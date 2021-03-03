@@ -1,15 +1,11 @@
 import React from 'react'
-import { Text, View } from 'react-native'
-import { useSelector } from 'react-redux'
+import { View, Button } from 'react-native'
+import styles from '../styles'
 
-const answerSelector = state => state.answer
-
-export default () => {
-  const answer = useSelector(answerSelector)
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ fontSize: 20 }}>Reviso</Text>
-      <Text>The answer to everything is {answer}</Text>
-    </View>
-  )
-}
+export default ({ navigation }) => (
+  <View style={styles.topLevel}>
+    <View style={styles.paddedElement}><Button title="Sign Up" disabled={true} /></View>
+    <View style={styles.paddedElement}><Button title="Log In" disabled={true} /></View>
+    <View style={styles.paddedElement}><Button title="Practice" onPress={() => navigation.navigate('PracticeHome')} /></View>
+  </View>
+)
