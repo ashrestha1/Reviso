@@ -38,6 +38,14 @@ export const rootReducer = (state, action) => {
 	...state.problemSets.slice(action.payload.idx + 1)
       ]
     }
+  case 'problemSet/new':
+    return {
+      ...state,
+      problemSets: [
+        ...state.problemSets,
+	action.payload.problemSet
+      ]
+    }
   default:
     return state
   }

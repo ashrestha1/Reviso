@@ -10,7 +10,7 @@ export default ({ navigation }) => {
     <View style={styles.topLevel}>
       <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
         <View style={styles.paddedElement}><Button title='Import' disabled={true} /></View>
-        <View style={styles.paddedElement}><Button title='New' disabled={true} /></View>
+        <View style={styles.paddedElement}><Button title='New' onPress={() => navigation.navigate('PracticeSetNew')} /></View>
       </View>
       <View style={{ flex: 9 }}>
         <ScrollView>

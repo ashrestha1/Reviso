@@ -2,12 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, ScrollView, Button, TextInput } from 'react-native'
 import styles from '../styles'
 import { useDispatch } from 'react-redux'
-
-const MyTextInput = props => (
-  <View style={[styles.paddedElement, { flexDirection: 'row' }]}>
-    <TextInput style={[styles.textInput, { flex: 1 }]} {...props} />
-  </View>
-)
+import MyTextInput from '../components/MyTextInput'
 
 const addProblemToSet = (navigation, dispatch, idx, problem) => {
   dispatch({ type: 'problemSet/addProblem', payload: { idx, problem } })
