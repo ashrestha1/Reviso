@@ -1,4 +1,4 @@
-export default (state, action) => {
+export const rootReducer = (state, action) => {
   switch (action.type) {
   case 'problemSet/delete':
     return {
@@ -23,7 +23,21 @@ export default (state, action) => {
 	...state.problemSets.slice(action.payload.idx + 1)
       ]
     }
-  // TODO
+  case 'problemSet/deleteProblem':
+    return {
+      ...state,
+      problemSets: [
+        ...state.problemSets.slice(0, action.payload.idx),
+	{
+          ...state.problemSets[action.payload.idx],
+          problems: [
+            ...state.problemSets[action.payload.idx].problems.slice(0, action.payload.jdx),
+            ...state.problemSets[action.payload.idx].problems.slice(action.payload.jdx + 1)
+	  ]
+	},
+	...state.problemSets.slice(action.payload.idx + 1)
+      ]
+    }
   default:
     return state
   }

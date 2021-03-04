@@ -19,7 +19,7 @@ export default ({ route, navigation }) => {
 	</View>
 	{ problemSet.problems.map((problem, jdx) => (
             <View key={jdx} style={styles.paddedElement}>
-              <Button title={`Question ${jdx + 1}`} disabled={true} />
+              <Button title={`Question ${jdx + 1}`} onPress={() => navigation.navigate('PracticeProblemEdit', { idx: route.params.idx, jdx })} />
             </View>
 	  )) }
       </ScrollView>

@@ -9,6 +9,7 @@ import PracticeSetHomeScreen from './screens/PracticeSetHomeScreen'
 import PracticeSetDetailsScreen from './screens/PracticeSetDetailsScreen'
 import PracticeSetEditScreen from './screens/PracticeSetEditScreen'
 import PracticeSetNewProblemScreen from './screens/PracticeSetNewProblemScreen'
+import PracticeProblemEditScreen from './screens/PracticeProblemEditScreen'
 
 const Stack = createStackNavigator()
 
@@ -21,6 +22,7 @@ const App = () => (
       <Stack.Screen name="PracticeSetDetails" component={PracticeSetDetailsScreen} options={({ route }) => ({ title: route.params.title })} />
       <Stack.Screen name="PracticeSetEdit" component={PracticeSetEditScreen} options={({ route }) => ({ title: route.params.title })} />
       <Stack.Screen name="PracticeSetNewProblem" component={PracticeSetNewProblemScreen} options={{ title: 'Create New Question' }} />
+      <Stack.Screen name="PracticeProblemEdit" component={PracticeProblemEditScreen} options={{ title: 'Edit Question' }} />
     </Stack.Navigator>
   </NavigationContainer>
 )
