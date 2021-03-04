@@ -15,7 +15,7 @@ export default ({ navigation }) => {
       </View>
       <View style={{ flex: 9 }}>
         <ScrollView>
-	  { problemSets.map((problemSet, idx) => <View key={idx} style={styles.paddedElement}><Button title={problemSet.title} onPress={() => navigation.navigate('PracticeSetDetails', {...problemSet, idx})} /></View>) }
+	  { problemSets.map((problemSet, idx) => <View key={idx} style={styles.paddedElement}><Button title={problemSet.title} onPress={() => navigation.navigate('PracticeSetDetails', { title: problemSet.title, idx })} /></View>) }
         </ScrollView>
       </View>
     </View>
