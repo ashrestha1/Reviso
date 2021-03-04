@@ -2,13 +2,12 @@ import React from 'react'
 import { View, Text, ScrollView, Button } from 'react-native'
 import styles from '../styles'
 import { useDispatch, useSelector } from 'react-redux'
+import { problemSetSelector } from '../redux/selectors'
 
 const deleteProblemSet = (navigation, dispatch, idx) => {
   dispatch({ type: 'problemSet/delete', payload: { idx } })
   navigation.pop()
 }
-
-const problemSetSelector = idx => state => state.problemSets[idx]
 
 export default ({ route, navigation }) => {
   const dispatch = useDispatch()
@@ -20,7 +19,7 @@ export default ({ route, navigation }) => {
       <ScrollView>
         <View style={styles.paddedElement}><Text>{problemSet.description}</Text></View>
         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-	  <View style={[{ flex: 1 }, styles.button]}><Button title="Edit" disabled={true} /></View>
+	  <View style={[{ flex: 1 }, styles.button]}><Button title="Edit" onPress={() => navigation.navigate('PracticeSetEdit', { title: problemSet.title, idx: route.params.idx })} /></View>
 	  <View style={[{ flex: 1 }, styles.button]}><Button title="Delete" onPress={() => deleteProblemSet(navigation, dispatch, route.params.idx)} /></View>
         </View>
         <View style={styles.paddedElement}><Text style={{ fontSize: 20, fontWeight: 'bold' }}>Questions</Text></View>

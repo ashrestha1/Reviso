@@ -2,8 +2,7 @@ import React from 'react'
 import { View, Text, Button, ScrollView } from 'react-native'
 import styles from '../styles'
 import { useSelector } from 'react-redux'
-
-const problemSetsSelector = state => state.problemSets
+import { problemSetsSelector } from '../redux/selectors'
 
 export default ({ navigation }) => {
   const problemSets = useSelector(problemSetsSelector)
