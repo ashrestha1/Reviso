@@ -3,34 +3,54 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
-import PracticeHomeScreen from './screens/PracticeHomeScreen';
 import PracticeSetHomeScreen from './screens/PracticeSetHomeScreen';
 import PracticeSetDetailsScreen from './screens/PracticeSetDetailsScreen';
 import PracticeSetEditScreen from './screens/PracticeSetEditScreen';
 import PracticeSetNewProblemScreen from './screens/PracticeSetNewProblemScreen';
 import PracticeProblemEditScreen from './screens/PracticeProblemEditScreen';
 import PracticeSetNewScreen from './screens/PracticeSetNewScreen';
+import Splash from './screens/Splash';
 
 const Stack = createStackNavigator();
-
+const config = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 50,
+    mass: 3,
+    overshootClamping: false,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
 const App = () => (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="Splash"
       screenOptions={{
         headerShown: false,
+        transitionSpec: {
+          open: config,
+          close: config,
+        },
       }}
     >
+      <Stack.Screen
+        name="Splash"
+        component={Splash}
+        options={{ title: 'Reviso - Splash' }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ title: 'Reviso - Login' }}
+      />
       <Stack.Screen
         name="Home"
         component={HomeScreen}
         options={{ title: 'Reviso - Home' }}
-      />
-      <Stack.Screen
-        name="PracticeHome"
-        component={PracticeHomeScreen}
-        options={{ title: 'Reviso - Practice Mode' }}
       />
       <Stack.Screen
         name="PracticeSetHome"

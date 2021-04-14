@@ -1,131 +1,278 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-  TextInput,
-} from 'react-native';
-import styles from './HomeScreenStyles';
+import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, Image, ImageBackground, TextInput } from 'react-native';
 
 export default ({ navigation }) => {
   return (
-    <ScrollView style={styles.container}>
-      <View>
+    <ImageBackground
+      source={require('../assets/images-dash/back.png')}
+      style={{ width: '100%', height: '100%' }}
+    >
+      <View
+        style={{
+          flexDirection: 'row',
+          marginTop: 40,
+          alignItems: 'center',
+          paddingHorizontal: 40,
+        }}
+      >
+        <Icon name="menu" size={30} color="#a2a2db" style={{ width: 20 }} />
+        <Icon
+          name="account-circle"
+          size={33}
+          color="#a2a2db"
+          style={{ marginLeft: 230 }}
+        />
+      </View>
+
+      <View style={{ paddingHorizontal: 40, marginTop: 25 }}>
+        <Text
+          style={{
+            fontSize: 40,
+            color: '#522289',
+            fontWeigh: 400,
+          }}
+        >
+          Hello
+        </Text>
+
+        <Text
+          style={{
+            fontSize: 15,
+            paddingVertical: 10,
+            paddingRight: 80,
+            lineHeight: 22,
+            fontWeight: 400,
+            color: '#a2a2db',
+          }}
+        >
+          Lorem ipsum dolor sit amet, consectetuer adipscing elit.
+        </Text>
+
         <View
           style={{
-            marginTop: '5%',
+            flexDirection: 'row',
+            backgroundColor: '#FFF',
+            borderRadius: 40,
             alignItems: 'center',
-            justifyContent: 'center',
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            marginTop: 30,
           }}
         >
           <Image
-            style={{ width: '40%', height: '40%' }}
-            source={require('../assets/LogoMakr.png')}
+            source={require('../assets/images-dash/search.png')}
+            style={{ height: 14, width: 14 }}
           />
-          <Text
-            style={[
-              styles.text,
-              {
-                marginTop: '5%',
-                fontSize: 22,
-                fontWeight: '500',
-              },
-            ]}
-          >
-            Reviso
-          </Text>
+          <TextInput
+            placeholder="Lorem ipsum"
+            style={{ paddingHorizontal: 20, fontSize: 15, color: '#ccccef' }}
+          />
         </View>
-        <View
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginRight: -40, marginTop: 30 }}
+        >
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Detail')}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 66,
+              width: 66,
+              borderRadius: 50,
+              backgroundColor: '#5facdb',
+            }}
+          >
+            <Image
+              source={require('../assets/images-dash/p.png')}
+              style={{ height: 24, width: 24 }}
+            />
+          </TouchableOpacity>
+
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 66,
+              width: 66,
+              borderRadius: 50,
+              backgroundColor: '#ff5c83',
+              marginHorizontal: 22,
+            }}
+          >
+            <Icon name="office-building" color="white" size={32} />
+          </View>
+
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 66,
+              width: 66,
+              borderRadius: 50,
+              backgroundColor: '#ffa06c',
+            }}
+          >
+            <Icon name="bus" color="white" size={32} />
+          </View>
+
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 66,
+              width: 66,
+              borderRadius: 50,
+              backgroundColor: '#bb32fe',
+              marginLeft: 22,
+            }}
+          >
+            <Icon name="dots-horizontal" color="white" size={32} />
+          </View>
+        </ScrollView>
+
+        <Text
           style={{
-            marginTop: '-5%',
-            flexDirection: 'row',
-            justifyContent: 'center',
+            color: '#FFF',
+            fontWeight: 400,
+            marginTop: 50,
+            fontSize: 17,
           }}
         >
-          <TouchableOpacity>
-            <View style={styles.socialButton}>
-              <Image
-                source={require('../assets/facebook.png')}
-                style={styles.socialLogo}
-              />
-              <Text style={styles.text}>Facebook</Text>
-            </View>
-          </TouchableOpacity>
+          Recommended
+        </Text>
 
-          <TouchableOpacity style={styles.socialButton}>
-            <Image
-              source={require('../assets/google.png')}
-              style={styles.socialLogo}
-            />
-            <Text style={styles.text}>Google</Text>
-          </TouchableOpacity>
-        </View>
-
-        <Text
-          style={[
-            styles.text,
-            {
-              color: '#ABB4BD',
-              fontSize: 15,
-              textAlign: 'center',
-              marginVertical: 20,
-            },
-          ]}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginHorizontal: -40, marginTop: 30 }}
         >
-          or
-        </Text>
-
-        <View style={styles.inputTitle}>
-          <Text style={styles.inputTitle}>Email</Text>
-          <TextInput style={styles.input} />
           <View
-            style={{ borderBottomColor: '#D8D8D8', borderBottomWidth: 1 }}
-          />
-        </View>
-        <View style={styles.inputTitle}>
-          <Text style={styles.inputTitle}>Password</Text>
-          <TextInput secureTextEntry={true} style={styles.input} />
-          <View
-            style={{ borderBottomColor: '#D8D8D8', borderBottomWidth: 1 }}
-          />
-        </View>
-
-        <Text style={[styles.text, styles.link, { textAlign: 'right' }]}>
-          Forgot Password?
-        </Text>
-
-        <TouchableOpacity style={styles.submitContainer}>
-          <Text
-            style={[
-              styles.text,
-              {
-                color: '#FFF',
-                fontWeight: '600',
-                fontSize: 16,
-              },
-            ]}
+            style={{
+              backgroundColor: '#FEFEFE',
+              height: 200,
+              width: 190,
+              borderRadius: 15,
+              padding: 5,
+            }}
           >
-            Login
-          </Text>
-        </TouchableOpacity>
+            <Image
+              source={require('../assets/images-dash/1.jpg')}
+              style={{ width: 180, borderRadius: 10, height: 130 }}
+            />
+            <View
+              style={{
+                flexDirection: 'row',
+                width: 150,
+                alignItems: 'center',
+              }}
+            >
+              <View
+                style={{
+                  paddingHorizontal: 5,
+                  paddingVertical: 5,
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: 400,
+                    fontSize: 11,
+                    color: '#a2a2db',
+                  }}
+                >
+                  Lorem impsum dolor sit amet, consectetuer adipscing elit,
+                </Text>
+              </View>
+              <Icon name="map-marker" size={25} color="#ff5c83" />
+            </View>
+          </View>
 
-        <Text
-          style={[
-            styles.text,
-            {
-              fontSize: 14,
-              color: '#ABB4BD',
-              textAlign: 'center',
-              marginTop: 24,
-            },
-          ]}
-        >
-          Don't have an account?{' '}
-          <Text style={[styles.text, styles.link]}>Register Now</Text>
-        </Text>
+          <View
+            style={{
+              backgroundColor: '#FEFEFE',
+              height: 200,
+              width: 190,
+              borderRadius: 15,
+              padding: 5,
+              marginHorizontal: 20,
+            }}
+          >
+            <Image
+              source={require('../assets/images-dash/2.jpg')}
+              style={{ width: 180, borderRadius: 10, height: 130 }}
+            />
+            <View
+              style={{
+                flexDirection: 'row',
+                width: 150,
+                alignItems: 'center',
+              }}
+            >
+              <View
+                style={{
+                  paddingHorizontal: 5,
+                  paddingVertical: 5,
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: 400,
+                    fontSize: 11,
+                    color: '#a2a2db',
+                  }}
+                >
+                  Lorem impsum dolor sit amet, consectetuer adipscing elit,
+                </Text>
+              </View>
+              <Icon name="map-marker" size={25} color="#5facdb" />
+            </View>
+          </View>
+
+          <View
+            style={{
+              backgroundColor: '#FEFEFE',
+              height: 200,
+              width: 190,
+              borderRadius: 15,
+              padding: 5,
+            }}
+          >
+            <Image
+              source={require('../assets/images-dash/3.jpg')}
+              style={{ width: 180, borderRadius: 10, height: 130 }}
+            />
+            <View
+              style={{
+                flexDirection: 'row',
+                width: 150,
+                alignItems: 'center',
+              }}
+            >
+              <View
+                style={{
+                  paddingHorizontal: 5,
+                  paddingVertical: 5,
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: 400,
+                    fontSize: 11,
+                    color: '#a2a2db',
+                  }}
+                >
+                  Lorem impsum dolor sit amet, consectetuer adipscing elit,
+                </Text>
+              </View>
+              <Icon name="map-marker" size={25} color="#bb32fe" />
+            </View>
+          </View>
+        </ScrollView>
       </View>
-    </ScrollView>
+    </ImageBackground>
   );
 };
