@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
+import QuestionScreen from './screens/QuestionsScreen';
 import PracticeSetHomeScreen from './screens/PracticeSetHomeScreen';
 import PracticeSetDetailsScreen from './screens/PracticeSetDetailsScreen';
 import PracticeSetEditScreen from './screens/PracticeSetEditScreen';
@@ -28,7 +29,7 @@ const config = {
 const App = () => (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="Splash"
+      initialRouteName="Home"
       screenOptions={{
         headerShown: false,
         transitionSpec: {
@@ -51,6 +52,11 @@ const App = () => (
         name="Home"
         component={HomeScreen}
         options={{ title: 'Reviso - Home' }}
+      />
+      <Stack.Screen
+        name="Question"
+        component={QuestionScreen}
+        options={{ title: 'Reviso - Question' }}
       />
       <Stack.Screen
         name="PracticeSetHome"

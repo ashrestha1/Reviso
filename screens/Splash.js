@@ -19,9 +19,8 @@ export default class Splash extends Component {
           source={require('../assets/welcome.json')}
           autoPlay
           loop={false}
-          speed={0.5}
+          speed={0.2}
           onAnimationFinish={() => {
-            console.log('Animation Finished!');
             this.props.navigation.replace('Login');
           }}
         />

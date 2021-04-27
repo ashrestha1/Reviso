@@ -1,14 +1,21 @@
 import React from 'react';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { View, Text, Image, ImageBackground, TextInput } from 'react-native';
+import {
+  StyleSheet,
+  Dimensions,
+  View,
+  Image,
+  ImageBackground,
+  TextInput,
+} from 'react-native';
+import { Button, Block, Text, Input, theme } from 'galio-framework';
+import QuestionSet from '../components/QuestionSet';
+const { width } = Dimensions.get('screen');
 
 export default ({ navigation }) => {
   return (
-    <ImageBackground
-      source={require('../assets/images-dash/back.png')}
-      style={{ width: '100%', height: '100%' }}
-    >
+    <ImageBackground style={{ width: '100%', height: '100%' }}>
       <View
         style={{
           flexDirection: 'row',
@@ -31,10 +38,10 @@ export default ({ navigation }) => {
           style={{
             fontSize: 40,
             color: '#522289',
-            fontWeigh: 400,
+            fontWeight: '400',
           }}
         >
-          Hello
+          Hello User
         </Text>
 
         <Text
@@ -43,7 +50,7 @@ export default ({ navigation }) => {
             paddingVertical: 10,
             paddingRight: 80,
             lineHeight: 22,
-            fontWeight: 400,
+            fontWeight: '400',
             color: '#a2a2db',
           }}
         >
@@ -58,7 +65,7 @@ export default ({ navigation }) => {
             alignItems: 'center',
             paddingVertical: 10,
             paddingHorizontal: 20,
-            marginTop: 30,
+            marginTop: 10,
           }}
         >
           <Image
@@ -74,72 +81,37 @@ export default ({ navigation }) => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={{ marginRight: -40, marginTop: 30 }}
+          style={{
+            marginTop: 10,
+            marginHorizontal: '-13%',
+            paddingHorizontal: '4%',
+            paddingVertical: '5%',
+          }}
         >
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Detail')}
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              height: 66,
-              width: 66,
-              borderRadius: 50,
-              backgroundColor: '#5facdb',
+              // backgroundColor: '#5facdb',
             }}
           >
             <Image
               source={require('../assets/images-dash/p.png')}
-              style={{ height: 24, width: 24 }}
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 24,
+                width: 24,
+              }}
             />
           </TouchableOpacity>
-
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: 66,
-              width: 66,
-              borderRadius: 50,
-              backgroundColor: '#ff5c83',
-              marginHorizontal: 22,
-            }}
-          >
-            <Icon name="office-building" color="white" size={32} />
-          </View>
-
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: 66,
-              width: 66,
-              borderRadius: 50,
-              backgroundColor: '#ffa06c',
-            }}
-          >
-            <Icon name="bus" color="white" size={32} />
-          </View>
-
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: 66,
-              width: 66,
-              borderRadius: 50,
-              backgroundColor: '#bb32fe',
-              marginLeft: 22,
-            }}
-          >
-            <Icon name="dots-horizontal" color="white" size={32} />
-          </View>
         </ScrollView>
 
         <Text
           style={{
-            color: '#FFF',
-            fontWeight: 400,
-            marginTop: 50,
+            color: 'black',
+            fontWeight: '400',
+            marginTop: 5,
             fontSize: 17,
           }}
         >
@@ -147,132 +119,84 @@ export default ({ navigation }) => {
         </Text>
 
         <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{ marginHorizontal: -40, marginTop: 30 }}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.products}
         >
-          <View
-            style={{
-              backgroundColor: '#FEFEFE',
-              height: 200,
-              width: 190,
-              borderRadius: 15,
-              padding: 5,
-            }}
-          >
-            <Image
-              source={require('../assets/images-dash/1.jpg')}
-              style={{ width: 180, borderRadius: 10, height: 130 }}
+          <Block flex>
+            <QuestionSet
+              product={{ title: '1' }}
+              navigation={navigation}
+              horizontal
             />
-            <View
-              style={{
-                flexDirection: 'row',
-                width: 150,
-                alignItems: 'center',
-              }}
-            >
-              <View
-                style={{
-                  paddingHorizontal: 5,
-                  paddingVertical: 5,
-                }}
-              >
-                <Text
-                  style={{
-                    fontWeight: 400,
-                    fontSize: 11,
-                    color: '#a2a2db',
-                  }}
-                >
-                  Lorem impsum dolor sit amet, consectetuer adipscing elit,
-                </Text>
-              </View>
-              <Icon name="map-marker" size={25} color="#ff5c83" />
-            </View>
-          </View>
-
-          <View
-            style={{
-              backgroundColor: '#FEFEFE',
-              height: 200,
-              width: 190,
-              borderRadius: 15,
-              padding: 5,
-              marginHorizontal: 20,
-            }}
-          >
-            <Image
-              source={require('../assets/images-dash/2.jpg')}
-              style={{ width: 180, borderRadius: 10, height: 130 }}
+            <Block flex row>
+              <QuestionSet
+                product={{ title: '1' }}
+                navigation={navigation}
+                style={{ marginRight: theme.SIZES.BASE }}
+              />
+              <QuestionSet product={{ title: '1' }} navigation={navigation} />
+            </Block>
+            <QuestionSet
+              product={{ title: '1' }}
+              navigation={navigation}
+              horizontal
             />
-            <View
-              style={{
-                flexDirection: 'row',
-                width: 150,
-                alignItems: 'center',
-              }}
-            >
-              <View
-                style={{
-                  paddingHorizontal: 5,
-                  paddingVertical: 5,
-                }}
-              >
-                <Text
-                  style={{
-                    fontWeight: 400,
-                    fontSize: 11,
-                    color: '#a2a2db',
-                  }}
-                >
-                  Lorem impsum dolor sit amet, consectetuer adipscing elit,
-                </Text>
-              </View>
-              <Icon name="map-marker" size={25} color="#5facdb" />
-            </View>
-          </View>
-
-          <View
-            style={{
-              backgroundColor: '#FEFEFE',
-              height: 200,
-              width: 190,
-              borderRadius: 15,
-              padding: 5,
-            }}
-          >
-            <Image
-              source={require('../assets/images-dash/3.jpg')}
-              style={{ width: 180, borderRadius: 10, height: 130 }}
+            <QuestionSet
+              product={{ title: '1' }}
+              navigation={navigation}
+              full
             />
-            <View
-              style={{
-                flexDirection: 'row',
-                width: 150,
-                alignItems: 'center',
-              }}
-            >
-              <View
-                style={{
-                  paddingHorizontal: 5,
-                  paddingVertical: 5,
-                }}
-              >
-                <Text
-                  style={{
-                    fontWeight: 400,
-                    fontSize: 11,
-                    color: '#a2a2db',
-                  }}
-                >
-                  Lorem impsum dolor sit amet, consectetuer adipscing elit,
-                </Text>
-              </View>
-              <Icon name="map-marker" size={25} color="#bb32fe" />
-            </View>
-          </View>
+          </Block>
         </ScrollView>
       </View>
     </ImageBackground>
   );
 };
+const styles = StyleSheet.create({
+  home: {
+    width: width,
+  },
+  search: {
+    height: 48,
+    width: width - 32,
+    marginHorizontal: 16,
+    borderWidth: 1,
+    borderRadius: 3,
+  },
+  header: {
+    backgroundColor: theme.COLORS.WHITE,
+    shadowColor: theme.COLORS.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 8,
+    shadowOpacity: 0.2,
+    elevation: 4,
+    zIndex: 2,
+  },
+  tabs: {
+    marginBottom: 24,
+    marginTop: 10,
+    elevation: 4,
+  },
+  tab: {
+    backgroundColor: theme.COLORS.TRANSPARENT,
+    width: width * 0.5,
+    borderRadius: 0,
+    borderWidth: 0,
+    height: 24,
+    elevation: 0,
+  },
+  tabTitle: {
+    lineHeight: 19,
+    fontWeight: '300',
+  },
+  divider: {
+    borderRightWidth: 0.3,
+    borderRightColor: theme.COLORS.MUTED,
+  },
+  products: {
+    paddingVertical: theme.SIZES.BASE / 2,
+  },
+});
