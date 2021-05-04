@@ -1,15 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, Text, SafeAreaView } from 'react-native';
+import { View, StyleSheet, StatusBar, SafeAreaView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Block, Text, theme } from 'galio-framework';
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#36B1F0',
-    flex: 1,
-    paddingHorizontal: 20,
-  },
+  container: {},
   text: {
-    color: '#fff',
+    color: 'black',
     fontSize: 25,
     textAlign: 'center',
     letterSpacing: -0.02,
@@ -39,6 +36,27 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     marginTop: 20,
     justifyContent: 'space-between',
+  },
+  shadow: {
+    shadowColor: theme.COLORS.BLACK,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    shadowOpacity: 0.1,
+    elevation: 2,
+  },
+  product: {
+    backgroundColor: theme.COLORS.WHITE,
+    marginVertical: theme.SIZES.BASE,
+    borderWidth: 0,
+    minHeight: 114,
+  },
+  productTitle: {
+    flex: 1,
+    flexWrap: 'wrap',
+    paddingBottom: 6,
+  },
+  productDescription: {
+    padding: theme.SIZES.BASE / 2,
   },
 });
 
@@ -75,25 +93,30 @@ export default ({ navigation }) => {
   console.log('question', questions.question);
 
   return (
-    <View style={[styles.container, { backgroundColor: 'blue' }]}>
-      <StatusBar barStyle="light-content" />
-      <SafeAreaView style={styles.safearea}>
-        <View>
-          <Text style={styles.text}>{questions[0].question}</Text>
+    <View style={{ backgroundColor: 'white' }}>
+      <View style={{ marginTop: '40%' }}>
+        <Block>
+          <Block row>
+            <Block row={true} card flex style={[styles.product, styles.shadow]}>
+              <Block flex space="between" style={styles.productDescription}>
+                <Text style={styles.text}>{questions[0].question}</Text>
+              </Block>
+            </Block>
+          </Block>
+        </Block>
 
-          <View style={styles.buttonContainer}>
-            {questions[0].answers.map((answer) => (
-              <TouchableOpacity key={answer.id} style={styles.button}>
-                <Text style={styles.answerText}>{answer.text}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+        <View style={styles.buttonContainer}>
+          {questions[0].answers.map((answer) => (
+            <TouchableOpacity key={answer.id} style={styles.button}>
+              <Text style={styles.answerText}>{answer.text}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
+      </View>
 
-        <Text style={styles.text}>
-          {`${this.state.correctCount}/${this.state.totalCount}`}
-        </Text>
-      </SafeAreaView>
+      <Text style={styles.text}>
+        {`${this.state.correctCount}/${this.state.totalCount}`}
+      </Text>
     </View>
   );
 };
