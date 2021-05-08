@@ -1,16 +1,17 @@
-import React from 'react';
-import { View, StyleSheet, StatusBar, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Block, Text, theme } from 'galio-framework';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 const styles = StyleSheet.create({
   container: {},
   text: {
     color: 'black',
     fontSize: 25,
+    fontWeight: '700',
     textAlign: 'center',
     letterSpacing: -0.02,
-    fontWeight: '600',
   },
   safearea: {
     flex: 1,
@@ -30,12 +31,18 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     textAlign: 'center',
+    color: 'black',
+    fontSize: 15,
+    fontWeight: '700',
   },
   buttonContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 20,
-    justifyContent: 'space-between',
+    marginTop: '5%',
+    marginHorizontal: '10%',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 4,
+    shadowOpacity: 0.1,
+    elevation: 2,
   },
   shadow: {
     shadowColor: theme.COLORS.BLACK,
@@ -48,7 +55,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.COLORS.WHITE,
     marginVertical: theme.SIZES.BASE,
     borderWidth: 0,
-    minHeight: 114,
+    padding: 3,
   },
   productTitle: {
     flex: 1,
@@ -61,6 +68,15 @@ const styles = StyleSheet.create({
 });
 
 export default ({ navigation }) => {
+  const [textColor, setTextColor] = useState('black');
+
+  const answerPressed = (isCorrect) => {
+    //score++
+    questions[0].answers.map((answer) => {
+      if (answer.isCorrect);
+    });
+  };
+
   const questions = [
     {
       question: "What is localhost's IP address?",
@@ -90,11 +106,22 @@ export default ({ navigation }) => {
     answerCorrect: false,
   };
 
-  console.log('question', questions.question);
-
   return (
-    <View style={{ backgroundColor: 'white' }}>
-      <View style={{ marginTop: '40%' }}>
+    <View style={{ flex: 1, paddingHorizontal: 5 }}>
+      <View style={{ marginTop: '15%' }}>
+        <AnimatedCircularProgress
+          size={80}
+          width={8}
+          fill={50}
+          tintColor="#00e0ff"
+          onAnimationComplete={() => console.log('')}
+          backgroundColor="white"
+          style={{ alignSelf: 'center', marginBottom: '5%' }}
+          rotation={0}
+        >
+          {(fill) => <Text h4>12</Text>}
+        </AnimatedCircularProgress>
+
         <Block>
           <Block row>
             <Block row={true} card flex style={[styles.product, styles.shadow]}>
@@ -107,16 +134,26 @@ export default ({ navigation }) => {
 
         <View style={styles.buttonContainer}>
           {questions[0].answers.map((answer) => (
-            <TouchableOpacity key={answer.id} style={styles.button}>
-              <Text style={styles.answerText}>{answer.text}</Text>
+            <TouchableOpacity
+              key={answer.id}
+              onPress={() => answerPressed(answer.correct)}
+            >
+              {ianswer.isCorrect}
+              <Block card style={[styles.product, styles.shadow]}>
+                <Block space="between" style={styles.productDescription}>
+                  <Text style={[styles.answerText, { color: 'white' }]}>
+                    {answer.text}
+                  </Text>
+                </Block>
+              </Block>
             </TouchableOpacity>
           ))}
         </View>
       </View>
-
+      {/* 
       <Text style={styles.text}>
         {`${this.state.correctCount}/${this.state.totalCount}`}
-      </Text>
+      </Text> */}
     </View>
   );
 };

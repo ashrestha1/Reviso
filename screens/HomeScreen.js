@@ -49,7 +49,7 @@ export default ({ navigation }) => {
             />
             <QuestionSet product={{ title: '1' }} navigation={navigation} />
           </Block>
-          <QuestionSetx
+          <QuestionSet
             product={{ title: '1' }}
             navigation={navigation}
             horizontal
