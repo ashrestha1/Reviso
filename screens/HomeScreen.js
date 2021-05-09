@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -7,6 +7,7 @@ import {
   View,
   Image,
   ImageBackground,
+  Modal,
   TextInput,
   useWindowDimensions,
   Animated,
@@ -14,7 +15,7 @@ import {
 import { Block, Text, theme } from 'galio-framework';
 import QuestionSet from '../components/QuestionSet';
 import ActionButton from 'react-native-action-button';
-
+import CreateQuestionSetModal from '../components/CreateQuestionSetModal';
 //Import Icon for the ActionButton
 
 const { width } = Dimensions.get('screen');
@@ -23,6 +24,16 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 const Tab = createMaterialTopTabNavigator();
 
 export default ({ navigation }) => {
+  const [
+    createQuestionSetModalVisible,
+    setCreateQuestionSetModalVisible,
+  ] = useState(false);
+
+  const toggleCreateQuestionSetModal = () => {
+    createQuestionSetModalVisible
+      ? setCreateQuestionSetModalVisible(false)
+      : setCreateQuestionSetModalVisible(true);
+  };
   const FirstRoute = () => (
     <View style={{ backgroundColor: '#9fc2c3' }}>
       <ScrollView
@@ -146,15 +157,15 @@ export default ({ navigation }) => {
            */}
             <ActionButton.Item
               buttonColor="#9b59b6"
-              title="Create a Question"
+              title="Create a Question Set"
               spaceBetween={-50}
-              onPress={() => alert('Create')}
+              onPress={toggleCreateQuestionSetModal}
             >
               <Icon name="plus" style={{ fontSize: 20 }} />
             </ActionButton.Item>
             <ActionButton.Item
               buttonColor="#3498db"
-              title="Edit a Question"
+              title="Edit a Question Set"
               spaceBetween={-50}
               onPress={() => alert('Edit')}
             >
@@ -186,6 +197,17 @@ export default ({ navigation }) => {
           <Tab.Screen name="Computer" component={SecondRoute} />
           <Tab.Screen name="Physics" component={SecondRoute} />
         </Tab.Navigator>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={createQuestionSetModalVisible}
+          toggleCreateQuestionSetModal={toggleCreateQuestionSetModal}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}
+        >
+          <CreateQuestionSetModal />
+        </Modal>
       </View>
     </ImageBackground>
   );
