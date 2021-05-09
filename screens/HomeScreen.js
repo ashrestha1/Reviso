@@ -13,6 +13,9 @@ import {
 } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import QuestionSet from '../components/QuestionSet';
+import ActionButton from 'react-native-action-button';
+
+//Import Icon for the ActionButton
 
 const { width } = Dimensions.get('screen');
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -79,37 +82,30 @@ export default ({ navigation }) => {
     >
       <View
         style={{
-          flexDirection: 'row',
-          marginTop: 40,
-          alignItems: 'center',
-          paddingHorizontal: 40,
-        }}
-      >
-        <Icon name="menu" size={30} color="#FFF" style={{ width: 20 }} />
-        <Icon
-          name="account-circle"
-          size={33}
-          color="#FFF"
-          style={{ marginLeft: 230 }}
-        />
-      </View>
-
-      <View
-        style={{
           paddingHorizontal: 40,
           marginTop: 25,
           flex: 1,
         }}
       >
-        <Text
+        <View
           style={{
-            fontSize: 40,
-            color: '#FFF',
-            fontWeight: '400',
+            marginTop: 40,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexDirection: 'row',
           }}
         >
-          Hello User
-        </Text>
+          <Text
+            style={{
+              fontSize: 40,
+              color: '#FFF',
+              fontWeight: '400',
+            }}
+          >
+            Hello User
+          </Text>
+          <Icon name="account-circle" size={33} color="#FFF" />
+        </View>
 
         <Text
           style={{
@@ -123,14 +119,64 @@ export default ({ navigation }) => {
         >
           Lorem ipsumd dolor sit amet, consectetuer adipscing elit.
         </Text>
-
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 100,
+            right: 100,
+            backgroundColor: 'red',
+            zIndex: 1,
+          }}
+        >
+          <ActionButton
+            buttonColor="rgba(231,76,60,1)"
+            offsetX={0}
+            offsetY={0}
+            renderIcon={(active) =>
+              active ? (
+                <Icon name="menu-open" style={{ fontSize: 20 }} />
+              ) : (
+                <Icon name="menu" style={{ fontSize: 20 }} />
+              )
+            }
+          >
+            {/*Inner options of the action button*/}
+            {/*Icons here
+             https://infinitered.github.io/ionicons-version-3-search/
+           */}
+            <ActionButton.Item
+              buttonColor="#9b59b6"
+              title="Create a Question"
+              spaceBetween={-50}
+              onPress={() => alert('Create')}
+            >
+              <Icon name="plus" style={{ fontSize: 20 }} />
+            </ActionButton.Item>
+            <ActionButton.Item
+              buttonColor="#3498db"
+              title="Edit a Question"
+              spaceBetween={-50}
+              onPress={() => alert('Edit')}
+            >
+              <Icon name="pencil" style={{ fontSize: 20 }} />
+            </ActionButton.Item>
+            <ActionButton.Item
+              buttonColor="#1abc9c"
+              spaceBetween={-50}
+              title="View your Students"
+              onPress={() => alert('Students')}
+            >
+              <Icon name="account-group" style={{ fontSize: 20 }} />
+            </ActionButton.Item>
+          </ActionButton>
+        </View>
         <Tab.Navigator
           tabBarOptions={{
             labelStyle: { fontSize: 12 },
             activeTintColor: 'white',
             inactiveTintColor: '#778899',
             indicatorStyle: { backgroundColor: 'white' },
-            style: { backgroundColor: '#f7b640' },
+            style: { backgroundColor: '#f7b640', marginTop: '5%', zIndex: 0 },
           }}
           style={{
             marginHorizontal: '-13%',

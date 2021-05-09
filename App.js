@@ -29,7 +29,7 @@ const config = {
 const App = () => (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="Question"
+      initialRouteName="Home"
       screenOptions={{
         headerShown: false,
         transitionSpec: {
