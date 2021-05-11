@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.COLORS.WHITE,
     marginVertical: theme.SIZES.BASE,
     borderWidth: 0,
-    minHeight: 114,
   },
   productTitle: {
     flex: 1,
@@ -78,11 +77,9 @@ const styles = StyleSheet.create({
     marginTop: -16,
   },
   horizontalImage: {
-    height: 122,
     width: 'auto',
   },
   fullImage: {
-    height: 215,
     width: width - theme.SIZES.BASE * 3,
   },
   shadow: {

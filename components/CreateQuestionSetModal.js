@@ -43,127 +43,119 @@ const { width, height } = Dimensions.get('screen');
 
 const CreateQuestionSetModal = (props) => {
   return (
-    <Block safe flex middle>
-      <Block style={styles.registerContainer}>
-        <Block flex={0.25} middle style={styles.socialConnect}>
-          <Text color="#8898AA" size={12}>
-            Sign up with
-          </Text>
-          <Block row style={{ marginTop: theme.SIZES.BASE }}>
-            <Button
-              style={{ ...styles.socialButtons, marginRight: 30 }}
-              onPress={props.toggleCreateQuestionSetModal}
-            >
-              <Block row>
-                <Icon
-                  name="logo-github"
-                  //   size={14}
-                  //   color={'black'}
-                  style={{ marginTop: 2, marginRight: 5 }}
-                />
-                <Text style={styles.socialTextButtons}>GITHUB</Text>
-              </Block>
-            </Button>
-            <Button style={styles.socialButtons}>
-              <Block row>
-                <Icon
-                  name="logo-google"
-                  //   size={14}
-                  //   color={'black'}
-                  style={{ marginTop: 2, marginRight: 5 }}
-                />
-                <Text style={styles.socialTextButtons}>GOOGLE</Text>
-              </Block>
-            </Button>
-          </Block>
-        </Block>
-        <Block flex>
-          <Block flex={0.17} middle>
-            <Text color="#8898AA" size={12}>
-              Or sign up the classic way
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+      <Block safe flex middle>
+        <Block style={styles.registerContainer}>
+          <Block middle style={styles.socialConnect}>
+            <Text color="#8898AA" size={20} style={{ marginTop: '5%' }}>
+              Question Set
             </Text>
+            <Block width={width * 0.8}>
+              <Input
+                borderless
+                placeholder="Title"
+                iconContent={
+                  <Icon
+                    //   size={16}
+                    //   color={argonTheme.COLORS.ICON}
+                    name="book-open-page-variant"
+                    //   family="ArgonExtra"
+                    style={[styles.inputIcons, { color: '#9fc2c3' }]}
+                  />
+                }
+              />
+            </Block>
           </Block>
-          <Block flex center>
-            <KeyboardAvoidingView
-              style={{ flex: 1 }}
-              behavior="padding"
-              enabled
-            >
+          <Block flex>
+            <Block style={{ paddingVertical: 15 }} middle>
+              <Text color="#8898AA" size={15}>
+                Input the first Question
+              </Text>
+            </Block>
+            <Block flex center>
               <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                 <Input
                   borderless
-                  placeholder="Name"
+                  placeholder="Question"
                   iconContent={
                     <Icon
                       //   size={16}
                       //   color={argonTheme.COLORS.ICON}
-                      name="hat-3"
+                      name="head-question-outline"
                       //   family="ArgonExtra"
-                      style={styles.inputIcons}
+                      //f7b640
+                      style={[styles.inputIcons, { color: '#f7b640' }]}
                     />
                   }
                 />
               </Block>
-              <Block width={width * 0.8} style={{ marginBottom: 15 }}>
+              <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                 <Input
                   borderless
-                  placeholder="Email"
+                  placeholder="Correct Answer"
                   iconContent={
                     <Icon
                       //   size={16}
                       //   color={argonTheme.COLORS.ICON}
-                      name="ic_mail_24px"
+                      name="check-circle-outline"
                       //   family="ArgonExtra"
-                      style={styles.inputIcons}
+                      style={[styles.inputIcons, { color: 'green' }]}
                     />
                   }
                 />
               </Block>
-              <Block width={width * 0.8}>
+              <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                 <Input
-                  password
                   borderless
-                  placeholder="Password"
+                  placeholder="Wrong Answer"
                   iconContent={
                     <Icon
                       //   size={16}
                       //   color={argonTheme.COLORS.ICON}
-                      name="padlock-unlocked"
+                      name="close-circle-outline"
                       //   family="ArgonExtra"
-                      style={styles.inputIcons}
+                      style={[styles.inputIcons, { color: 'red' }]}
                     />
                   }
                 />
-                <Block row style={styles.passwordCheck}>
-                  <Text size={12} color={argonTheme.COLORS.MUTED}>
-                    password strength:
-                  </Text>
-                  <Text bold size={12} color={argonTheme.COLORS.SUCCESS}>
-                    strong
-                  </Text>
-                </Block>
               </Block>
-              <Block row width={width * 0.75}>
-                <Checkbox
-                  checkboxStyle={{
-                    borderWidth: 3,
-                  }}
-                  color={argonTheme.COLORS.PRIMARY}
-                  label="I agree with the"
+              <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                <Input
+                  borderless
+                  placeholder="Wrong Answer"
+                  iconContent={
+                    <Icon
+                      //   size={16}
+                      //   color={argonTheme.COLORS.ICON}
+                      name="close-circle-outline"
+                      //   family="ArgonExtra"
+                      style={[styles.inputIcons, { color: 'red' }]}
+                    />
+                  }
                 />
-                <Button
-                  style={{ width: 100 }}
-                  color="transparent"
-                  textStyle={{
-                    color: argonTheme.COLORS.PRIMARY,
-                    fontSize: 14,
-                  }}
-                >
-                  Privacy Policy
-                </Button>
               </Block>
+              <Block width={width * 0.8} style={{ marginBottom: 12 }}>
+                <Input
+                  borderless
+                  placeholder="Wrong Answer"
+                  iconContent={
+                    <Icon
+                      //   size={16}
+                      //   color={argonTheme.COLORS.ICON}
+                      name="close-circle-outline"
+                      //   family="ArgonExtra"
+                      style={[styles.inputIcons, { color: 'red' }]}
+                    />
+                  }
+                />
+              </Block>
+
               <Block row space="evenly">
-                <Button color="primary" style={styles.createButton}>
+                <Button
+                  color="primary"
+                  style={styles.createButton}
+                  onPress={props.toggleCreateQuestionSetModal}
+                >
                   <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                     CANCEL
                   </Text>
@@ -174,11 +166,11 @@ const CreateQuestionSetModal = (props) => {
                   </Text>
                 </Button>
               </Block>
-            </KeyboardAvoidingView>
+            </Block>
           </Block>
         </Block>
       </Block>
-    </Block>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -200,6 +192,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   socialConnect: {
+    paddingVertical: '4%',
     backgroundColor: argonTheme.COLORS.WHITE,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: '#8898AA',
@@ -224,6 +217,7 @@ const styles = StyleSheet.create({
   },
   inputIcons: {
     marginRight: 12,
+    fontSize: 25,
   },
   passwordCheck: {
     paddingLeft: 15,
@@ -232,6 +226,6 @@ const styles = StyleSheet.create({
   },
   createButton: {
     width: width / 3,
-    marginTop: 25,
+    marginTop: 10,
   },
 });
