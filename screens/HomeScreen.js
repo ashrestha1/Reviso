@@ -201,12 +201,13 @@ export default ({ navigation }) => {
           animationType="slide"
           transparent={true}
           visible={createQuestionSetModalVisible}
-          toggleCreateQuestionSetModal={toggleCreateQuestionSetModal}
           onRequestClose={() => {
             Alert.alert('Modal has been closed.');
           }}
         >
-          <CreateQuestionSetModal />
+          <CreateQuestionSetModal
+            toggleCreateQuestionSetModal={toggleCreateQuestionSetModal}
+          />
         </Modal>
       </View>
     </ImageBackground>

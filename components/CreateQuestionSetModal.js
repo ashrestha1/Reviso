@@ -42,7 +42,6 @@ const argonTheme = {
 const { width, height } = Dimensions.get('screen');
 
 const CreateQuestionSetModal = (props) => {
-  console.log(props);
   return (
     <Block safe flex middle>
       <Block style={styles.registerContainer}>
@@ -163,10 +162,15 @@ const CreateQuestionSetModal = (props) => {
                   Privacy Policy
                 </Button>
               </Block>
-              <Block middle>
+              <Block row space="evenly">
                 <Button color="primary" style={styles.createButton}>
                   <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                    CREATE ACCOUNT
+                    CANCEL
+                  </Text>
+                </Button>
+                <Button color="primary" style={styles.createButton}>
+                  <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                    CREATE
                   </Text>
                 </Button>
               </Block>
@@ -182,7 +186,7 @@ export default CreateQuestionSetModal;
 const styles = StyleSheet.create({
   registerContainer: {
     width: width * 0.9,
-    height: height * 0.875,
+    height: height * 0.9,
     backgroundColor: '#F4F5F7',
     borderRadius: 4,
     shadowColor: argonTheme.COLORS.BLACK,
@@ -227,7 +231,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   createButton: {
-    width: width * 0.5,
+    width: width / 3,
     marginTop: 25,
   },
 });
