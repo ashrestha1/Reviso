@@ -12,6 +12,7 @@ import PracticeSetEditScreen from './screens/PracticeSetEditScreen';
 import PracticeSetNewProblemScreen from './screens/PracticeSetNewProblemScreen';
 import PracticeProblemEditScreen from './screens/PracticeProblemEditScreen';
 import PracticeSetNewScreen from './screens/PracticeSetNewScreen';
+import QuestionSetListScreen from './screens/QuestionSetListScreen';
 import Splash from './screens/Splash';
 
 const Stack = createStackNavigator();
@@ -58,6 +59,12 @@ const App = () => (
         component={QuestionScreen}
         options={{ title: 'Reviso - Question' }}
       />
+      <Stack.Screen
+        name="QuestionSetList"
+        component={QuestionSetListScreen}
+        options={{ title: 'Reviso - Question Set List' }}
+      />
+
       <Stack.Screen
         name="PracticeSetHome"
         component={PracticeSetHomeScreen}

@@ -23,27 +23,30 @@ class QuestionSet extends React.Component {
     ];
 
     const navigation = this.props.navigation;
+    const destination = this.props.destination;
+    const size = this.props.small ? 12 : 22;
+    const padding = this.props.small ? 1.5 : 1;
+    console.log(destination);
 
     return (
-      <Block
-        row={horizontal}
-        card
-        flex
-        style={[styles.product, styles.shadow, style]}
-      >
-        <TouchableOpacity onPress={() => navigation.navigate('Question')}>
-          <Block flex style={[styles.imageContainer, styles.shadow]}>
-            <Image source={{ uri: product.image }} style={imageStyles} />
-          </Block>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate('Question')}>
-          <Block flex space="between" style={styles.productDescription}>
-            <Text size={14} style={styles.productTitle}>
-              {product.title}
+      <Block card flex style={[styles.product, styles.shadow, style]}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(destination)}
+          style={{ height: '100%' }}
+        >
+          <Block
+            style={[
+              styles.productDescription,
+              { padding: theme.SIZES.BASE / padding },
+            ]}
+            row
+            space="between"
+          >
+            <Text size={size + 2} style={styles.productTitle}>
+              title
             </Text>
-            <Text size={12} muted={!priceColor} color={priceColor}>
-              ${product.price}
+            <Text size={size} muted={!priceColor} color={priceColor}>
+              number
             </Text>
           </Block>
         </TouchableOpacity>
@@ -61,13 +64,9 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   productTitle: {
-    flex: 1,
-    flexWrap: 'wrap',
     paddingBottom: 6,
   },
-  productDescription: {
-    padding: theme.SIZES.BASE / 2,
-  },
+
   imageContainer: {
     elevation: 1,
   },

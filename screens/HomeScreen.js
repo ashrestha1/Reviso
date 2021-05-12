@@ -53,20 +53,27 @@ export default ({ navigation }) => {
           <QuestionSet
             product={{ title: '1' }}
             navigation={navigation}
-            horizontal
+            destination="Question"
           />
           <Block flex row>
             <QuestionSet
               product={{ title: '1' }}
               navigation={navigation}
+              destination="Question"
+              small={true}
               style={{ marginRight: theme.SIZES.BASE }}
             />
-            <QuestionSet product={{ title: '1' }} navigation={navigation} />
+            <QuestionSet
+              product={{ title: '1' }}
+              navigation={navigation}
+              small={true}
+              destination="Question"
+            />
           </Block>
           <QuestionSet
             product={{ title: '1' }}
             navigation={navigation}
-            horizontal
+            destination="Question"
           />
           <Text
             style={{
@@ -77,7 +84,12 @@ export default ({ navigation }) => {
           >
             New
           </Text>
-          <QuestionSet product={{ title: '1' }} navigation={navigation} full />
+          <QuestionSet
+            product={{ title: '1' }}
+            navigation={navigation}
+            prevScreen="homeScreen"
+            destination="Question"
+          />
         </Block>
       </ScrollView>
     </View>
@@ -167,7 +179,7 @@ export default ({ navigation }) => {
               buttonColor="#3498db"
               title="Edit a Question Set"
               spaceBetween={-50}
-              onPress={() => alert('Edit')}
+              onPress={() => navigation.navigate('QuestionSetList')}
             >
               <Icon name="pencil" style={{ fontSize: 20 }} />
             </ActionButton.Item>
@@ -264,6 +276,7 @@ const styles = StyleSheet.create({
   },
   products: {
     paddingHorizontal: '5%',
+
     paddingVertical: theme.SIZES.BASE / 2,
   },
 });
