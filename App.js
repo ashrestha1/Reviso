@@ -13,6 +13,7 @@ import PracticeSetNewProblemScreen from './screens/PracticeSetNewProblemScreen';
 import PracticeProblemEditScreen from './screens/PracticeProblemEditScreen';
 import PracticeSetNewScreen from './screens/PracticeSetNewScreen';
 import QuestionSetListScreen from './screens/QuestionSetListScreen';
+import RegisterScreen from './screens/RegisterScreen';
 import Splash from './screens/Splash';
 
 const Stack = createStackNavigator();
@@ -30,7 +31,7 @@ const config = {
 const App = () => (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="Login"
       screenOptions={{
         headerShown: false,
         transitionSpec: {
@@ -48,6 +49,11 @@ const App = () => (
         name="Login"
         component={LoginScreen}
         options={{ title: 'Reviso - Login' }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={RegisterScreen}
+        options={{ title: 'Reviso - Register' }}
       />
       <Stack.Screen
         name="Home"

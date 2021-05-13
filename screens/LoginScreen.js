@@ -17,6 +17,7 @@ import {
   State,
   TouchableOpacity,
 } from 'react-native-gesture-handler';
+import axios from 'axios';
 
 const { width, height } = Dimensions.get('window');
 const {
@@ -36,6 +37,28 @@ const {
 
 export default ({ navigation }) => {
   const [buttonOpacity, setButtonOpacity] = useState(new Value(1));
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
+
+  const loginPressed = () => {
+    const data = JSON.stringify({
+      username: username,
+      password: password,
+    });
+    axios
+      .post('http://18.162.200.79/login', data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        navigation.navigate('Home');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const onStateChange = (e) => {
     if (e.nativeEvent.state === State.END) {
@@ -82,7 +105,7 @@ export default ({ navigation }) => {
       ]),
 
       timing(clock, state, config),
-      cond(state.finished, debug('stop clock', stopClock(clock))),
+      // cond(state.finished, debug('stop clock', stopClock(clock))),
       state.position,
     ]);
   };
@@ -131,7 +154,7 @@ export default ({ navigation }) => {
           </Text>
         </Animated.View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
             <Animated.View
               style={{
                 ...styles.button,
@@ -180,25 +203,31 @@ export default ({ navigation }) => {
             <TextInput
               style={styles.inputText}
               placeholderTextColor="gray"
+              onChangeText={(val) => setUsername(val)}
               placeholder="Username"
             />
             <TextInput
               style={styles.inputText}
               placeholderTextColor="gray"
+              onChangeText={(val) => setPassword(val)}
+              defaultValue={password}
               placeholder="Password"
             />
-            <View
-              style={{
-                ...styles.button,
-                backgroundColor: '#4e8896',
-                shadowOffset: { width: 2, height: 2 },
-                shadowColor: '#000',
-                shadowOpacity: 0.2,
-                elevation: 3,
-              }}
-            >
-              <Text style={{ fontWeight: 'bold', color: '#FFF' }}>LOGIN</Text>
-            </View>
+
+            <TouchableOpacity onPress={loginPressed}>
+              <View
+                style={{
+                  ...styles.button,
+                  backgroundColor: '#4e8896',
+                  shadowOffset: { width: 2, height: 2 },
+                  shadowColor: '#000',
+                  shadowOpacity: 0.2,
+                  elevation: 3,
+                }}
+              >
+                <Text style={{ fontWeight: 'bold', color: '#FFF' }}>LOGIN</Text>
+              </View>
+            </TouchableOpacity>
           </Animated.View>
         </View>
       </KeyboardAvoidingView>
