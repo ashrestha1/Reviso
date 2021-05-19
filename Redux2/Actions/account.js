@@ -1,10 +1,11 @@
 import { FETCH_ACCOUNT, CREATE_ACCOUNT } from '../Constants/account';
 import axios from 'axios';
 //Actions Creators
-export const getAccount = (id) => async (dispatch) => {
+export const getAccount = (token) => async (dispatch) => {
   try {
-    axios.get(`property/${id}`).then((res) => {
+    axios.get(`http://18.167.126.245/profile?token=${token}`).then((res) => {
       const { data } = res;
+      console.log(data);
       dispatch({ type: FETCH_ACCOUNT, payload: data });
     });
   } catch (error) {

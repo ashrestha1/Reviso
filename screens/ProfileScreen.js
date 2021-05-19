@@ -20,6 +20,7 @@ import { Shake } from 'react-native-motion';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
 const argonTheme = {
   COLORS: {
     DEFAULT: '#172B4D',
@@ -79,6 +80,9 @@ export default ({ navigation }) => {
   const startAnimation = () => {
     setValue(value + 1);
   };
+
+  const account = useSelector((state) => state.account);
+
   const DATA = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -145,7 +149,9 @@ export default ({ navigation }) => {
                       style={{
                         ...styles.socialButtons,
                         marginRight: 30,
-                        backgroundColor: student ? '#f7b640' : '#FFF',
+                        backgroundColor: !account.privileged
+                          ? '#f7b640'
+                          : '#FFF',
                       }}
                       onPress={() => {
                         setStudent(true);
@@ -166,7 +172,9 @@ export default ({ navigation }) => {
                       disabled={true}
                       style={{
                         ...styles.teacherButton,
-                        backgroundColor: !student ? '#f7b640' : '#FFF',
+                        backgroundColor: account.privileged
+                          ? '#f7b640'
+                          : '#FFF',
                       }}
                     >
                       <Block row>
@@ -186,7 +194,7 @@ export default ({ navigation }) => {
                 </Block>
                 <Block flex>
                   <Block flex={0.3} middle>
-                    {student ? (
+                    {privileged != 1 ? (
                       <>
                         <Text color="#8898AA" size={12}>
                           The start of your Journey with Reviso
@@ -201,7 +209,7 @@ export default ({ navigation }) => {
                         onPress={() => setStudentModal(true)}
                       >
                         <Text bold size={14} color={argonTheme.COLORS.BLACK}>
-                          View Your Students
+                          View Your Questions
                         </Text>
                       </Button>
                     )}

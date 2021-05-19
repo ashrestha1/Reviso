@@ -2,7 +2,10 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+// import store from './redux/store';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import reducers from './Redux2/reducers';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import QuestionScreen from './screens/QuestionsScreen';
@@ -31,6 +34,7 @@ const config = {
     restSpeedThreshold: 0.01,
   },
 };
+
 const App = () => (
   <NavigationContainer>
     <Stack.Navigator
@@ -122,6 +126,7 @@ const App = () => (
     </Stack.Navigator>
   </NavigationContainer>
 );
+const store = createStore(reducers, applyMiddleware(thunk));
 
 export default () => (
   <Provider store={store}>

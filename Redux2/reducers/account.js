@@ -1,11 +1,11 @@
-import { FETCH_ACCOUNT, CREATE_ACCOUNT } from '../Constants/property';
+import { FETCH_ACCOUNT, CREATE_ACCOUNT } from '../Constants/account';
 
 const initialState = {};
 
-export default function property(state = initialState, action) {
+export default function account(state = initialState, action) {
   switch (action.type) {
     case FETCH_ACCOUNT:
-      return { ...state, ...action.payload };
+      return (state = action.payload);
     case CREATE_ACCOUNT:
       const newAccount = {
         prettyName: action.payload.prettyName,
@@ -13,7 +13,8 @@ export default function property(state = initialState, action) {
         password: action.payload.password,
         privileged: true,
       };
-      return { newAccount };
+      console.log('newAccount', newAccount);
+      return (state = newAccount);
     default:
       return state;
   }

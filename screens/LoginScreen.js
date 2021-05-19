@@ -53,7 +53,6 @@ export default ({ navigation }) => {
   };
 
   const loginPressed = () => {
-    console.log('hi');
     const data = JSON.stringify({
       username: username,
       password: password,
@@ -69,7 +68,7 @@ export default ({ navigation }) => {
         console.log(res);
         save('token', res.data.token);
 
-        navigation.navigate('Home');
+        navigation.navigate('Home', { token: res.data.token });
       })
       .catch((err) => {
         console.log('hisss');

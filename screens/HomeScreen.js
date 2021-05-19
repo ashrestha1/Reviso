@@ -18,6 +18,9 @@ import ActionButton from 'react-native-action-button';
 import CreateQuestionSetModal from '../components/CreateQuestionSetModal';
 //Import Icon for the ActionButton
 import * as SecureStore from 'expo-secure-store';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAccount } from '../Redux2/Actions/account';
+import { getQuestionsTeacher } from '../Redux2/Actions/questions';
 
 const { width } = Dimensions.get('screen');
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -33,14 +36,22 @@ async function getValueFor(key) {
   }
 }
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
+  const dispatch = useDispatch();
+
   const [
     createQuestionSetModalVisible,
     setCreateQuestionSetModalVisible,
   ] = useState(false);
   useEffect(() => {
-    getValueFor('token');
+    console.log('activate', route.params.token);
+    dispatch(getAccount(route.params.token));
+    dispatch(getQuestionsTeacher(route.params.token));
   }, []);
+
+  const account = useSelector((state) => state.account);
+  const questions = useSelector((state) => state.questions.questionsArray);
+
   const toggleCreateQuestionSetModal = () => {
     createQuestionSetModalVisible
       ? setCreateQuestionSetModalVisible(false)
@@ -61,47 +72,18 @@ export default ({ navigation }) => {
         >
           Reccomended
         </Text>
+
         <Block flex>
-          <QuestionSet
-            product={{ title: '1' }}
-            navigation={navigation}
-            destination="Question"
-          />
-          <Block flex row>
+          {console.log('question222s', questions)}
+          {questions.map((data, i) => (
             <QuestionSet
-              product={{ title: '1' }}
+              key={data.id}
+              product={data.title}
               navigation={navigation}
               destination="Question"
-              small={true}
-              style={{ marginRight: theme.SIZES.BASE }}
             />
-            <QuestionSet
-              product={{ title: '1' }}
-              navigation={navigation}
-              small={true}
-              destination="Question"
-            />
-          </Block>
-          <QuestionSet
-            product={{ title: '1' }}
-            navigation={navigation}
-            destination="Question"
-          />
-          <Text
-            style={{
-              fontWeight: '400',
-              color: '#FFFFFF',
-              fontSize: 17,
-            }}
-          >
-            New
-          </Text>
-          <QuestionSet
-            product={{ title: '1' }}
-            navigation={navigation}
-            prevScreen="homeScreen"
-            destination="Question"
-          />
+          ))}
+          {questions?.length === 0 && <Text>No Questions left </Text>}
         </Block>
       </ScrollView>
     </View>
@@ -137,7 +119,7 @@ export default ({ navigation }) => {
               fontWeight: '400',
             }}
           >
-            Hello User
+            Hello {account.prettyName}
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
             <Icon name="account-circle" size={33} color="#FFF" />
@@ -154,7 +136,7 @@ export default ({ navigation }) => {
             color: '#2e808b',
           }}
         >
-          Lorem ipsumd dolor sit amet, consectetuer adipscing elit.
+          Reviso - Start training your Brain!
         </Text>
         <View
           style={{
@@ -165,47 +147,49 @@ export default ({ navigation }) => {
             zIndex: 1,
           }}
         >
-          <ActionButton
-            buttonColor="rgba(231,76,60,1)"
-            offsetX={0}
-            offsetY={0}
-            renderIcon={(active) =>
-              active ? (
-                <Icon name="menu-open" style={{ fontSize: 20 }} />
-              ) : (
-                <Icon name="menu" style={{ fontSize: 20 }} />
-              )
-            }
-          >
-            {/*Inner options of the action button*/}
-            {/*Icons here
+          {account.privileged == 1 && (
+            <ActionButton
+              buttonColor="rgba(231,76,60,1)"
+              offsetX={0}
+              offsetY={0}
+              renderIcon={(active) =>
+                active ? (
+                  <Icon name="menu-open" style={{ fontSize: 20 }} />
+                ) : (
+                  <Icon name="menu" style={{ fontSize: 20 }} />
+                )
+              }
+            >
+              {/*Inner options of the action button*/}
+              {/*Icons here
              https://infinitered.github.io/ionicons-version-3-search/
            */}
-            <ActionButton.Item
-              buttonColor="#9b59b6"
-              title="Create a Question Set"
-              spaceBetween={-50}
-              onPress={toggleCreateQuestionSetModal}
-            >
-              <Icon name="plus" style={{ fontSize: 20 }} />
-            </ActionButton.Item>
-            <ActionButton.Item
-              buttonColor="#3498db"
-              title="Edit a Question Set"
-              spaceBetween={-50}
-              onPress={() => navigation.navigate('QuestionSetList')}
-            >
-              <Icon name="pencil" style={{ fontSize: 20 }} />
-            </ActionButton.Item>
-            <ActionButton.Item
-              buttonColor="#1abc9c"
-              spaceBetween={-50}
-              title="View your Students"
-              onPress={() => alert('Students')}
-            >
-              <Icon name="account-group" style={{ fontSize: 20 }} />
-            </ActionButton.Item>
-          </ActionButton>
+              <ActionButton.Item
+                buttonColor="#9b59b6"
+                title="Create a Question Set"
+                spaceBetween={-50}
+                onPress={toggleCreateQuestionSetModal}
+              >
+                <Icon name="plus" style={{ fontSize: 20 }} />
+              </ActionButton.Item>
+              <ActionButton.Item
+                buttonColor="#3498db"
+                title="Edit a Question Set"
+                spaceBetween={-50}
+                onPress={() => navigation.navigate('QuestionSetList')}
+              >
+                <Icon name="pencil" style={{ fontSize: 20 }} />
+              </ActionButton.Item>
+              <ActionButton.Item
+                buttonColor="#1abc9c"
+                spaceBetween={-50}
+                title="View your Students"
+                onPress={() => alert('Students')}
+              >
+                <Icon name="account-group" style={{ fontSize: 20 }} />
+              </ActionButton.Item>
+            </ActionButton>
+          )}
         </View>
         <Tab.Navigator
           tabBarOptions={{
@@ -233,6 +217,7 @@ export default ({ navigation }) => {
         >
           <CreateQuestionSetModal
             toggleCreateQuestionSetModal={toggleCreateQuestionSetModal}
+            token={route.params.token}
           />
         </Modal>
       </View>
