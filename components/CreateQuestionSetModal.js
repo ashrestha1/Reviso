@@ -1,7 +1,14 @@
-import React from 'react';
-import { StyleSheet, Dimensions, KeyboardAvoidingView } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  Dimensions,
+  KeyboardAvoidingView,
+  Modal,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import { Block, Checkbox, Text, theme } from 'galio-framework';
-
+import DateTimePicker from '@react-native-community/datetimepicker';
 import Button from './Button';
 import Input from './input';
 
@@ -42,130 +49,304 @@ const argonTheme = {
 const { width, height } = Dimensions.get('screen');
 
 const CreateQuestionSetModal = (props) => {
+  const [deadline, setDeadline] = useState('DATE');
+  const [questionSetTitle, setQuestionSetTitle] = useState('');
+  const [question, setQuestion] = useState('');
+  const [correctAnswer, setCorrectAnswer] = useState('');
+  const [wrongAnswer1, setWrongAnswer1] = useState('');
+  const [wrongAnswer2, setWrongAnswer2] = useState('');
+  const [wrongAnswer3, setWrongAnswer3] = useState('');
+  const [description, setDescription] = useState('');
+  const [timeLimit, setTimelimit] = useState('');
+
+  const [isPrimary, setIsPrimary] = useState('muted');
+  const gradedPressed = () => {
+    isPrimary == 'muted'
+      ? setIsPrimary('INPUT_SUCCESS')
+      : setIsPrimary('muted');
+  };
+  const createPressed = () => {
+    const data = JSON.stringify({
+      token: props.token,
+      graded: action.payload.graded,
+      deadline: action.payload.deadline,
+      timeLimit: action.payload.timeLimit,
+      questionSet: action.payload.questionSet,
+    });
+  };
+
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  const [showTimer, setShowTimer] = useState(false);
+  const [time, setTime] = useState(new Date());
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+    setDeadline(currentDate.toLocaleDateString());
+  };
+
+  const onChangeTime = (event, selectedTimer) => {
+    console.log(new Date(selectedTimer).getMinutes());
+    console.log(new Date(selectedTimer).getHours());
+    const currentTime = selectedTimer || date;
+    setShow(Platform.OS === 'ios');
+    setTime(currentTime);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const timerModalToggle = () => {
+    setShowTimer(!showTimer);
+  };
+
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
-      <Block flex={0.5} safe middle>
-        <Block style={styles.registerContainer}>
-          <Block middle style={styles.socialConnect}>
-            <Text color="#8898AA" size={20} style={{ marginTop: '5%' }}>
-              Question Set
-            </Text>
-            <Block width={width * 0.8}>
-              <Input
-                borderless
-                placeholder="Title"
-                iconContent={
+    <>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+        <Block flex={0.5} safe middle>
+          <Block style={styles.registerContainer}>
+            <Block middle style={styles.socialConnect}>
+              <Block row middle>
+                <Text color="#8898AA" size={20} style={{ marginTop: '5%' }}>
+                  Question Set
+                </Text>
+                <TouchableOpacity onPress={timerModalToggle}>
                   <Icon
                     //   size={16}
                     //   color={argonTheme.COLORS.ICON}
-                    name="book-open-page-variant"
+                    name="timer"
                     //   family="ArgonExtra"
-                    style={[styles.inputIcons, { color: '#9fc2c3' }]}
+                    style={{
+                      color: '#9fc2c3',
+                      fontSize: 30,
+                      marginTop: '3%',
+                      marginLeft: 10,
+                    }}
                   />
-                }
-              />
-            </Block>
-          </Block>
-          <Block flex>
-            <Block flex center>
-              <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                <Input
-                  borderless
-                  placeholder="Question"
-                  iconContent={
-                    <Icon
-                      //   size={16}
-                      //   color={argonTheme.COLORS.ICON}
-                      name="head-question-outline"
-                      //   family="ArgonExtra"
-                      //f7b640
-                      style={[styles.inputIcons, { color: '#f7b640' }]}
-                    />
-                  }
-                />
-              </Block>
-              <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                <Input
-                  borderless
-                  placeholder="Correct Answer"
-                  iconContent={
-                    <Icon
-                      //   size={16}
-                      //   color={argonTheme.COLORS.ICON}
-                      name="check-circle-outline"
-                      //   family="ArgonExtra"
-                      style={[styles.inputIcons, { color: 'green' }]}
-                    />
-                  }
-                />
-              </Block>
-              <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                <Input
-                  borderless
-                  placeholder="Wrong Answer"
-                  iconContent={
-                    <Icon
-                      //   size={16}
-                      //   color={argonTheme.COLORS.ICON}
-                      name="close-circle-outline"
-                      //   family="ArgonExtra"
-                      style={[styles.inputIcons, { color: 'red' }]}
-                    />
-                  }
-                />
-              </Block>
-              <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                <Input
-                  borderless
-                  placeholder="Wrong Answer"
-                  iconContent={
-                    <Icon
-                      //   size={16}
-                      //   color={argonTheme.COLORS.ICON}
-                      name="close-circle-outline"
-                      //   family="ArgonExtra"
-                      style={[styles.inputIcons, { color: 'red' }]}
-                    />
-                  }
-                />
-              </Block>
-              <Block width={width * 0.8} style={{ marginBottom: 12 }}>
-                <Input
-                  borderless
-                  placeholder="Wrong Answer"
-                  iconContent={
-                    <Icon
-                      //   size={16}
-                      //   color={argonTheme.COLORS.ICON}
-                      name="close-circle-outline"
-                      //   family="ArgonExtra"
-                      style={[styles.inputIcons, { color: 'red' }]}
-                    />
-                  }
-                />
+                </TouchableOpacity>
               </Block>
 
-              <Block row space="evenly">
-                <Button
-                  color="primary"
-                  style={styles.createButton}
-                  onPress={props.toggleCreateQuestionSetModal}
-                >
-                  <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                    CANCEL
-                  </Text>
-                </Button>
-                <Button color="primary" style={styles.createButton}>
-                  <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                    CREATE
-                  </Text>
-                </Button>
+              <Block width={width * 0.8}>
+                <Input
+                  borderless
+                  onChangeText={(val) => setQuestionSetTitle(val)}
+                  placeholder="Title"
+                  iconContent={
+                    <Icon
+                      //   size={16}
+                      //   color={argonTheme.COLORS.ICON}
+                      name="book-open-page-variant"
+                      //   family="ArgonExtra"
+                      style={[styles.inputIcons, { color: '#9fc2c3' }]}
+                    />
+                  }
+                />
+              </Block>
+            </Block>
+            <Block flex>
+              <Block flex center>
+                <Block width={width * 0.8} style={{ marginBottom: 15 }}>
+                  <Input
+                    borderless
+                    placeholder="Question"
+                    onChangeText={(val) => setQuestion(val)}
+                    iconContent={
+                      <Icon
+                        //   size={16}
+                        //   color={argonTheme.COLORS.ICON}
+                        name="head-question-outline"
+                        //   family="ArgonExtra"
+                        //f7b640
+                        style={[styles.inputIcons, { color: '#f7b640' }]}
+                      />
+                    }
+                  />
+                </Block>
+                <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                  <Input
+                    borderless
+                    onChangeText={(val) => setCorrectAnswer(val)}
+                    placeholder="Correct Answer"
+                    iconContent={
+                      <Icon
+                        //   size={16}
+                        //   color={argonTheme.COLORS.ICON}
+                        name="check-circle-outline"
+                        //   family="ArgonExtra"
+                        style={[styles.inputIcons, { color: 'green' }]}
+                      />
+                    }
+                  />
+                </Block>
+                <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                  <Input
+                    borderless
+                    onChangeText={(val) => setWrongAnswer1(val)}
+                    placeholder="Wrong Answer"
+                    iconContent={
+                      <Icon
+                        //   size={16}
+                        //   color={argonTheme.COLORS.ICON}
+                        name="close-circle-outline"
+                        //   family="ArgonExtra"
+                        style={[styles.inputIcons, { color: 'red' }]}
+                      />
+                    }
+                  />
+                </Block>
+                <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                  <Input
+                    borderless
+                    onChangeText={(val) => setWrongAnswer2(val)}
+                    placeholder="Wrong Answer"
+                    iconContent={
+                      <Icon
+                        //   size={16}
+                        //   color={argonTheme.COLORS.ICON}
+                        name="close-circle-outline"
+                        //   family="ArgonExtra"
+                        style={[styles.inputIcons, { color: 'red' }]}
+                      />
+                    }
+                  />
+                </Block>
+                <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                  <Input
+                    borderless
+                    onChangeText={(val) => setWrongAnswer3(val)}
+                    placeholder="Wrong Answer"
+                    iconContent={
+                      <Icon
+                        //   size={16}
+                        //   color={argonTheme.COLORS.ICON}
+                        name="close-circle-outline"
+                        //   family="ArgonExtra"
+                        style={[styles.inputIcons, { color: 'red' }]}
+                      />
+                    }
+                  />
+                </Block>
+
+                <Block middle row>
+                  <Button
+                    color="primary"
+                    style={styles.resetButton}
+                    onPress={showDatepicker}
+                  >
+                    <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                      {deadline}
+                    </Text>
+                  </Button>
+
+                  <Button
+                    color={isPrimary}
+                    style={styles.resetButton}
+                    onPress={gradedPressed}
+                  >
+                    <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                      GRADED
+                    </Text>
+                  </Button>
+                </Block>
+
+                <Block row space="evenly">
+                  <Button
+                    color="primary"
+                    style={styles.createButton}
+                    onPress={props.toggleCreateQuestionSetModal}
+                  >
+                    <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                      CANCEL
+                    </Text>
+                  </Button>
+                  <Button color="primary" style={styles.createButton}>
+                    <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                      CREATE
+                    </Text>
+                  </Button>
+                </Block>
               </Block>
             </Block>
           </Block>
         </Block>
-      </Block>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+
+      {show && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={show}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}
+        >
+          <View style={styles.modal}>
+            <DateTimePicker
+              maximumDate={new Date(2021, 11, 31)}
+              minimumDate={new Date(1950, 0, 1)}
+              testID="dateTimePicker"
+              value={date}
+              mode={mode}
+              display="default"
+              onChange={onChange}
+              style={{ marginBottom: 10 }}
+            />
+            <View style={{ alignItems: 'center' }}>
+              <Button
+                color="primary"
+                style={styles.createButton}
+                onPress={() => setShow(false)}
+              >
+                <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                  CONFIRM
+                </Text>
+              </Button>
+            </View>
+          </View>
+        </Modal>
+      )}
+
+      {showTimer && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showTimer}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}
+        >
+          <View style={styles.modal}>
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={time}
+              mode={'countdown'}
+              display="default"
+              onChange={onChangeTime}
+              style={{ marginBottom: 10 }}
+            />
+            <View style={{ alignItems: 'center' }}>
+              <Button
+                color="primary"
+                style={styles.createButton}
+                onPress={() => setShowTimer(false)}
+              >
+                <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                  CONFIRM
+                </Text>
+              </Button>
+            </View>
+          </View>
+        </Modal>
+      )}
+    </>
   );
 };
 
@@ -186,6 +367,26 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     elevation: 1,
     overflow: 'hidden',
+  },
+  modal: {
+    flex: 1,
+    margin: 160,
+    width: '90%',
+    backgroundColor: '#F5F5F5',
+    padding: 10,
+    justifyContent: 'center',
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    alignSelf: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   socialConnect: {
     paddingVertical: '4%',
@@ -223,5 +424,9 @@ const styles = StyleSheet.create({
   createButton: {
     width: width / 3,
     marginTop: 10,
+  },
+  resetButton: {
+    width: width * 0.35,
+    marginTop: 15,
   },
 });

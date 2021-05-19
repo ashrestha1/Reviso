@@ -111,7 +111,7 @@ const RegisterScreen = ({ navigation }) => {
       })
       .then((res) => {
         console.log(res);
-        navigation.navigate('Login');
+        navigation.navigate('Login', { token: res.data });
       })
       .catch((err) => {
         console.log(err);
