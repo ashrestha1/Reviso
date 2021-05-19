@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
+  ImageBackground,
   Dimensions,
+  StatusBar,
   KeyboardAvoidingView,
+  Alert,
+  Modal,
   View,
   FlatList,
 } from 'react-native';
 import { Block, Checkbox, Text, theme } from 'galio-framework';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import QuestionSet from '../components/QuestionSet';
+import { BlurView } from 'expo-blur';
 
 import Button from '../components/Button';
 import Input from '../components/input';
+import { Shake } from 'react-native-motion';
 
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 const argonTheme = {
   COLORS: {
     DEFAULT: '#172B4D',
@@ -46,6 +52,8 @@ const argonTheme = {
     BLACK: '#000000',
   },
 };
+
+const { width, height } = Dimensions.get('screen');
 const DATA = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -61,53 +69,48 @@ const DATA = [
   },
 ];
 
-const { width, height } = Dimensions.get('screen');
-
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
   return (
-    <Block style={styles.registerContainer}>
-      <Block style={styles.socialConnect} row>
-        <Button
-          style={styles.backButton}
-          color="#9fc2c3"
-          onPress={() => {
-            navigation.navigate('Home');
-          }}
-        >
-          <Icon name="progress-close" size={25} color="#8898AA" />
-        </Button>
-        <Text color="#8898AA" size={25} style={{ marginTop: '5%' }}>
-          <Icon
-            name="book-open-page-variant"
-            style={[styles.inputIcons, { color: '#9fc2c3' }]}
-          />{' '}
-          Question Set
-        </Text>
-      </Block>
+    <View style={styles.modal}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Profile');
+        }}
+        style={{ marginBottom: 20 }}
+      >
+        <Icon name="progress-close" size={25} color="#8898AA" />
+      </TouchableOpacity>
 
+      <Text
+        bold
+        size={34}
+        color={argonTheme.COLORS.BLACK}
+        style={{ alignSelf: 'center', marginBottom: 40 }}
+      >
+        {route.params.title}
+      </Text>
       <FlatList
         data={DATA}
         renderItem={({ item }) => (
           <View style={styles.card}>
             <View style={styles.cardContent}>
               <Text bold size={14} color={argonTheme.COLORS.BLACK}>
-                {/* {item.title} */}
-                hi
+                {item.title}
               </Text>
             </View>
           </View>
         )}
         keyExtractor={(item) => item.id}
       />
-    </Block>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   registerContainer: {
-    // width: width * 0.9,
-    height: height,
-
+    width: width * 0.9,
+    height: height * 0.75,
+    backgroundColor: '#F4F5F7',
     borderRadius: 4,
     shadowColor: argonTheme.COLORS.BLACK,
     shadowOffset: {
@@ -120,10 +123,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   socialConnect: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    alignContent: 'center',
-    paddingVertical: '6%',
+    paddingTop: 20,
     backgroundColor: argonTheme.COLORS.WHITE,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: '#8898AA',
@@ -141,28 +141,69 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     elevation: 1,
   },
+  teacherButton: {
+    width: 120,
+    height: 40,
+    backgroundColor: 'white',
+    shadowColor: argonTheme.COLORS.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowRadius: 8,
+    shadowOpacity: 0.1,
+    elevation: 1,
+  },
   socialTextButtons: {
-    color: argonTheme.COLORS.PRIMARY,
+    color: '#303030',
     fontWeight: '800',
     fontSize: 14,
   },
   inputIcons: {
     marginRight: 12,
-    fontSize: 30,
   },
   passwordCheck: {
     paddingLeft: 15,
-    paddingTop: 13,
-    paddingBottom: 30,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
-  backButton: {
-    marginRight: '10%',
-
-    width: '14%',
+  remainingCheck: {
+    paddingLeft: 15,
   },
-  products: {
-    paddingHorizontal: '5%',
-    paddingVertical: theme.SIZES.BASE / 2,
+  masterPasswordCheck: {
+    paddingLeft: 15,
+  },
+  resetButton: {
+    width: width * 0.35,
+    marginTop: 15,
+  },
+  labelStyle: {
+    width: width * 0.75,
+    backgroundColor: 'white',
+  },
+  modal: {
+    flex: 1,
+    margin: 10,
+    width: '97%',
+    backgroundColor: '#F5F5F5',
+    padding: 10,
+    justifyContent: 'center',
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    alignSelf: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  nonBlurredContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   card: {
     borderRadius: 6,

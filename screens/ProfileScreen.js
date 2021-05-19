@@ -55,7 +55,7 @@ const argonTheme = {
 
 const { width, height } = Dimensions.get('screen');
 
-const ProfileScreen = ({ navigation }) => {
+export default ({ navigation }) => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [privileged, setPrivileged] = useState(false);
@@ -385,7 +385,18 @@ const ProfileScreen = ({ navigation }) => {
                 renderItem={({ item }) => (
                   <View style={styles.card}>
                     <View style={styles.cardContent}>
-                      <Text>{item.title}</Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setStudentModal(false);
+                          navigation.navigate('StudentScoreList', {
+                            title: 'hi',
+                          });
+                        }}
+                      >
+                        <Text bold size={14} color={argonTheme.COLORS.BLACK}>
+                          {item.title}
+                        </Text>
+                      </TouchableOpacity>
                     </View>
                   </View>
                 )}
@@ -515,5 +526,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-export default ProfileScreen;

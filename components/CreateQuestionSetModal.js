@@ -44,7 +44,7 @@ const { width, height } = Dimensions.get('screen');
 const CreateQuestionSetModal = (props) => {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
-      <Block safe flex middle>
+      <Block flex={0.5} safe middle>
         <Block style={styles.registerContainer}>
           <Block middle style={styles.socialConnect}>
             <Text color="#8898AA" size={20} style={{ marginTop: '5%' }}>
@@ -67,11 +67,6 @@ const CreateQuestionSetModal = (props) => {
             </Block>
           </Block>
           <Block flex>
-            <Block style={{ paddingVertical: 15 }} middle>
-              <Text color="#8898AA" size={15}>
-                Input the first Question
-              </Text>
-            </Block>
             <Block flex center>
               <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                 <Input
@@ -177,6 +172,7 @@ const CreateQuestionSetModal = (props) => {
 export default CreateQuestionSetModal;
 const styles = StyleSheet.create({
   registerContainer: {
+    marginTop: '86%',
     width: width * 0.9,
     height: height * 0.9,
     backgroundColor: '#F4F5F7',

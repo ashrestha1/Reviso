@@ -71,7 +71,7 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   const masterPasswordInputted = () => {
-    if (masterPassword != '123') {
+    if (masterPassword != 'P@ssw0rd') {
       startAnimation();
       setMasterPassword('');
       setMasterPasswordWrong(true);
@@ -102,8 +102,9 @@ const RegisterScreen = ({ navigation }) => {
       masterPassword: masterPassword,
     });
 
+    console.log('data', data);
     axios
-      .post('http://18.162.200.79/signup', data, {
+      .post('http://18.167.126.245/signup', data, {
         headers: {
           'Content-Type': 'application/json',
         },

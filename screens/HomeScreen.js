@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -17,18 +17,30 @@ import QuestionSet from '../components/QuestionSet';
 import ActionButton from 'react-native-action-button';
 import CreateQuestionSetModal from '../components/CreateQuestionSetModal';
 //Import Icon for the ActionButton
+import * as SecureStore from 'expo-secure-store';
 
 const { width } = Dimensions.get('screen');
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const Tab = createMaterialTopTabNavigator();
 
+async function getValueFor(key) {
+  let result = await SecureStore.getItemAsync(key);
+  if (result) {
+    alert("🔐 Here's your value 🔐 \n" + result);
+  } else {
+    alert('No values stored under that key.');
+  }
+}
+
 export default ({ navigation }) => {
   const [
     createQuestionSetModalVisible,
     setCreateQuestionSetModalVisible,
   ] = useState(false);
-
+  useEffect(() => {
+    getValueFor('token');
+  }, []);
   const toggleCreateQuestionSetModal = () => {
     createQuestionSetModalVisible
       ? setCreateQuestionSetModalVisible(false)

@@ -11,6 +11,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 import Animated, { Easing } from 'react-native-reanimated';
 import {
   TapGestureHandler,
@@ -36,6 +37,10 @@ const {
   Extrapolate,
 } = Animated;
 
+async function save(key, value) {
+  await SecureStore.setItemAsync(key, value);
+}
+
 export default ({ navigation }) => {
   const [buttonOpacity, setButtonOpacity] = useState(new Value(1));
   const [username, setUsername] = useState(null);
@@ -48,21 +53,26 @@ export default ({ navigation }) => {
   };
 
   const loginPressed = () => {
+    console.log('hi');
     const data = JSON.stringify({
       username: username,
       password: password,
     });
+    console.log(data);
     axios
-      .post('http://18.162.200.79/login', data, {
+      .post('http://18.167.126.245/login', data, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
       .then((res) => {
         console.log(res);
+        save('token', res.data.token);
+
         navigation.navigate('Home');
       })
       .catch((err) => {
+        console.log('hisss');
         startAnimation();
         setLoginText('Wrong credentials');
         setTimeout(function () {

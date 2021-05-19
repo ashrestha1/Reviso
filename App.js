@@ -15,6 +15,8 @@ import PracticeSetNewScreen from './screens/PracticeSetNewScreen';
 import QuestionSetListScreen from './screens/QuestionSetListScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import StudentScoreListScreen from './screens/StudentScoreListScreen';
+import QuestionEditScreen from './screens/QuestionEditScreen';
 import Splash from './screens/Splash';
 
 const Stack = createStackNavigator();
@@ -32,7 +34,7 @@ const config = {
 const App = () => (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="Profile"
+      initialRouteName="Login"
       screenOptions={{
         headerShown: false,
         transitionSpec: {
@@ -67,9 +69,19 @@ const App = () => (
         options={{ title: 'Reviso - Profile' }}
       />
       <Stack.Screen
+        name="StudentScoreList"
+        component={StudentScoreListScreen}
+        options={{ title: 'Reviso - Student Score List' }}
+      />
+      <Stack.Screen
         name="Question"
         component={QuestionScreen}
         options={{ title: 'Reviso - Question' }}
+      />
+      <Stack.Screen
+        name="QuestionEdit"
+        component={QuestionEditScreen}
+        options={{ title: 'Reviso - Question Edit' }}
       />
       <Stack.Screen
         name="QuestionSetList"
