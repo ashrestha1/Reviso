@@ -127,7 +127,9 @@ export default ({ navigation }) => {
           >
             Hello User
           </Text>
-          <Icon name="account-circle" size={33} color="#FFF" />
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+            <Icon name="account-circle" size={33} color="#FFF" />
+          </TouchableOpacity>
         </View>
 
         <Text

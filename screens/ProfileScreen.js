@@ -8,6 +8,7 @@ import {
   Alert,
   Modal,
   View,
+  FlatList,
 } from 'react-native';
 import { Block, Checkbox, Text, theme } from 'galio-framework';
 import { BlurView } from 'expo-blur';
@@ -54,46 +55,46 @@ const argonTheme = {
 
 const { width, height } = Dimensions.get('screen');
 
-const RegisterScreen = ({ navigation }) => {
+const ProfileScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [privileged, setPrivileged] = useState(false);
-  const [masterPassword, setMasterPassword] = useState(false);
-  const [masterPasswordModal, setMasterPasswordModal] = useState(false);
-  const [masterPasswordWrong, setMasterPasswordWrong] = useState(false);
-  const [errorCreate, setErrorCreate] = useState(false);
-  const [studentSelected, setStudentSelected] = useState(true);
+
+  const [resetModal, setResetModal] = useState(false);
+  const [studentModal, setStudentModal] = useState(false);
+  const [student, setStudent] = useState(false);
   const [value, setValue] = useState(0);
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [errorCreate, setErrorCreate] = useState('false');
+
+  const resetPassword = () => {
+    setErrorCreate(true);
+    startAnimation();
+    setTimeout(function () {
+      setErrorCreate(false);
+    }, 3000);
+  };
 
   const startAnimation = () => {
     setValue(value + 1);
   };
+  const DATA = [
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      title: 'First Item',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      title: 'Second Item',
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d72',
+      title: 'Third Item',
+    },
+  ];
 
-  const masterPasswordInputted = () => {
-    if (masterPassword != '123') {
-      startAnimation();
-      setMasterPassword('');
-      setMasterPasswordWrong(true);
-      setPrivileged(false);
-      setStudentSelected(true);
-      return;
-    } else {
-      setPrivileged(true);
-      setMasterPasswordModal(false);
-      setStudentSelected(false);
-    }
-  };
-  const createPressed = () => {
-    if (password.length == 0 || username.length == 0 || name == 0) {
-      startAnimation();
-      setErrorCreate(true);
-      setTimeout(function () {
-        setErrorCreate(false);
-      }, 3000);
-      return;
-    }
-
+  const logoutPressed = () => {
     const data = JSON.stringify({
       prettyName: name,
       username: username,
@@ -140,13 +141,14 @@ const RegisterScreen = ({ navigation }) => {
                   </Text>
                   <Block row style={{ marginTop: theme.SIZES.BASE }}>
                     <Button
+                      disabled={true}
                       style={{
                         ...styles.socialButtons,
                         marginRight: 30,
-                        backgroundColor: studentSelected ? '#f7b640' : '#FFF',
+                        backgroundColor: student ? '#f7b640' : '#FFF',
                       }}
                       onPress={() => {
-                        setStudentSelected(true);
+                        setStudent(true);
                         setPrivileged(false);
                       }}
                     >
@@ -161,13 +163,10 @@ const RegisterScreen = ({ navigation }) => {
                       </Block>
                     </Button>
                     <Button
-                      disabled={privileged}
+                      disabled={true}
                       style={{
                         ...styles.teacherButton,
-                        backgroundColor: !studentSelected ? '#f7b640' : '#FFF',
-                      }}
-                      onPress={() => {
-                        setMasterPasswordModal(true);
+                        backgroundColor: !student ? '#f7b640' : '#FFF',
                       }}
                     >
                       <Block row>
@@ -186,13 +185,26 @@ const RegisterScreen = ({ navigation }) => {
                   </Block>
                 </Block>
                 <Block flex>
-                  <Block flex={0.17} middle>
-                    <Text color="#8898AA" size={12}>
-                      The start of your Journey with Reviso
-                    </Text>
-                    <Text color="#8898AA" size={10}>
-                      Fill in the fields!
-                    </Text>
+                  <Block flex={0.3} middle>
+                    {student ? (
+                      <>
+                        <Text color="#8898AA" size={12}>
+                          The start of your Journey with Reviso
+                        </Text>
+                        <Text color="#8898AA" size={10}>
+                          Fill in the fields!
+                        </Text>
+                      </>
+                    ) : (
+                      <Button
+                        style={styles.labelStyle}
+                        onPress={() => setStudentModal(true)}
+                      >
+                        <Text bold size={14} color={argonTheme.COLORS.BLACK}>
+                          View Your Students
+                        </Text>
+                      </Button>
+                    )}
                   </Block>
                   <Block flex center>
                     <KeyboardAvoidingView
@@ -201,111 +213,51 @@ const RegisterScreen = ({ navigation }) => {
                       enabled
                     >
                       <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                        <Input
-                          onChangeText={(val) => setName(val)}
-                          borderless
-                          placeholder="Name"
-                          iconContent={
-                            <Icon
-                              size={16}
-                              color={argonTheme.COLORS.ICON}
-                              family="ArgonExtra"
-                              style={styles.inputIcons}
-                            />
-                          }
-                        />
+                        <Button style={styles.labelStyle}>
+                          <Text bold size={14} color={argonTheme.COLORS.BLACK}>
+                            Name
+                          </Text>
+                        </Button>
                       </Block>
                       <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                        <Input
-                          onChangeText={(val) => setUsername(val)}
-                          borderless
-                          placeholder="Username"
-                          iconContent={
-                            <Icon
-                              size={16}
-                              color={argonTheme.COLORS.ICON}
-                              family="ArgonExtra"
-                              style={styles.inputIcons}
-                            />
-                          }
-                        />
-                      </Block>
-                      <Block width={width * 0.8}>
-                        <Input
-                          onChangeText={(val) => setPassword(val)}
-                          password
-                          borderless
-                          placeholder="Password"
-                          iconContent={
-                            <Icon
-                              size={16}
-                              color={argonTheme.COLORS.ICON}
-                              family="ArgonExtra"
-                              style={styles.inputIcons}
-                            />
-                          }
-                        />
-                        {errorCreate && (
-                          <Block row style={styles.remainingCheck}>
-                            <Text
-                              bold
-                              size={12}
-                              color={argonTheme.COLORS.ERROR}
-                            >
-                              Fill in the remaining fields
-                            </Text>
-                          </Block>
-                        )}
-                        {password.length > 0 && (
-                          <Block row style={styles.passwordCheck}>
-                            <Text size={12} color={argonTheme.COLORS.MUTED}>
-                              password strength:
-                            </Text>
-                            {password.length >= 8 && (
-                              <Text
-                                bold
-                                size={12}
-                                color={argonTheme.COLORS.SUCCESS}
-                              >
-                                {' '}
-                                strong
-                              </Text>
-                            )}
-                            {password.length < 8 && (
-                              <Text
-                                bold
-                                size={12}
-                                color={argonTheme.COLORS.ERROR}
-                              >
-                                {' '}
-                                weak
-                              </Text>
-                            )}
-                          </Block>
-                        )}
+                        <Button style={styles.labelStyle}>
+                          <Text bold size={14} color={argonTheme.COLORS.BLACK}>
+                            UserName
+                          </Text>
+                        </Button>
                       </Block>
 
                       <Block middle row>
                         <Button
                           color="primary"
-                          style={styles.createButton}
-                          onPress={() => navigation.navigate('Login')}
+                          style={styles.resetButton}
+                          onPress={() => {
+                            setResetModal(true);
+                          }}
                         >
                           <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                            BACK
+                            Reset Password
                           </Text>
                         </Button>
                         <Button
                           color="primary"
-                          style={styles.createButton}
-                          onPress={createPressed}
+                          style={styles.resetButton}
+                          onPress={logoutPressed}
                         >
                           <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                            CREATE
+                            Logout
                           </Text>
                         </Button>
                       </Block>
                     </KeyboardAvoidingView>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('Home');
+                      }}
+                      style={{ marginBottom: 20 }}
+                    >
+                      <Icon name="exit-to-app" size={40} color="#8898AA" />
+                    </TouchableOpacity>
                   </Block>
                 </Block>
               </Block>
@@ -313,7 +265,7 @@ const RegisterScreen = ({ navigation }) => {
           </Shake>
         </ImageBackground>
       </Block>
-      {masterPasswordModal && (
+      {resetModal && (
         <BlurView
           intensity={90}
           style={[StyleSheet.absoluteFill, styles.nonBlurredContent]}
@@ -321,7 +273,7 @@ const RegisterScreen = ({ navigation }) => {
           <Modal
             animationType="slide"
             transparent={true}
-            visible={masterPasswordModal}
+            visible={resetModal}
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
             }}
@@ -336,29 +288,24 @@ const RegisterScreen = ({ navigation }) => {
                 <Block flex>
                   <TouchableOpacity
                     onPress={() => {
-                      setMasterPasswordModal(false);
-                      setMasterPasswordWrong(false);
+                      setResetModal(false);
                     }}
                   >
                     <Icon name="progress-close" size={25} color="#8898AA" />
                   </TouchableOpacity>
-                  <Block flex={0.2} middle style={{ marginTop: 17 }}>
-                    <Text color="#8898AA" size={15}>
-                      Enter the Master Password
-                    </Text>
-                  </Block>
+
                   <Block flex center>
                     <KeyboardAvoidingView
-                      style={{ flex: 1 }}
+                      style={{ flex: 1, marginTop: 20 }}
                       behavior="padding"
                       enabled
                     >
                       <Block width={width * 0.8}>
                         <Input
-                          onChangeText={(val) => setMasterPassword(val)}
+                          onChangeText={(val) => setOldPassword(val)}
                           password
                           borderless
-                          placeholder="Master Password"
+                          placeholder="Old Password"
                           iconContent={
                             <Icon
                               size={16}
@@ -368,31 +315,37 @@ const RegisterScreen = ({ navigation }) => {
                             />
                           }
                         />
-
-                        {masterPasswordWrong && (
-                          <Block row style={styles.masterPasswordCheck}>
-                            <Text size={12} color={argonTheme.COLORS.MUTED}>
-                              Password Invalid:
-                            </Text>
-                            <Text
-                              bold
-                              size={12}
-                              color={argonTheme.COLORS.ERROR}
-                            >
-                              Wrong input!
-                            </Text>
-                          </Block>
-                        )}
+                        <Input
+                          onChangeText={(val) => setNewPassword(val)}
+                          password
+                          borderless
+                          placeholder="New Password"
+                          iconContent={
+                            <Icon
+                              size={16}
+                              color={argonTheme.COLORS.ICON}
+                              family="ArgonExtra"
+                              style={styles.inputIcons}
+                            />
+                          }
+                        />
                       </Block>
+                      {errorCreate && (
+                        <Block row style={styles.resetCheck}>
+                          <Text bold size={12} color={argonTheme.COLORS.ERROR}>
+                            Wrong old password
+                          </Text>
+                        </Block>
+                      )}
 
                       <Block middle>
                         <Button
                           color="primary"
-                          style={styles.createButton}
-                          onPress={masterPasswordInputted}
+                          style={styles.resetButton}
+                          onPress={resetPassword}
                         >
                           <Text bold size={20} color={argonTheme.COLORS.WHITE}>
-                            Enter
+                            Reset
                           </Text>
                         </Button>
                       </Block>
@@ -401,6 +354,44 @@ const RegisterScreen = ({ navigation }) => {
                 </Block>
               </View>
             </Shake>
+          </Modal>
+        </BlurView>
+      )}
+
+      {studentModal && (
+        <BlurView
+          intensity={90}
+          style={[StyleSheet.absoluteFill, styles.nonBlurredContent]}
+        >
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={studentModal}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}
+          >
+            <View style={styles.modal}>
+              <TouchableOpacity
+                onPress={() => {
+                  setStudentModal(false);
+                }}
+                style={{ marginBottom: 20 }}
+              >
+                <Icon name="progress-close" size={25} color="#8898AA" />
+              </TouchableOpacity>
+              <FlatList
+                data={DATA}
+                renderItem={({ item }) => (
+                  <View style={styles.card}>
+                    <View style={styles.cardContent}>
+                      <Text>{item.title}</Text>
+                    </View>
+                  </View>
+                )}
+                keyExtractor={(item) => item.id}
+              />
+            </View>
           </Modal>
         </BlurView>
       )}
@@ -475,13 +466,17 @@ const styles = StyleSheet.create({
   masterPasswordCheck: {
     paddingLeft: 15,
   },
-  createButton: {
+  resetButton: {
     width: width * 0.35,
-    marginTop: 25,
+    marginTop: 15,
+  },
+  labelStyle: {
+    width: width * 0.75,
+    backgroundColor: 'white',
   },
   modal: {
     flex: 1,
-    margin: 210,
+    margin: 200,
     width: '90%',
     backgroundColor: '#F5F5F5',
     padding: 10,
@@ -503,6 +498,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  card: {
+    borderRadius: 6,
+    elevation: 3,
+    backgroundColor: '#fff',
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: '#333',
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    marginHorizontal: 4,
+    marginVertical: 6,
+  },
+  cardContent: {
+    marginHorizontal: 18,
+    marginVertical: 10,
+    alignItems: 'center',
+  },
 });
 
-export default RegisterScreen;
+export default ProfileScreen;

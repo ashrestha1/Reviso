@@ -18,6 +18,7 @@ import {
   TouchableOpacity,
 } from 'react-native-gesture-handler';
 import axios from 'axios';
+import { Shake } from 'react-native-motion';
 
 const { width, height } = Dimensions.get('window');
 const {
@@ -39,6 +40,12 @@ export default ({ navigation }) => {
   const [buttonOpacity, setButtonOpacity] = useState(new Value(1));
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const [value, setValue] = useState(0);
+  const [loginText, setLoginText] = useState('Login');
+
+  const startAnimation = () => {
+    setValue(value + 1);
+  };
 
   const loginPressed = () => {
     const data = JSON.stringify({
@@ -56,6 +63,12 @@ export default ({ navigation }) => {
         navigation.navigate('Home');
       })
       .catch((err) => {
+        startAnimation();
+        setLoginText('Wrong credentials');
+        setTimeout(function () {
+          setLoginText('Login');
+        }, 3000);
+
         console.log(err);
       });
   };
@@ -177,6 +190,7 @@ export default ({ navigation }) => {
               <Text style={styles.buttonText}>LOGIN</Text>
             </Animated.View>
           </TapGestureHandler>
+
           <Animated.View
             style={{
               ...styles.loginContainer,
@@ -199,35 +213,43 @@ export default ({ navigation }) => {
                 />
               </Animated.View>
             </TapGestureHandler>
+            <Shake
+              value={value}
+              type="timing"
+              useNativeDriver={true}
+              style={[StyleSheet.absoluteFill, { marginTop: 20 }]}
+            >
+              <TextInput
+                style={styles.inputText}
+                placeholderTextColor="gray"
+                onChangeText={(val) => setUsername(val)}
+                placeholder="Username"
+              />
+              <TextInput
+                style={styles.inputText}
+                placeholderTextColor="gray"
+                onChangeText={(val) => setPassword(val)}
+                defaultValue={password}
+                placeholder="Password"
+              />
 
-            <TextInput
-              style={styles.inputText}
-              placeholderTextColor="gray"
-              onChangeText={(val) => setUsername(val)}
-              placeholder="Username"
-            />
-            <TextInput
-              style={styles.inputText}
-              placeholderTextColor="gray"
-              onChangeText={(val) => setPassword(val)}
-              defaultValue={password}
-              placeholder="Password"
-            />
-
-            <TouchableOpacity onPress={loginPressed}>
-              <View
-                style={{
-                  ...styles.button,
-                  backgroundColor: '#4e8896',
-                  shadowOffset: { width: 2, height: 2 },
-                  shadowColor: '#000',
-                  shadowOpacity: 0.2,
-                  elevation: 3,
-                }}
-              >
-                <Text style={{ fontWeight: 'bold', color: '#FFF' }}>LOGIN</Text>
-              </View>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={loginPressed}>
+                <View
+                  style={{
+                    ...styles.button,
+                    backgroundColor: '#4e8896',
+                    shadowOffset: { width: 2, height: 2 },
+                    shadowColor: '#000',
+                    shadowOpacity: 0.2,
+                    elevation: 3,
+                  }}
+                >
+                  <Text style={{ fontWeight: 'bold', color: '#FFF' }}>
+                    {loginText}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </Shake>
           </Animated.View>
         </View>
       </KeyboardAvoidingView>
@@ -287,6 +309,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 30,
     borderColor: '#2f818c',
+    backgroundColor: 'white',
     borderWidth: 0.5,
     marginHorizontal: 30,
     marginVertical: 5,
