@@ -3,13 +3,13 @@ import axios from 'axios';
 //Actions Creators
 export const getAccount = (token) => async (dispatch) => {
   try {
-    axios.get(`http://18.167.126.245/profile?token=${token}`).then((res) => {
+    axios.get(`http://18.163.214.230/profile?token=${token}`).then((res) => {
       const { data } = res;
-      console.log(data);
       dispatch({ type: FETCH_ACCOUNT, payload: data });
     });
   } catch (error) {
-    console.log(error.message);
+    console.log('getACcount');
+    console.log(error);
   }
 };
 
@@ -22,6 +22,7 @@ export const createAccount = (orderData) => async (dispatch) => {
       return true;
     });
   } catch (error) {
+    console.log('errorrrr');
     return false;
   }
 };

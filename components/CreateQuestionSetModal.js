@@ -11,8 +11,10 @@ import { Block, Checkbox, Text, theme } from 'galio-framework';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Button from './Button';
 import Input from './input';
-
+import { Shake } from 'react-native-motion';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import { createQuestions } from '../Redux2/Actions/questions';
 const argonTheme = {
   COLORS: {
     DEFAULT: '#172B4D',
@@ -57,31 +59,73 @@ const CreateQuestionSetModal = (props) => {
   const [wrongAnswer2, setWrongAnswer2] = useState('');
   const [wrongAnswer3, setWrongAnswer3] = useState('');
   const [description, setDescription] = useState('');
-  const [timeLimit, setTimelimit] = useState('');
+  const [timeLimit, setTimelimit] = useState(new Date());
+  const [graded, setGraded] = useState(false);
+  const [value, setValue] = useState(0);
+
+  const dispatch = useDispatch();
 
   const [isPrimary, setIsPrimary] = useState('muted');
   const gradedPressed = () => {
     isPrimary == 'muted'
       ? setIsPrimary('INPUT_SUCCESS')
       : setIsPrimary('muted');
+
+    setGraded(!graded);
   };
+
+  const startAnimation = () => {
+    setValue(value + 1);
+  };
+
   const createPressed = () => {
+    if (
+      questionSetTitle == '' ||
+      question == '' ||
+      correctAnswer == '' ||
+      wrongAnswer1 == '' ||
+      wrongAnswer2 == '' ||
+      wrongAnswer3 == '' ||
+      timeLimit == new Date()
+    ) {
+      console.log('hi');
+      console.log(timeLimit);
+      startAnimation();
+      return;
+    }
+
+    var minute = new Date(timeLimit).getMinutes();
+    var hour = new Date(timeLimit).getHours();
+    var totalSecond = minute * 60 + hour * 3600;
+
     const data = JSON.stringify({
       token: props.token,
-      graded: action.payload.graded,
-      deadline: action.payload.deadline,
-      timeLimit: action.payload.timeLimit,
-      questionSet: action.payload.questionSet,
+      graded: graded,
+      deadline: deadline,
+      timeLimit: totalSecond,
+      questionSet: {
+        title: questionSetTitle,
+        description: '',
+        problems: [
+          {
+            question: question,
+            answers: [correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3],
+          },
+        ],
+      },
     });
+
+    console.log(data);
+    dispatch(createQuestions(data));
   };
 
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
-  const [time, setTime] = useState(new Date());
 
   const onChange = (event, selectedDate) => {
+    console.log(selectedDate);
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
@@ -89,11 +133,10 @@ const CreateQuestionSetModal = (props) => {
   };
 
   const onChangeTime = (event, selectedTimer) => {
-    console.log(new Date(selectedTimer).getMinutes());
-    console.log(new Date(selectedTimer).getHours());
-    const currentTime = selectedTimer || date;
+    console.log(selectedTimer);
+    const currentTime = selectedTimer || timeLimit;
     setShow(Platform.OS === 'ios');
-    setTime(currentTime);
+    setTimelimit(currentTime);
   };
 
   const showDatepicker = () => {
@@ -105,7 +148,11 @@ const CreateQuestionSetModal = (props) => {
   };
 
   const timerModalToggle = () => {
-    setShowTimer(!showTimer);
+    setShowTimer(true);
+  };
+  const closeModal = () => {
+    setShowTimer(false);
+    setShow(false);
   };
 
   return (
@@ -258,16 +305,16 @@ const CreateQuestionSetModal = (props) => {
                 </Block>
 
                 <Block row space="evenly">
-                  <Button
-                    color="primary"
-                    style={styles.createButton}
-                    onPress={props.toggleCreateQuestionSetModal}
-                  >
+                  <Button color="primary" style={styles.createButton}>
                     <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                       CANCEL
                     </Text>
                   </Button>
-                  <Button color="primary" style={styles.createButton}>
+                  <Button
+                    onPress={createPressed}
+                    color="primary"
+                    style={styles.createButton}
+                  >
                     <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                       CREATE
                     </Text>
@@ -291,7 +338,7 @@ const CreateQuestionSetModal = (props) => {
           <View style={styles.modal}>
             <DateTimePicker
               maximumDate={new Date(2021, 11, 31)}
-              minimumDate={new Date(1950, 0, 1)}
+              minimumDate={new Date()}
               testID="dateTimePicker"
               value={date}
               mode={mode}
@@ -303,7 +350,7 @@ const CreateQuestionSetModal = (props) => {
               <Button
                 color="primary"
                 style={styles.createButton}
-                onPress={() => setShow(false)}
+                onPress={closeModal}
               >
                 <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                   CONFIRM
@@ -325,8 +372,7 @@ const CreateQuestionSetModal = (props) => {
         >
           <View style={styles.modal}>
             <DateTimePicker
-              testID="dateTimePicker"
-              value={time}
+              value={timeLimit}
               mode={'countdown'}
               display="default"
               onChange={onChangeTime}
@@ -336,7 +382,7 @@ const CreateQuestionSetModal = (props) => {
               <Button
                 color="primary"
                 style={styles.createButton}
-                onPress={() => setShowTimer(false)}
+                onPress={closeModal}
               >
                 <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                   CONFIRM

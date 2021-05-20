@@ -27,15 +27,6 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 const Tab = createMaterialTopTabNavigator();
 
-async function getValueFor(key) {
-  let result = await SecureStore.getItemAsync(key);
-  if (result) {
-    alert("🔐 Here's your value 🔐 \n" + result);
-  } else {
-    alert('No values stored under that key.');
-  }
-}
-
 export default ({ navigation, route }) => {
   const dispatch = useDispatch();
 
@@ -46,7 +37,7 @@ export default ({ navigation, route }) => {
   useEffect(() => {
     console.log('activate', route.params.token);
     dispatch(getAccount(route.params.token));
-    dispatch(getQuestionsTeacher(route.params.token));
+    // dispatch(getQuestionsTeacher(route.params.token));
   }, []);
 
   const account = useSelector((state) => state.account);

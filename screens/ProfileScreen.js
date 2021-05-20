@@ -108,7 +108,7 @@ export default ({ navigation }) => {
     });
 
     axios
-      .post('http://18.162.200.79/signup', data, {
+      .post('http://18.163.214.230/signup', data, {
         headers: {
           'Content-Type': 'application/json',
         },
