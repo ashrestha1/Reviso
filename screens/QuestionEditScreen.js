@@ -76,7 +76,7 @@ export default ({ navigation, route }) => {
         <Block style={styles.socialConnect}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('QuestionSetList');
+              navigation.navigate('QuestionList');
             }}
           >
             <Icon name="progress-close" size={25} color="#8898AA" />

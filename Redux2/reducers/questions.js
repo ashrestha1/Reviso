@@ -25,6 +25,21 @@ export default function questions(state = initialState, action) {
         ...state,
         questionsArray: [...state.questionsArray, newQuestionSet],
       };
+    case UPDATE_QUESTION:
+      return {
+        ...state,
+        questionsArray: state.questionsArray.map((question) => {
+          question.id === action.payload.id
+            ? {
+                id: question.id,
+                title: question.title,
+                created: question.created,
+                graded: action.payload.changeToUngraded,
+                timeLimit: action.payload.newDeadline || question.timeLimit,
+              }
+            : question;
+        }),
+      };
     default:
       return state;
   }

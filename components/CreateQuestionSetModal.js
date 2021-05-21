@@ -65,12 +65,7 @@ const CreateQuestionSetModal = (props) => {
 
   const dispatch = useDispatch();
 
-  const [isPrimary, setIsPrimary] = useState('muted');
   const gradedPressed = () => {
-    isPrimary == 'muted'
-      ? setIsPrimary('INPUT_SUCCESS')
-      : setIsPrimary('muted');
-
     setGraded(!graded);
   };
 
@@ -115,7 +110,8 @@ const CreateQuestionSetModal = (props) => {
       },
     });
 
-    console.log(data);
+    props.navigation.navigate('QuestionList', { data: data });
+
     dispatch(createQuestions(data));
   };
 
@@ -290,7 +286,8 @@ const CreateQuestionSetModal = (props) => {
 
                   <Block middle row>
                     <Button
-                      color="primary"
+                      disabled={!graded}
+                      color={graded ? 'primary' : 'muted'}
                       style={styles.resetButton}
                       onPress={showDatepicker}
                     >
@@ -300,7 +297,7 @@ const CreateQuestionSetModal = (props) => {
                     </Button>
 
                     <Button
-                      color={isPrimary}
+                      color={graded ? 'success' : 'muted'}
                       style={styles.resetButton}
                       onPress={gradedPressed}
                     >
@@ -318,7 +315,26 @@ const CreateQuestionSetModal = (props) => {
                     </Button>
                     <Button
                       onPress={createPressed}
-                      color="primary"
+                      color={
+                        questionSetTitle == '' ||
+                        question == '' ||
+                        correctAnswer == '' ||
+                        wrongAnswer1 == '' ||
+                        wrongAnswer2 == '' ||
+                        wrongAnswer3 == '' ||
+                        timeLimit == new Date()
+                          ? 'muted'
+                          : 'primary'
+                      }
+                      disabled={
+                        questionSetTitle == '' ||
+                        question == '' ||
+                        correctAnswer == '' ||
+                        wrongAnswer1 == '' ||
+                        wrongAnswer2 == '' ||
+                        wrongAnswer3 == '' ||
+                        timeLimit == new Date()
+                      }
                       style={styles.createButton}
                     >
                       <Text bold size={14} color={argonTheme.COLORS.WHITE}>

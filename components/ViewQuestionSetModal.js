@@ -78,24 +78,25 @@ const ViewQuestionSetModal = (props) => {
   };
 
   const modifyPressed = () => {
-    const data = JSON.stringify({
-      token: props.token,
-      graded: graded,
-      deadline: deadline,
-      questionSet: {
-        title: questionSetTitle,
-        description: '',
-        problems: [
-          {
-            question: question,
-            answers: [correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3],
-          },
-        ],
-      },
-    });
+    console.log(graded != oldGraded);
+    const gradeChangeToUngraded = graded != oldGraded;
 
-    console.log(data);
-    dispatch(createQuestions(data));
+    if (gradeChangeToUngraded) {
+      const data = JSON.stringify({
+        token: props.token,
+        id: props.data.id,
+        changeToUngraded: gradeChangeToUngraded,
+      });
+    } else {
+      const data = JSON.stringify({
+        token: props.token,
+        id: props.data.id,
+        changeToUngraded: gradeChangeToUngraded,
+        newDeadline: deadline,
+      });
+    }
+
+    dispatch(updateQuestion(data));
     props.closeViewQuestionSetModal;
   };
 
@@ -128,9 +129,6 @@ const ViewQuestionSetModal = (props) => {
     setMode(currentMode);
   };
 
-  const timerModalToggle = () => {
-    setShowTimer(true);
-  };
   const closeModal = () => {
     setTimerIconColor(argonTheme.COLORS.GREEN);
     setShowTimer(false);
@@ -282,7 +280,8 @@ const ViewQuestionSetModal = (props) => {
 
                   <Block middle row>
                     <Button
-                      color={'PRIMARY'}
+                      disabled={!graded}
+                      color={graded ? 'primary' : 'muted'}
                       style={styles.resetButton}
                       onPress={showDatepicker}
                     >

@@ -16,6 +16,7 @@ import PracticeSetEditScreen from './screens/PracticeSetEditScreen';
 import PracticeSetNewProblemScreen from './screens/PracticeSetNewProblemScreen';
 import PracticeProblemEditScreen from './screens/PracticeProblemEditScreen';
 import PracticeSetNewScreen from './screens/PracticeSetNewScreen';
+import QuestionListScreen from './screens/QuestionListScreen';
 import QuestionSetListScreen from './screens/QuestionSetListScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ProfileScreen from './screens/ProfileScreen';
@@ -89,6 +90,11 @@ const App = () => {
           name="QuestionEdit"
           component={QuestionEditScreen}
           options={{ title: 'Reviso - Question Edit' }}
+        />
+        <Stack.Screen
+          name="QuestionList"
+          component={QuestionListScreen}
+          options={{ title: 'Reviso - Question List' }}
         />
         <Stack.Screen
           name="QuestionSetList"

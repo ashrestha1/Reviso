@@ -37,3 +37,23 @@ export const createQuestions = (questionData) => async (dispatch) => {
     return false;
   }
 };
+
+export const updateQuestion = (newData) => async (dispatch) => {
+  try {
+    console.log('creating....', newData);
+    axios
+      .post(`http://18.163.214.230/set/create`, newData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        console.log('here is the response', res);
+        dispatch({ type: UPDATE_QUESTION, payload: newData });
+        return true;
+      });
+  } catch (error) {
+    console.log('223teac', error);
+    return false;
+  }
+};

@@ -35,8 +35,8 @@ export default ({ navigation, route }) => {
     setCreateQuestionSetModalVisible,
   ] = useState(false);
   useEffect(() => {
-    console.log('activate', route.params.token);
-    dispatch(getAccount(route.params.token));
+    // console.log('activate', route.params.token);
+    // dispatch(getAccount(route.params.token));
     // dispatch(getQuestionsTeacher(route.params.token));
   }, []);
 
@@ -66,14 +66,16 @@ export default ({ navigation, route }) => {
 
         <Block flex>
           {console.log('question222s', questions)}
-          {questions.map((data, i) => (
-            <QuestionSet
-              key={data.id}
-              product={data.title}
-              navigation={navigation}
-              destination="Question"
-            />
-          ))}
+          {questions.map((data) =>
+            data.title.includes('Math') ? (
+              <QuestionSet
+                key={data.id}
+                question={data}
+                navigation={navigation}
+                destination="Question"
+              />
+            ) : null
+          )}
           {questions?.length === 0 && <Text>No Questions left </Text>}
         </Block>
       </ScrollView>
@@ -81,7 +83,71 @@ export default ({ navigation, route }) => {
   );
 
   const SecondRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#f8f8ff' }} />
+    <View style={{ backgroundColor: '#9fc2c3' }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.products}
+      >
+        <Text
+          style={{
+            fontWeight: '400',
+            color: '#FFFFFF',
+            fontSize: 17,
+          }}
+        >
+          Reccomended
+        </Text>
+
+        <Block flex>
+          {console.log('question222s', questions)}
+          {questions.map((data) =>
+            data.title.includes('Computer') ? (
+              <QuestionSet
+                key={data.id}
+                question={data}
+                navigation={navigation}
+                destination="Question"
+              />
+            ) : null
+          )}
+          {questions?.length === 0 && <Text>No Questions left </Text>}
+        </Block>
+      </ScrollView>
+    </View>
+  );
+
+  const ThirdRoute = () => (
+    <View style={{ backgroundColor: '#9fc2c3' }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.products}
+      >
+        <Text
+          style={{
+            fontWeight: '400',
+            color: '#FFFFFF',
+            fontSize: 17,
+          }}
+        >
+          Reccomended
+        </Text>
+
+        <Block flex>
+          {console.log('question222s', questions)}
+          {questions.map((data) =>
+            data.title.includes('Physics') ? (
+              <QuestionSet
+                key={data.id}
+                question={data}
+                navigation={navigation}
+                destination="Question"
+              />
+            ) : null
+          )}
+          {questions?.length === 0 && <Text>No Questions left </Text>}
+        </Block>
+      </ScrollView>
+    </View>
   );
 
   return (
@@ -196,7 +262,7 @@ export default ({ navigation, route }) => {
         >
           <Tab.Screen name="Math" component={FirstRoute} />
           <Tab.Screen name="Computer" component={SecondRoute} />
-          <Tab.Screen name="Physics" component={SecondRoute} />
+          <Tab.Screen name="Physics" component={ThirdRoute} />
         </Tab.Navigator>
         <Modal
           animationType="slide"
@@ -208,7 +274,7 @@ export default ({ navigation, route }) => {
         >
           <CreateQuestionSetModal
             toggleCreateQuestionSetModal={toggleCreateQuestionSetModal}
-            token={route.params.token}
+            // token={route.params.token}
           />
         </Modal>
       </View>

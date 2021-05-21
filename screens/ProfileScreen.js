@@ -141,7 +141,7 @@ export default ({ navigation }) => {
               <Block style={styles.registerContainer}>
                 <Block flex={0.25} middle style={styles.socialConnect}>
                   <Text color="#8898AA" size={14}>
-                    Sign up as
+                    Role:
                   </Text>
                   <Block row style={{ marginTop: theme.SIZES.BASE }}>
                     <Button
@@ -193,27 +193,7 @@ export default ({ navigation }) => {
                   </Block>
                 </Block>
                 <Block flex>
-                  <Block flex={0.3} middle>
-                    {privileged != 1 ? (
-                      <>
-                        <Text color="#8898AA" size={12}>
-                          The start of your Journey with Reviso
-                        </Text>
-                        <Text color="#8898AA" size={10}>
-                          Fill in the fields!
-                        </Text>
-                      </>
-                    ) : (
-                      <Button
-                        style={styles.labelStyle}
-                        onPress={() => setStudentModal(true)}
-                      >
-                        <Text bold size={14} color={argonTheme.COLORS.BLACK}>
-                          View Your Questions
-                        </Text>
-                      </Button>
-                    )}
-                  </Block>
+                  <Block flex={0.3} middle></Block>
                   <Block flex center>
                     <KeyboardAvoidingView
                       style={{ flex: 1 }}

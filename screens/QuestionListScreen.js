@@ -11,6 +11,8 @@ import {
 import { Block, Checkbox, Text, theme } from 'galio-framework';
 import { BlurView } from 'expo-blur';
 
+import ViewQuestionSetModal from '../components/ViewQuestionSetModal';
+
 import Button from '../components/Button';
 
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
@@ -67,7 +69,26 @@ const DATA = [
 
 const { width, height } = Dimensions.get('screen');
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
+  const data = route.params.data;
+
+  const [
+    viewQuestionSetModalVisible,
+    setViewQuestionSetModalVisible,
+  ] = useState(false);
+
+  const [viewQuestionSetModalData, setViewQuestionSetModalData] = useState([]);
+
+  const openViewQuestionSetModal = (item) => {
+    setViewQuestionSetModalData(item);
+    setViewQuestionSetModalVisible(true);
+  };
+
+  const closeViewQuestionSetModal = () => {
+    setViewQuestionSetModalVisible(false);
+    setViewQuestionSetModalData([]);
+  };
+
   return (
     <>
       <Block style={styles.registerContainer}>
@@ -76,7 +97,7 @@ export default ({ navigation }) => {
             style={styles.backButton}
             color="#9fc2c3"
             onPress={() => {
-              navigation.navigate('Home');
+              navigation.navigate('QuestionSetList');
             }}
           >
             <Icon name="arrow-left" size={30} color="#8898AA" />
@@ -86,18 +107,14 @@ export default ({ navigation }) => {
               name="book-open-page-variant"
               style={[styles.inputIcons, { color: '#9fc2c3' }]}
             />{' '}
-            Question Sets
+            Question Set
           </Text>
         </Block>
 
         <FlatList
           data={DATA}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('QuestionList', { data: item.problems })
-              }
-            >
+            <TouchableOpacity onPress={() => openViewQuestionSetModal(item)}>
               <View style={styles.card}>
                 <View style={styles.cardContent}>
                   <Text bold size={14} color={argonTheme.COLORS.BLACK}>
@@ -110,6 +127,26 @@ export default ({ navigation }) => {
           keyExtractor={(item) => item.id}
         />
       </Block>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={viewQuestionSetModalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}
+      >
+        <BlurView
+          intensity={90}
+          style={[StyleSheet.absoluteFill, styles.nonBlurredContent]}
+        >
+          <ViewQuestionSetModal
+            closeViewQuestionSetModal={closeViewQuestionSetModal}
+            data={viewQuestionSetModalData}
+            // token={props.token}
+          />
+        </BlurView>
+      </Modal>
     </>
   );
 };
