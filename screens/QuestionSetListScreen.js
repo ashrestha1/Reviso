@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Dimensions,
   KeyboardAvoidingView,
   View,
   FlatList,
+  TouchableOpacity,
+  Modal,
 } from 'react-native';
 import { Block, Checkbox, Text, theme } from 'galio-framework';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import QuestionSet from '../components/QuestionSet';
+import { BlurView } from 'expo-blur';
+
+import ViewQuestionSetModal from '../components/ViewQuestionSetModal';
 
 import Button from '../components/Button';
-import Input from '../components/input';
 
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 const argonTheme = {
@@ -50,10 +52,14 @@ const DATA = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
     title: 'First Item',
+    graded: true,
+    date: '2021',
   },
   {
     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
     title: 'Second Item',
+    graded: false,
+    date: '1921',
   },
   {
     id: '58694a0f-3da1-471f-bd96-145571e29d72',
@@ -64,42 +70,82 @@ const DATA = [
 const { width, height } = Dimensions.get('screen');
 
 export default ({ navigation }) => {
+  const [
+    viewQuestionSetModalVisible,
+    setViewQuestionSetModalVisible,
+  ] = useState(false);
+
+  const [viewQuestionSetModalData, setViewQuestionSetModalData] = useState([]);
+
+  const openViewQuestionSetModal = (item) => {
+    setViewQuestionSetModalData(item);
+    setViewQuestionSetModalVisible(true);
+  };
+
+  const closeViewQuestionSetModal = () => {
+    setViewQuestionSetModalVisible(false);
+    setViewQuestionSetModalData([]);
+  };
+
   return (
-    <Block style={styles.registerContainer}>
-      <Block style={styles.socialConnect} row>
-        <Button
-          style={styles.backButton}
-          color="#9fc2c3"
-          onPress={() => {
-            navigation.navigate('Home');
-          }}
-        >
-          <Icon name="progress-close" size={25} color="#8898AA" />
-        </Button>
-        <Text color="#8898AA" size={25} style={{ marginTop: '5%' }}>
-          <Icon
-            name="book-open-page-variant"
-            style={[styles.inputIcons, { color: '#9fc2c3' }]}
-          />{' '}
-          Question Set
-        </Text>
+    <>
+      <Block style={styles.registerContainer}>
+        <Block style={styles.socialConnect} row>
+          <Button
+            style={styles.backButton}
+            color="#9fc2c3"
+            onPress={() => {
+              navigation.navigate('Home');
+            }}
+          >
+            <Icon name="arrow-left" size={30} color="#8898AA" />
+          </Button>
+          <Text color="#8898AA" size={25} style={{ marginTop: '5%' }}>
+            <Icon
+              name="book-open-page-variant"
+              style={[styles.inputIcons, { color: '#9fc2c3' }]}
+            />{' '}
+            Question Set
+          </Text>
+        </Block>
+
+        <FlatList
+          data={DATA}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => openViewQuestionSetModal(item)}>
+              <View style={styles.card}>
+                <View style={styles.cardContent}>
+                  <Text bold size={14} color={argonTheme.COLORS.BLACK}>
+                    {item.title}
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item.id}
+        />
       </Block>
 
-      <FlatList
-        data={DATA}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <View style={styles.cardContent}>
-              <Text bold size={14} color={argonTheme.COLORS.BLACK}>
-                {/* {item.title} */}
-                hi
-              </Text>
-            </View>
-          </View>
-        )}
-        keyExtractor={(item) => item.id}
-      />
-    </Block>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={viewQuestionSetModalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}
+      >
+        <BlurView
+          intensity={90}
+          style={[StyleSheet.absoluteFill, styles.nonBlurredContent]}
+        >
+          <ViewQuestionSetModal
+            closeViewQuestionSetModal={closeViewQuestionSetModal}
+            data={viewQuestionSetModalData}
+            // token={props.token}
+          />
+        </BlurView>
+      </Modal>
+    </>
   );
 };
 
@@ -150,6 +196,10 @@ const styles = StyleSheet.create({
     marginRight: 12,
     fontSize: 30,
   },
+  nonBlurredContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   passwordCheck: {
     paddingLeft: 15,
     paddingTop: 13,
@@ -157,7 +207,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     marginRight: '10%',
-
+    marginTop: '5%',
     width: '14%',
   },
   products: {
@@ -172,8 +222,9 @@ const styles = StyleSheet.create({
     shadowColor: '#333',
     shadowOpacity: 0.3,
     shadowRadius: 2,
-    marginHorizontal: 4,
-    marginVertical: 6,
+    marginHorizontal: 10,
+    marginVertical: 8,
+    paddingVertical: 2,
   },
   cardContent: {
     marginHorizontal: 18,
