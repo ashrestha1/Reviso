@@ -77,6 +77,7 @@ export default ({ navigation, route }) => {
           {questions.map((data) =>
             data.title.includes('math') ? (
               <QuestionSet
+                disable={account.privileged ? true : false}
                 key={data.id}
                 question={data}
                 navigation={navigation}
@@ -110,6 +111,7 @@ export default ({ navigation, route }) => {
           {questions.map((data) =>
             data.title.includes('computer') ? (
               <QuestionSet
+                disable={account.privileged ? true : false}
                 key={data.id}
                 question={data}
                 navigation={navigation}
@@ -143,6 +145,7 @@ export default ({ navigation, route }) => {
           {questions.map((data) =>
             data.title.includes('physics') ? (
               <QuestionSet
+                disable={account.privileged ? true : false}
                 key={data.id}
                 question={data}
                 navigation={navigation}
@@ -250,9 +253,11 @@ export default ({ navigation, route }) => {
               <ActionButton.Item
                 buttonColor="#1abc9c"
                 spaceBetween={-50}
-                title="Refresh"
+                title="View Your Students"
                 onPress={() => {
-                  dispatch(getQuestionsTeacher(route.params.token));
+                  navigation.navigate('StudentScoreList', {
+                    token: route.params.token,
+                  });
                 }}
               >
                 <Icon name="refresh" style={{ fontSize: 20 }} />

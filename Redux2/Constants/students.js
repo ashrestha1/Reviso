@@ -1,0 +1,2 @@
+export const FETCH_STUDENTS = 'FETCH_STUDENTS';
+export const DELETE_STUDENTS = 'DELETE_STUDENTS';

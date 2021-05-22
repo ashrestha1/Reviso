@@ -193,7 +193,14 @@ export default ({ navigation }) => {
                   </Block>
                 </Block>
                 <Block flex>
-                  <Block flex={0.3} middle></Block>
+                  <Block flex={0.3} middle>
+                    <Text color="#8898AA" size={12}>
+                      Welcome to your Profile!
+                    </Text>
+                    <Text color="#8898AA" size={10}>
+                      Below are your details
+                    </Text>
+                  </Block>
                   <Block flex center>
                     <KeyboardAvoidingView
                       style={{ flex: 1 }}
@@ -203,14 +210,14 @@ export default ({ navigation }) => {
                       <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                         <Button style={styles.labelStyle}>
                           <Text bold size={14} color={argonTheme.COLORS.BLACK}>
-                            Name
+                            {account.prettyName}
                           </Text>
                         </Button>
                       </Block>
                       <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                         <Button style={styles.labelStyle}>
                           <Text bold size={14} color={argonTheme.COLORS.BLACK}>
-                            UserName
+                            {account.username}
                           </Text>
                         </Button>
                       </Block>
@@ -342,55 +349,6 @@ export default ({ navigation }) => {
                 </Block>
               </View>
             </Shake>
-          </Modal>
-        </BlurView>
-      )}
-
-      {studentModal && (
-        <BlurView
-          intensity={90}
-          style={[StyleSheet.absoluteFill, styles.nonBlurredContent]}
-        >
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={studentModal}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-            }}
-          >
-            <View style={styles.modal}>
-              <TouchableOpacity
-                onPress={() => {
-                  setStudentModal(false);
-                }}
-                style={{ marginBottom: 20 }}
-              >
-                <Icon name="progress-close" size={25} color="#8898AA" />
-              </TouchableOpacity>
-              <FlatList
-                data={DATA}
-                renderItem={({ item }) => (
-                  <View style={styles.card}>
-                    <View style={styles.cardContent}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          setStudentModal(false);
-                          navigation.navigate('StudentScoreList', {
-                            title: 'hi',
-                          });
-                        }}
-                      >
-                        <Text bold size={14} color={argonTheme.COLORS.BLACK}>
-                          {item.title}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )}
-                keyExtractor={(item) => item.id}
-              />
-            </View>
           </Modal>
         </BlurView>
       )}

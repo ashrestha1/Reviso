@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   ImageBackground,
@@ -12,7 +12,8 @@ import {
 } from 'react-native';
 import { Block, Checkbox, Text, theme } from 'galio-framework';
 import { BlurView } from 'expo-blur';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { getStudents } from '../Redux2/Actions/students';
 import Button from '../components/Button';
 import Input from '../components/input';
 import { Shake } from 'react-native-motion';
@@ -70,6 +71,13 @@ const DATA = [
 ];
 
 export default ({ navigation, route }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getStudents(route.params.token));
+  }, []);
+
+  const students = useSelector((state) => state.students.studentsArray);
+
   return (
     <View style={styles.modal}>
       <TouchableOpacity
@@ -87,20 +95,30 @@ export default ({ navigation, route }) => {
         color={argonTheme.COLORS.BLACK}
         style={{ alignSelf: 'center', marginBottom: 40 }}
       >
-        {route.params.title}
+        Your Students
       </Text>
       <FlatList
-        data={DATA}
+        data={students}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <View style={styles.cardContent}>
-              <Text bold size={14} color={argonTheme.COLORS.BLACK}>
-                {item.title}
-              </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('QuestionSetList', {
+                token: route.params.token,
+                studentId: item.id,
+                viewScore: true,
+              });
+            }}
+          >
+            <View style={styles.card}>
+              <View style={styles.cardContent}>
+                <Text bold size={14} color={argonTheme.COLORS.BLACK}>
+                  {item.prettyName}
+                </Text>
+              </View>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => index.toString()}
       />
     </View>
   );

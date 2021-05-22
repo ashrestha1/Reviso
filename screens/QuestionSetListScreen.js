@@ -13,6 +13,8 @@ import { BlurView } from 'expo-blur';
 import { useDispatch, useSelector } from 'react-redux';
 import { getQuestionsTeacher } from '../Redux2/Actions/questions';
 import ViewQuestionSetModal from '../components/ViewQuestionSetModal';
+import ViewScoreModal from '../components/ViewScoreModal';
+import axios from 'axios';
 
 import Button from '../components/Button';
 
@@ -49,33 +51,19 @@ const argonTheme = {
     BLACK: '#000000',
   },
 };
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-    graded: true,
-    date: '2021',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-    graded: false,
-    date: '1921',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
 
 const { width, height } = Dimensions.get('screen');
 
 export default ({ navigation, route }) => {
+  const viewScore = route.params.viewScore || false;
+
   const dispatch = useDispatch();
   const [
     viewQuestionSetModalVisible,
     setViewQuestionSetModalVisible,
   ] = useState(false);
+
+  const [viewScoreModalVisible, setViewScoreModalVisible] = useState(false);
 
   const [viewQuestionSetModalData, setViewQuestionSetModalData] = useState([]);
 
@@ -88,6 +76,30 @@ export default ({ navigation, route }) => {
     setViewQuestionSetModalVisible(false);
     setViewQuestionSetModalData([]);
   };
+
+  const [viewScoreData, setViewScoreData] = useState({});
+
+  const viewScoreModalOpen = (questionSetId) => {
+    console.log('pressed');
+
+    axios
+      .get(
+        `http://18.166.28.128/score/users?token=${route.params.token}&student=${route.params.studentId}&${questionSetId}`
+      )
+      .then((res) => {
+        setViewScoreData(res);
+      })
+      .catch((err) => {
+        console.err(err);
+      });
+
+    setViewScoreModalVisible(true);
+  };
+
+  const viewScoreModalClose = () => {
+    setViewScoreModalVisible(false);
+  };
+
   useEffect(() => {
     dispatch(getQuestionsTeacher(route.params.token));
   }, []);
@@ -102,7 +114,7 @@ export default ({ navigation, route }) => {
             style={styles.backButton}
             color="#9fc2c3"
             onPress={() => {
-              navigation.navigate('Home');
+              navigation.navigate('StudentScoreList');
             }}
           >
             <Icon name="arrow-left" size={30} color="#8898AA" />
@@ -119,7 +131,14 @@ export default ({ navigation, route }) => {
         <FlatList
           data={questions}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => openViewQuestionSetModal(item)}>
+            <TouchableOpacity
+              onPress={() => {
+                console.log('view', viewScore);
+                viewScore
+                  ? viewScoreModalOpen()
+                  : openViewQuestionSetModal(item.id);
+              }}
+            >
               <View style={styles.card}>
                 <View style={styles.cardContent}>
                   <Text bold size={14} color={argonTheme.COLORS.BLACK}>
@@ -149,6 +168,25 @@ export default ({ navigation, route }) => {
             questionData={viewQuestionSetModalData}
             creating={false}
             token={route.params.token}
+          />
+        </BlurView>
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={viewScoreModalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}
+      >
+        <BlurView
+          intensity={90}
+          style={[StyleSheet.absoluteFill, styles.nonBlurredContent]}
+        >
+          <ViewScoreModal
+            data={viewScoreData}
+            viewScoreModalClose={viewScoreModalClose}
           />
         </BlurView>
       </Modal>

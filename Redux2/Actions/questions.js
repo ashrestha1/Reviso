@@ -58,3 +58,23 @@ export const updateQuestion = (newData, token) => async (dispatch) => {
     return false;
   }
 };
+
+export const deleteQuestion = (data, token) => async (dispatch) => {
+  try {
+    console.log('delete....', data);
+    axios
+      .post(`http://18.166.28.128/set/delete`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        dispatch(getQuestionsTeacher(token));
+        dispatch({ type: DELETE_QUESTION, payload: data });
+        return true;
+      });
+  } catch (error) {
+    console.log('223teac', error);
+    return false;
+  }
+};

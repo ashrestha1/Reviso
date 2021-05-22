@@ -14,7 +14,7 @@ import Input from './input';
 import { Shake } from 'react-native-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
-import { updateQuestion } from '../Redux2/Actions/questions';
+import { updateQuestion, deleteQuestion } from '../Redux2/Actions/questions';
 const argonTheme = {
   COLORS: {
     DEFAULT: '#172B4D',
@@ -106,7 +106,15 @@ const ViewQuestionSetModal = (props) => {
     }
 
     dispatch(updateQuestion(data, props.token));
-    props.closeViewQuestionSetModal;
+  };
+
+  const deletePressed = () => {
+    const data = JSON.stringify({
+      token: props.token,
+      id: questionData.id,
+    });
+    console.log('delete');
+    dispatch(deleteQuestion(data, props.token));
   };
 
   const [date, setDate] = useState(new Date());
@@ -361,13 +369,11 @@ const ViewQuestionSetModal = (props) => {
                   </Block>
                   {!creating && (
                     <Button
-                      onPress={modifyPressed}
-                      disabled={oldDate == deadline && oldGraded == graded}
-                      color={
-                        oldDate == deadline && oldGraded == graded
-                          ? 'muted'
-                          : 'primary'
-                      }
+                      onPress={() => {
+                        deletePressed();
+                        props.closeViewQuestionSetModal();
+                      }}
+                      color="primary"
                       style={styles.createButton}
                     >
                       <Text bold size={14} color={argonTheme.COLORS.WHITE}>

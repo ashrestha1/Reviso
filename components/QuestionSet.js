@@ -24,6 +24,7 @@ class QuestionSet extends React.Component {
 
     const navigation = this.props.navigation;
     const destination = this.props.destination;
+    const disable = this.props.disable;
     const questionData = this.props.question;
     const size = 12;
     const padding = 1.5;
@@ -35,6 +36,7 @@ class QuestionSet extends React.Component {
     return (
       <Block card flex style={[styles.product, styles.shadow, style]}>
         <TouchableOpacity
+          disabled={disable}
           onPress={() => navigation.navigate(destination)}
           style={{ height: '100%' }}
         >
