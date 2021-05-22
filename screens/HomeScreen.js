@@ -96,6 +96,7 @@ export default ({ navigation, route }) => {
                   disable={account.privileged ? true : false}
                   key={data.id}
                   question={data}
+                  token={route.params.token}
                   navigation={navigation}
                   destination="Question"
                 />
@@ -112,6 +113,7 @@ export default ({ navigation, route }) => {
                   disable={account.privileged ? true : false}
                   key={data.id}
                   question={data}
+                  token={route.params.token}
                   navigation={navigation}
                   destination="Question"
                 />
@@ -149,6 +151,7 @@ export default ({ navigation, route }) => {
                 disable={account.privileged ? true : false}
                 key={data.id}
                 question={data}
+                token={route.params.token}
                 navigation={navigation}
                 destination="Question"
               />
@@ -183,6 +186,7 @@ export default ({ navigation, route }) => {
                 disable={account.privileged ? true : false}
                 key={data.id}
                 question={data}
+                token={route.params.token}
                 navigation={navigation}
                 destination="Question"
               />
