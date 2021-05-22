@@ -45,6 +45,7 @@ const argonTheme = {
     BORDER: '#CAD1D7',
     WHITE: '#FFFFFF',
     BLACK: '#000000',
+    GREEN: '#4ead69',
   },
 };
 
@@ -62,6 +63,20 @@ const CreateQuestionSetModal = (props) => {
   const [timeLimit, setTimelimit] = useState(new Date());
   const [graded, setGraded] = useState(false);
   const [value, setValue] = useState(0);
+
+  const [math, setMath] = useState(false);
+  const [computer, setComputer] = useState(false);
+  const [physics, setPhysics] = useState(false);
+
+  const mathPressed = () => {
+    setMath(!math);
+  };
+  const computerPressed = () => {
+    setComputer(!computer);
+  };
+  const physicsPressed = () => {
+    setPhysics(!physics);
+  };
 
   const dispatch = useDispatch();
 
@@ -81,7 +96,8 @@ const CreateQuestionSetModal = (props) => {
       wrongAnswer1 == '' ||
       wrongAnswer2 == '' ||
       wrongAnswer3 == '' ||
-      timeLimit == new Date()
+      timeLimit == new Date() ||
+      (!math && !computer && !physics)
     ) {
       console.log('hi');
       console.log(timeLimit);
@@ -89,18 +105,39 @@ const CreateQuestionSetModal = (props) => {
       return;
     }
 
+    var category = '';
+    if (math) category += 'math';
+    if (computer) category += 'computer';
+    if (physics) category += 'physics';
+
     var minute = new Date(timeLimit).getMinutes();
     var hour = new Date(timeLimit).getHours();
     var totalSecond = minute * 60 + hour * 3600;
 
-    const data = JSON.stringify({
+    // const data = JSON.stringify({
+    //   token: props.token,
+    //   graded: graded,
+    //   deadline: deadline,
+    //   timeLimit: totalSecond,
+    //   questionSet: {
+    //     title: questionSetTitle,
+    //     description: category,
+    //     problems: [
+    //       {
+    //         question: question,
+    //         answers: [correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3],
+    //       },
+    //     ],
+    //   },
+    // });
+    const data = {
       token: props.token,
       graded: graded,
       deadline: deadline,
       timeLimit: totalSecond,
       questionSet: {
         title: questionSetTitle,
-        description: '',
+        description: category,
         problems: [
           {
             question: question,
@@ -108,17 +145,18 @@ const CreateQuestionSetModal = (props) => {
           },
         ],
       },
-    });
+    };
 
-    props.navigation.navigate('QuestionList', { data: data });
+    props.navigation.navigate('QuestionList', { data: data, create: true });
 
-    dispatch(createQuestions(data));
+    // dispatch(createQuestions(data));
   };
 
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
+  const [timerIconColor, setTimerIconColor] = useState('#9fc2c3');
 
   const onChange = (event, selectedDate) => {
     console.log(selectedDate);
@@ -151,6 +189,12 @@ const CreateQuestionSetModal = (props) => {
     setShow(false);
   };
 
+  const closeTimerModal = () => {
+    setTimerIconColor(argonTheme.COLORS.GREEN);
+    setShowTimer(false);
+    setShow(false);
+  };
+
   return (
     <>
       <Shake
@@ -171,12 +215,12 @@ const CreateQuestionSetModal = (props) => {
                     <Icon
                       //   size={16}
                       //   color={argonTheme.COLORS.ICON}
-                      name="timer"
+                      name="timer-outline"
                       //   family="ArgonExtra"
+                      color={timerIconColor}
                       style={{
-                        color: '#9fc2c3',
-                        fontSize: 30,
-                        marginTop: '3%',
+                        fontSize: 45,
+
                         marginLeft: 10,
                       }}
                     />
@@ -202,7 +246,7 @@ const CreateQuestionSetModal = (props) => {
               </Block>
               <Block flex>
                 <Block flex center>
-                  <Block width={width * 0.8} style={{ marginBottom: 15 }}>
+                  <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                     <Input
                       borderless
                       placeholder="Question"
@@ -283,9 +327,35 @@ const CreateQuestionSetModal = (props) => {
                       }
                     />
                   </Block>
-
+                  <Block row>
+                    <Button
+                      onPress={mathPressed}
+                      small
+                      center
+                      color={math ? 'success' : 'muted'}
+                    >
+                      Math
+                    </Button>
+                    <Button
+                      onPress={computerPressed}
+                      small
+                      center
+                      color={computer ? 'success' : 'muted'}
+                    >
+                      Computer
+                    </Button>
+                    <Button
+                      onPress={physicsPressed}
+                      small
+                      center
+                      color={physics ? 'success' : 'muted'}
+                    >
+                      Physics
+                    </Button>
+                  </Block>
                   <Block middle row>
                     <Button
+                      small
                       disabled={!graded}
                       color={graded ? 'primary' : 'muted'}
                       style={styles.resetButton}
@@ -300,6 +370,7 @@ const CreateQuestionSetModal = (props) => {
                       color={graded ? 'success' : 'muted'}
                       style={styles.resetButton}
                       onPress={gradedPressed}
+                      small
                     >
                       <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                         GRADED
@@ -308,13 +379,22 @@ const CreateQuestionSetModal = (props) => {
                   </Block>
 
                   <Block row space="evenly">
-                    <Button color="primary" style={styles.createButton}>
+                    <Button
+                      small
+                      color="primary"
+                      style={styles.createButton}
+                      onPress={props.toggleCreateQuestionSetModal}
+                    >
                       <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                         CANCEL
                       </Text>
                     </Button>
                     <Button
-                      onPress={createPressed}
+                      small
+                      onPress={() => {
+                        props.toggleCreateQuestionSetModal();
+                        createPressed();
+                      }}
                       color={
                         questionSetTitle == '' ||
                         question == '' ||
@@ -322,7 +402,9 @@ const CreateQuestionSetModal = (props) => {
                         wrongAnswer1 == '' ||
                         wrongAnswer2 == '' ||
                         wrongAnswer3 == '' ||
-                        timeLimit == new Date()
+                        timeLimit == new Date() ||
+                        (!math && !computer && !physics) ||
+                        (graded && deadline == 'DATE')
                           ? 'muted'
                           : 'primary'
                       }
@@ -333,7 +415,9 @@ const CreateQuestionSetModal = (props) => {
                         wrongAnswer1 == '' ||
                         wrongAnswer2 == '' ||
                         wrongAnswer3 == '' ||
-                        timeLimit == new Date()
+                        timeLimit == new Date() ||
+                        (!math && !computer && !physics) ||
+                        (graded && deadline == 'DATE')
                       }
                       style={styles.createButton}
                     >
@@ -404,7 +488,7 @@ const CreateQuestionSetModal = (props) => {
                 <Button
                   color="primary"
                   style={styles.createButton}
-                  onPress={closeModal}
+                  onPress={closeTimerModal}
                 >
                   <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                     CONFIRM
@@ -458,7 +542,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   socialConnect: {
-    paddingVertical: '4%',
+    paddingVertical: '3%',
     backgroundColor: argonTheme.COLORS.WHITE,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: '#8898AA',

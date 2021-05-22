@@ -51,19 +51,32 @@ const argonTheme = {
 
 const { width, height } = Dimensions.get('screen');
 
-const ViewQuestionSetModal = (props) => {
-  const questionData = props.questionData;
-  const questionSetData = props.questionSetData;
-
-  const creating = props.creating;
-  const oldGraded = questionSetData.graded;
-  const oldDate = questionSetData.deadline;
-
-  const [deadline, setDeadline] = useState(oldDate);
-
+const AddQuestionSetModal = (props) => {
+  const [deadline, setDeadline] = useState('DATE');
+  const [questionSetTitle, setQuestionSetTitle] = useState('');
+  const [question, setQuestion] = useState('');
+  const [correctAnswer, setCorrectAnswer] = useState('');
+  const [wrongAnswer1, setWrongAnswer1] = useState('');
+  const [wrongAnswer2, setWrongAnswer2] = useState('');
+  const [wrongAnswer3, setWrongAnswer3] = useState('');
+  const [description, setDescription] = useState('');
   const [timeLimit, setTimelimit] = useState(new Date());
-  const [graded, setGraded] = useState(oldGraded);
+  const [graded, setGraded] = useState(false);
   const [value, setValue] = useState(0);
+
+  const [math, setMath] = useState(false);
+  const [computer, setComputer] = useState(false);
+  const [physics, setPhysics] = useState(false);
+
+  const mathPressed = () => {
+    setMath(!math);
+  };
+  const computerPressed = () => {
+    setComputer(!computer);
+  };
+  const physicsPressed = () => {
+    setPhysics(!physics);
+  };
 
   const dispatch = useDispatch();
 
@@ -75,34 +88,42 @@ const ViewQuestionSetModal = (props) => {
     setValue(value + 1);
   };
 
-  const modifyPressed = () => {
-    console.log(graded != oldGraded);
-    const gradeChangeToUngraded = graded != oldGraded;
-
-    if (gradeChangeToUngraded) {
-      const data = JSON.stringify({
-        token: props.token,
-        id: props.data.id,
-        changeToUngraded: gradeChangeToUngraded,
-      });
-    } else {
-      const data = JSON.stringify({
-        token: props.token,
-        id: props.data.id,
-        changeToUngraded: gradeChangeToUngraded,
-        newDeadline: deadline,
-      });
+  const createPressed = () => {
+    if (
+      question == '' ||
+      correctAnswer == '' ||
+      wrongAnswer1 == '' ||
+      wrongAnswer2 == '' ||
+      wrongAnswer3 == ''
+    ) {
+      console.log('hi');
+      console.log(timeLimit);
+      startAnimation();
+      return;
     }
 
-    dispatch(updateQuestion(data));
-    props.closeViewQuestionSetModal;
+    var category = '';
+    if (math) category += 'math';
+    if (computer) category += 'computer';
+    if (physics) category += 'physics';
+
+    var minute = new Date(timeLimit).getMinutes();
+    var hour = new Date(timeLimit).getHours();
+    var totalSecond = minute * 60 + hour * 3600;
+
+    const newProblem = {
+      question: question,
+      answers: [correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3],
+    };
+
+    // dispatch(createQuestions(data));
   };
 
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
-  const [timerIconColor, setTimerIconColor] = useState(argonTheme.COLORS.GREEN);
+  const [timerIconColor, setTimerIconColor] = useState('#9fc2c3');
 
   const onChange = (event, selectedDate) => {
     console.log(selectedDate);
@@ -127,7 +148,15 @@ const ViewQuestionSetModal = (props) => {
     setMode(currentMode);
   };
 
+  const timerModalToggle = () => {
+    setShowTimer(true);
+  };
   const closeModal = () => {
+    setShowTimer(false);
+    setShow(false);
+  };
+
+  const closeTimerModal = () => {
     setTimerIconColor(argonTheme.COLORS.GREEN);
     setShowTimer(false);
     setShow(false);
@@ -145,25 +174,10 @@ const ViewQuestionSetModal = (props) => {
           <Block flex={0.5} safe middle>
             <Block style={styles.registerContainer}>
               <Block middle style={styles.socialConnect}>
-                <Block row middle style>
-                  <Text color="#8898AA" size={25} style={{ marginTop: '5%' }}>
-                    Question Set:
+                <Block row middle>
+                  <Text color="#8898AA" size={20} style={{ marginTop: '5%' }}>
+                    Question Set
                   </Text>
-                  {!creating && (
-                    <TouchableOpacity>
-                      <Icon
-                        //   size={16}
-                        //   color={argonTheme.COLORS.ICON}
-                        name="timer-outline"
-                        color={timerIconColor}
-                        //   family="ArgonExtra"
-                        style={{
-                          fontSize: 45,
-                          marginLeft: 10,
-                        }}
-                      />
-                    </TouchableOpacity>
-                  )}
                 </Block>
 
                 <Block width={width * 0.8}>
@@ -180,235 +194,146 @@ const ViewQuestionSetModal = (props) => {
                         //   family="ArgonExtra"
                         style={[styles.inputIcons, { color: '#9fc2c3' }]}
                       />{' '}
-                      {questionSetData.questionSet.title}
+                      Title.....
                     </Text>
                   </Button>
                 </Block>
               </Block>
               <Block flex>
                 <Block flex center>
-                  <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                    <Button style={styles.labelStyle}>
-                      <Text
-                        style={{ fontWeight: '500' }}
-                        size={16}
-                        color={argonTheme.COLORS.BLACK}
-                      >
+                  <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                    <Input
+                      borderless
+                      placeholder="Question"
+                      onChangeText={(val) => setQuestion(val)}
+                      iconContent={
                         <Icon
                           //   size={16}
                           //   color={argonTheme.COLORS.ICON}
                           name="head-question-outline"
                           //   family="ArgonExtra"
+                          //f7b640
                           style={[styles.inputIcons, { color: '#f7b640' }]}
-                        />{' '}
-                        {questionData.question}
-                      </Text>
-                    </Button>
+                        />
+                      }
+                    />
                   </Block>
                   <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                    <Button style={styles.labelStyle}>
-                      <Text
-                        style={{ fontWeight: '500' }}
-                        size={16}
-                        color={argonTheme.COLORS.GREEN}
-                      >
+                    <Input
+                      borderless
+                      onChangeText={(val) => setCorrectAnswer(val)}
+                      placeholder="Correct Answer"
+                      iconContent={
                         <Icon
                           //   size={16}
                           //   color={argonTheme.COLORS.ICON}
                           name="check-circle-outline"
                           //   family="ArgonExtra"
                           style={[styles.inputIcons, { color: 'green' }]}
-                        />{' '}
-                        {questionData.answers[0]}
-                      </Text>
-                    </Button>
+                        />
+                      }
+                    />
                   </Block>
                   <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                    <Button style={styles.labelStyle}>
-                      <Text
-                        style={{ fontWeight: '500' }}
-                        size={16}
-                        color={argonTheme.COLORS.ERROR}
-                      >
+                    <Input
+                      borderless
+                      onChangeText={(val) => setWrongAnswer1(val)}
+                      placeholder="Wrong Answer"
+                      iconContent={
                         <Icon
                           //   size={16}
                           //   color={argonTheme.COLORS.ICON}
                           name="close-circle-outline"
                           //   family="ArgonExtra"
                           style={[styles.inputIcons, { color: 'red' }]}
-                        />{' '}
-                        {questionData.answers[1]}
-                      </Text>
-                    </Button>
+                        />
+                      }
+                    />
                   </Block>
                   <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                    <Button style={styles.labelStyle}>
-                      <Text
-                        style={{ fontWeight: '500' }}
-                        size={16}
-                        color={argonTheme.COLORS.ERROR}
-                      >
+                    <Input
+                      borderless
+                      onChangeText={(val) => setWrongAnswer2(val)}
+                      placeholder="Wrong Answer"
+                      iconContent={
                         <Icon
                           //   size={16}
                           //   color={argonTheme.COLORS.ICON}
                           name="close-circle-outline"
                           //   family="ArgonExtra"
                           style={[styles.inputIcons, { color: 'red' }]}
-                        />{' '}
-                        {questionData.answers[2]}
-                      </Text>
-                    </Button>
+                        />
+                      }
+                    />
                   </Block>
                   <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                    <Button style={styles.labelStyle}>
-                      <Text
-                        style={{ fontWeight: '500' }}
-                        size={16}
-                        color={argonTheme.COLORS.ERROR}
-                      >
+                    <Input
+                      borderless
+                      onChangeText={(val) => setWrongAnswer3(val)}
+                      placeholder="Wrong Answer"
+                      iconContent={
                         <Icon
                           //   size={16}
                           //   color={argonTheme.COLORS.ICON}
                           name="close-circle-outline"
                           //   family="ArgonExtra"
                           style={[styles.inputIcons, { color: 'red' }]}
-                        />{' '}
-                        {questionData.answers[3]}
-                      </Text>
-                    </Button>
+                        />
+                      }
+                    />
                   </Block>
-
-                  {!creating && (
-                    <Block middle row>
-                      <Button
-                        disabled={!graded}
-                        color={graded ? 'primary' : 'muted'}
-                        style={styles.resetButton}
-                        onPress={showDatepicker}
-                      >
-                        <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                          {oldDate}
-                        </Text>
-                      </Button>
-
-                      <Button
-                        disabled={!oldGraded}
-                        color={graded ? 'success' : 'muted'}
-                        style={styles.resetButton}
-                        onPress={gradedPressed}
-                      >
-                        <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                          GRADED
-                        </Text>
-                      </Button>
-                    </Block>
-                  )}
 
                   <Block row space="evenly">
                     <Button
+                      small
                       color="primary"
                       style={styles.createButton}
-                      onPress={props.closeViewQuestionSetModal}
+                      onPress={props.toggleCreateQuestionSetModal}
                     >
                       <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                        {creating ? 'BACK' : 'CANCEL'}
+                        CANCEL
                       </Text>
                     </Button>
-                    {!creating && (
-                      <Button
-                        onPress={modifyPressed}
-                        disabled={oldDate == deadline && oldGraded == graded}
-                        color={
-                          oldDate == deadline && oldGraded == graded
-                            ? 'muted'
-                            : 'primary'
-                        }
-                        style={styles.createButton}
-                      >
-                        <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                          MODIFY
-                        </Text>
-                      </Button>
-                    )}
+                    <Button
+                      small
+                      onPress={() => {
+                        props.toggleAddQuestionSetModal();
+                        createPressed();
+                      }}
+                      color={
+                        question == '' ||
+                        correctAnswer == '' ||
+                        wrongAnswer1 == '' ||
+                        wrongAnswer2 == '' ||
+                        wrongAnswer3 == ''
+                          ? 'muted'
+                          : 'primary'
+                      }
+                      disabled={
+                        question == '' ||
+                        correctAnswer == '' ||
+                        wrongAnswer1 == '' ||
+                        wrongAnswer2 == '' ||
+                        wrongAnswer3 == ''
+                      }
+                      style={styles.createButton}
+                    >
+                      <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                        CREATE
+                      </Text>
+                    </Button>
                   </Block>
                 </Block>
               </Block>
             </Block>
           </Block>
         </KeyboardAvoidingView>
-
-        {show && (
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={show}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-            }}
-          >
-            <View style={styles.modal}>
-              <DateTimePicker
-                maximumDate={new Date(2021, 11, 31)}
-                minimumDate={new Date()}
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
-                display="default"
-                onChange={onChange}
-                style={{ marginBottom: 10 }}
-              />
-              <View style={{ alignItems: 'center' }}>
-                <Button
-                  color="primary"
-                  style={styles.createButton}
-                  onPress={closeModal}
-                >
-                  <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                    CONFIRM
-                  </Text>
-                </Button>
-              </View>
-            </View>
-          </Modal>
-        )}
-
-        {showTimer && (
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={showTimer}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-            }}
-          >
-            <View style={styles.modal}>
-              <DateTimePicker
-                value={timeLimit}
-                mode={'countdown'}
-                display="default"
-                onChange={onChangeTime}
-                style={{ marginBottom: 10 }}
-              />
-              <View style={{ alignItems: 'center' }}>
-                <Button
-                  color="primary"
-                  style={styles.createButton}
-                  onPress={closeModal}
-                >
-                  <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                    CONFIRM
-                  </Text>
-                </Button>
-              </View>
-            </View>
-          </Modal>
-        )}
       </Shake>
     </>
   );
 };
 
-export default ViewQuestionSetModal;
+export default AddQuestionSetModal;
 const styles = StyleSheet.create({
   registerContainer: {
     marginTop: '86%',
@@ -446,8 +371,14 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
+  labelStyle: {
+    width: width * 0.75,
+    paddingLeft: 10,
+    alignItems: 'flex-start',
+    backgroundColor: 'white',
+  },
   socialConnect: {
-    paddingVertical: '4%',
+    paddingVertical: '3%',
     backgroundColor: argonTheme.COLORS.WHITE,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: '#8898AA',
@@ -486,11 +417,5 @@ const styles = StyleSheet.create({
   resetButton: {
     width: width * 0.35,
     marginTop: 15,
-  },
-  labelStyle: {
-    width: width * 0.75,
-    paddingLeft: 10,
-    alignItems: 'flex-start',
-    backgroundColor: 'white',
   },
 });

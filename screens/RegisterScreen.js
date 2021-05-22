@@ -104,7 +104,7 @@ const RegisterScreen = ({ navigation }) => {
 
     console.log('data', data);
     axios
-      .post('http://18.163.214.230/signup', data, {
+      .post('http://18.166.28.128/signup', data, {
         headers: {
           'Content-Type': 'application/json',
         },

@@ -42,7 +42,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="QuestionSetList"
+        initialRouteName="Login"
         screenOptions={{
           headerShown: false,
           transitionSpec: {

@@ -35,9 +35,9 @@ export default ({ navigation, route }) => {
     setCreateQuestionSetModalVisible,
   ] = useState(false);
   useEffect(() => {
-    // console.log('activate', route.params.token);
-    // dispatch(getAccount(route.params.token));
-    // dispatch(getQuestionsTeacher(route.params.token));
+    console.log('activate', route.params.token);
+    dispatch(getAccount(route.params.token));
+    dispatch(getQuestionsTeacher(route.params.token));
   }, []);
 
   const account = useSelector((state) => state.account);
@@ -274,7 +274,8 @@ export default ({ navigation, route }) => {
         >
           <CreateQuestionSetModal
             toggleCreateQuestionSetModal={toggleCreateQuestionSetModal}
-            // token={route.params.token}
+            token={route.params.token}
+            navigation={navigation}
           />
         </Modal>
       </View>

@@ -12,6 +12,7 @@ import { Block, Checkbox, Text, theme } from 'galio-framework';
 import { BlurView } from 'expo-blur';
 
 import ViewQuestionSetModal from '../components/ViewQuestionSetModal';
+import AddQuestionSetModal from '../components/AddQuestionSetModal';
 
 import Button from '../components/Button';
 
@@ -48,29 +49,37 @@ const argonTheme = {
     BLACK: '#000000',
   },
 };
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-    graded: true,
-    date: '2021',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-    graded: false,
-    date: '1921',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
 
 const { width, height } = Dimensions.get('screen');
 
 export default ({ navigation, route }) => {
-  const data = route.params.data;
+  var data = {
+    token: '',
+    graded: false,
+    deadline: '',
+    timeLimit: 0,
+    questionSet: {
+      title: '',
+      description: '',
+      problems: [
+        {
+          question: '',
+          answers: ['', '', '', ''],
+        },
+      ],
+    },
+  };
+
+  data = route.params.data;
+  const create = route.params.create;
+
+  const [problems, setProblems] = useState(data.questionSet.problems);
+
+  const addProblem = (newProblem) => {
+    var oldProblems = problems;
+    var newProblems = oldProblems.push(newProblem);
+    setProblems(newProblems);
+  };
 
   const [
     viewQuestionSetModalVisible,
@@ -87,6 +96,16 @@ export default ({ navigation, route }) => {
   const closeViewQuestionSetModal = () => {
     setViewQuestionSetModalVisible(false);
     setViewQuestionSetModalData([]);
+  };
+
+  const [addQuestionSetModalVisible, setAddQuestionSetModalVisible] = useState(
+    false
+  );
+
+  const toggleAddQuestionSetModal = () => {
+    addQuestionSetModalVisible
+      ? setAddQuestionSetModalVisible(false)
+      : setAddQuestionSetModalVisible(true);
   };
 
   return (
@@ -107,26 +126,54 @@ export default ({ navigation, route }) => {
               name="book-open-page-variant"
               style={[styles.inputIcons, { color: '#9fc2c3' }]}
             />{' '}
-            Question Set
+            {data.questionSet.title}
           </Text>
+          {create && (
+            <Button
+              style={styles.backButton}
+              color="#9fc2c3"
+              onPress={toggleAddQuestionSetModal}
+            >
+              <Icon name="plus" size={30} color="#8898AA" />
+            </Button>
+          )}
         </Block>
 
         <FlatList
-          data={DATA}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => openViewQuestionSetModal(item)}>
+          keyExtractor={(item, index) => index.toString()}
+          data={data.questionSet.problems}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => openViewQuestionSetModal(item)}
+            >
               <View style={styles.card}>
                 <View style={styles.cardContent}>
                   <Text bold size={14} color={argonTheme.COLORS.BLACK}>
-                    {item.title}
+                    {item.question}
                   </Text>
                 </View>
               </View>
             </TouchableOpacity>
           )}
-          keyExtractor={(item) => item.id}
         />
       </Block>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={addQuestionSetModalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}
+      >
+        <BlurView
+          intensity={90}
+          style={[StyleSheet.absoluteFill, styles.nonBlurredContent]}
+        >
+          <AddQuestionSetModal addProblem={addProblem} />
+        </BlurView>
+      </Modal>
 
       <Modal
         animationType="slide"
@@ -142,7 +189,9 @@ export default ({ navigation, route }) => {
         >
           <ViewQuestionSetModal
             closeViewQuestionSetModal={closeViewQuestionSetModal}
-            data={viewQuestionSetModalData}
+            questionData={viewQuestionSetModalData}
+            questionSetData={data}
+            creating={create}
             // token={props.token}
           />
         </BlurView>

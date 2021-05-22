@@ -3,7 +3,7 @@ import axios from 'axios';
 //Actions Creators
 export const getAccount = (token) => async (dispatch) => {
   try {
-    axios.get(`http://18.163.214.230/profile?token=${token}`).then((res) => {
+    axios.get(`http://18.166.28.128/profile?token=${token}`).then((res) => {
       const { data } = res;
       dispatch({ type: FETCH_ACCOUNT, payload: data });
     });

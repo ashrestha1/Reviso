@@ -9,7 +9,7 @@ import axios from 'axios';
 //Actions Creators
 export const getQuestionsTeacher = (token) => async (dispatch) => {
   try {
-    axios.get(`http://18.163.214.230/set/manage?token=${token}`).then((res) => {
+    axios.get(`http://18.166.28.128/set/manage?token=${token}`).then((res) => {
       const { data } = res;
       dispatch({ type: FETCH_QUESTIONS, payload: data });
     });
@@ -22,7 +22,7 @@ export const createQuestions = (questionData) => async (dispatch) => {
   try {
     console.log('creating....', questionData);
     axios
-      .post(`http://18.163.214.230/set/create`, questionData, {
+      .post(`http://18.166.28.128/set/create`, questionData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -42,7 +42,7 @@ export const updateQuestion = (newData) => async (dispatch) => {
   try {
     console.log('creating....', newData);
     axios
-      .post(`http://18.163.214.230/set/create`, newData, {
+      .post(`http://18.166.28.128/set/create`, newData, {
         headers: {
           'Content-Type': 'application/json',
         },
