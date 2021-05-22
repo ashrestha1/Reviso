@@ -72,6 +72,22 @@ const { width, height } = Dimensions.get('screen');
 
 export default ({ navigation, route }) => {
   const dispatch = useDispatch();
+  const [
+    viewQuestionSetModalVisible,
+    setViewQuestionSetModalVisible,
+  ] = useState(false);
+
+  const [viewQuestionSetModalData, setViewQuestionSetModalData] = useState([]);
+
+  const openViewQuestionSetModal = (item) => {
+    setViewQuestionSetModalData(item);
+    setViewQuestionSetModalVisible(true);
+  };
+
+  const closeViewQuestionSetModal = () => {
+    setViewQuestionSetModalVisible(false);
+    setViewQuestionSetModalData([]);
+  };
   useEffect(() => {
     dispatch(getQuestionsTeacher(route.params.token));
   }, []);
@@ -103,11 +119,7 @@ export default ({ navigation, route }) => {
         <FlatList
           data={questions}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('QuestionList', { data: item })
-              }
-            >
+            <TouchableOpacity onPress={() => openViewQuestionSetModal(item)}>
               <View style={styles.card}>
                 <View style={styles.cardContent}>
                   <Text bold size={14} color={argonTheme.COLORS.BLACK}>
@@ -120,6 +132,26 @@ export default ({ navigation, route }) => {
           keyExtractor={(item, index) => index.toString()}
         />
       </Block>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={viewQuestionSetModalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}
+      >
+        <BlurView
+          intensity={90}
+          style={[StyleSheet.absoluteFill, styles.nonBlurredContent]}
+        >
+          <ViewQuestionSetModal
+            closeViewQuestionSetModal={closeViewQuestionSetModal}
+            questionData={viewQuestionSetModalData}
+            creating={false}
+            token={route.params.token}
+          />
+        </BlurView>
+      </Modal>
     </>
   );
 };

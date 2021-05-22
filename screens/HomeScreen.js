@@ -250,12 +250,12 @@ export default ({ navigation, route }) => {
               <ActionButton.Item
                 buttonColor="#1abc9c"
                 spaceBetween={-50}
-                title="View your Students"
+                title="Refresh"
                 onPress={() => {
                   dispatch(getQuestionsTeacher(route.params.token));
                 }}
               >
-                <Icon name="account-group" style={{ fontSize: 20 }} />
+                <Icon name="refresh" style={{ fontSize: 20 }} />
               </ActionButton.Item>
             </ActionButton>
           )}

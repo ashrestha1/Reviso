@@ -75,8 +75,6 @@ export default ({ navigation, route }) => {
   data = route.params.data;
   const create = route.params.create;
 
-  console.log(data);
-
   const [problems, setProblems] = useState(data.questionSet.problems);
 
   const addProblem = (newProblem) => {
@@ -91,7 +89,6 @@ export default ({ navigation, route }) => {
   const [viewQuestionSetModalData, setViewQuestionSetModalData] = useState([]);
 
   const openViewQuestionSetModal = (item) => {
-    console.log('hererere', item);
     setViewQuestionSetModalData(item);
     setViewQuestionSetModalVisible(true);
   };
@@ -114,7 +111,6 @@ export default ({ navigation, route }) => {
   const createSet = () => {
     const createData = JSON.stringify(data);
 
-    console.log('creating...', createData);
     dispatch(createQuestions(data));
     // dispatch(getQuestionsTeacher(data.token));
     // navigation.navigate('Home');

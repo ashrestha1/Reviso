@@ -14,7 +14,7 @@ import Input from './input';
 import { Shake } from 'react-native-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
-import { createQuestions } from '../Redux2/Actions/questions';
+import { updateQuestion } from '../Redux2/Actions/questions';
 const argonTheme = {
   COLORS: {
     DEFAULT: '#172B4D',
@@ -57,9 +57,17 @@ const ViewQuestionSetModal = (props) => {
   const questionSetData = props.questionSetData;
   console.log('questionSSEEETTdata', props.questionSetData);
 
-  const creating = props.creating;
-  const oldGraded = questionSetData.graded;
-  const oldDate = questionSetData.deadline;
+  const creating = props.creating || false;
+
+  var oldDate = 'Date';
+  var oldGraded = 0;
+  if (creating) {
+    oldGraded = questionSetData.graded;
+    oldDate = questionSetData.deadline;
+  } else {
+    oldGraded = questionData.graded;
+    oldDate = new Date(questionData.deadline).toLocaleDateString('fr-CA');
+  }
 
   const [deadline, setDeadline] = useState(oldDate);
 
@@ -80,22 +88,24 @@ const ViewQuestionSetModal = (props) => {
   const modifyPressed = () => {
     const gradeChangeToUngraded = graded != oldGraded;
 
+    var data;
+
     if (gradeChangeToUngraded) {
-      const data = JSON.stringify({
+      data = JSON.stringify({
         token: props.token,
-        id: props.data.id,
+        id: questionData.id,
         changeToUngraded: gradeChangeToUngraded,
       });
     } else {
-      const data = JSON.stringify({
+      data = JSON.stringify({
         token: props.token,
-        id: props.data.id,
+        id: questionData.id,
         changeToUngraded: gradeChangeToUngraded,
         newDeadline: deadline,
       });
     }
 
-    dispatch(updateQuestion(data));
+    dispatch(updateQuestion(data, props.token));
     props.closeViewQuestionSetModal;
   };
 
@@ -108,8 +118,9 @@ const ViewQuestionSetModal = (props) => {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
+    currentDate.toLocaleDateString('fr-CA');
     setDate(currentDate);
-    setDeadline(currentDate.toLocaleDateString());
+    setDeadline(currentDate.toLocaleDateString('fr-CA'));
   };
 
   const onChangeTime = (event, selectedTimer) => {
@@ -131,10 +142,16 @@ const ViewQuestionSetModal = (props) => {
     setShowTimer(false);
     setShow(false);
   };
-  var questionSetReplacedTitle = questionSetData.questionSet.title.replace(
-    'math',
-    ''
-  );
+
+  if (creating) {
+    var questionSetReplacedTitle = questionSetData.questionSet.title.replace(
+      'math',
+      ''
+    );
+  } else {
+    var questionSetReplacedTitle = questionData.title.replace('math', '');
+  }
+
   questionSetReplacedTitle = questionSetReplacedTitle.replace('computer', '');
   questionSetReplacedTitle = questionSetReplacedTitle.replace('physics', '');
 
@@ -192,96 +209,100 @@ const ViewQuestionSetModal = (props) => {
               </Block>
               <Block flex>
                 <Block flex center>
-                  <Block width={width * 0.8} style={{ marginBottom: 15 }}>
-                    <Button style={styles.labelStyle}>
-                      <Text
-                        style={{ fontWeight: '500' }}
-                        size={16}
-                        color={argonTheme.COLORS.BLACK}
-                      >
-                        <Icon
-                          //   size={16}
-                          //   color={argonTheme.COLORS.ICON}
-                          name="head-question-outline"
-                          //   family="ArgonExtra"
-                          style={[styles.inputIcons, { color: '#f7b640' }]}
-                        />{' '}
-                        {questionData.question}
-                      </Text>
-                    </Button>
-                  </Block>
-                  <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                    <Button style={styles.labelStyle}>
-                      <Text
-                        style={{ fontWeight: '500' }}
-                        size={16}
-                        color={argonTheme.COLORS.GREEN}
-                      >
-                        <Icon
-                          //   size={16}
-                          //   color={argonTheme.COLORS.ICON}
-                          name="check-circle-outline"
-                          //   family="ArgonExtra"
-                          style={[styles.inputIcons, { color: 'green' }]}
-                        />{' '}
-                        {questionData.answers[0]}
-                      </Text>
-                    </Button>
-                  </Block>
-                  <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                    <Button style={styles.labelStyle}>
-                      <Text
-                        style={{ fontWeight: '500' }}
-                        size={16}
-                        color={argonTheme.COLORS.ERROR}
-                      >
-                        <Icon
-                          //   size={16}
-                          //   color={argonTheme.COLORS.ICON}
-                          name="close-circle-outline"
-                          //   family="ArgonExtra"
-                          style={[styles.inputIcons, { color: 'red' }]}
-                        />{' '}
-                        {questionData.answers[1]}
-                      </Text>
-                    </Button>
-                  </Block>
-                  <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                    <Button style={styles.labelStyle}>
-                      <Text
-                        style={{ fontWeight: '500' }}
-                        size={16}
-                        color={argonTheme.COLORS.ERROR}
-                      >
-                        <Icon
-                          //   size={16}
-                          //   color={argonTheme.COLORS.ICON}
-                          name="close-circle-outline"
-                          //   family="ArgonExtra"
-                          style={[styles.inputIcons, { color: 'red' }]}
-                        />{' '}
-                        {questionData.answers[2]}
-                      </Text>
-                    </Button>
-                  </Block>
-                  <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                    <Button style={styles.labelStyle}>
-                      <Text
-                        style={{ fontWeight: '500' }}
-                        size={16}
-                        color={argonTheme.COLORS.ERROR}
-                      >
-                        <Icon
-                          //   size={16}
-                          //   color={argonTheme.COLORS.ICON}
-                          name="close-circle-outline"
-                          //   family="ArgonExtra"
-                          style={[styles.inputIcons, { color: 'red' }]}
-                        />{' '}
-                        {questionData.answers[3]}
-                      </Text>
-                    </Button>
-                  </Block>
+                  {creating && (
+                    <>
+                      <Block width={width * 0.8} style={{ marginBottom: 15 }}>
+                        <Button style={styles.labelStyle}>
+                          <Text
+                            style={{ fontWeight: '500' }}
+                            size={16}
+                            color={argonTheme.COLORS.BLACK}
+                          >
+                            <Icon
+                              //   size={16}
+                              //   color={argonTheme.COLORS.ICON}
+                              name="head-question-outline"
+                              //   family="ArgonExtra"
+                              style={[styles.inputIcons, { color: '#f7b640' }]}
+                            />{' '}
+                            {questionData.question}
+                          </Text>
+                        </Button>
+                      </Block>
+                      <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                        <Button style={styles.labelStyle}>
+                          <Text
+                            style={{ fontWeight: '500' }}
+                            size={16}
+                            color={argonTheme.COLORS.GREEN}
+                          >
+                            <Icon
+                              //   size={16}
+                              //   color={argonTheme.COLORS.ICON}
+                              name="check-circle-outline"
+                              //   family="ArgonExtra"
+                              style={[styles.inputIcons, { color: 'green' }]}
+                            />{' '}
+                            {questionData.answers[0]}
+                          </Text>
+                        </Button>
+                      </Block>
+                      <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                        <Button style={styles.labelStyle}>
+                          <Text
+                            style={{ fontWeight: '500' }}
+                            size={16}
+                            color={argonTheme.COLORS.ERROR}
+                          >
+                            <Icon
+                              //   size={16}
+                              //   color={argonTheme.COLORS.ICON}
+                              name="close-circle-outline"
+                              //   family="ArgonExtra"
+                              style={[styles.inputIcons, { color: 'red' }]}
+                            />{' '}
+                            {questionData.answers[1]}
+                          </Text>
+                        </Button>
+                      </Block>
+                      <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                        <Button style={styles.labelStyle}>
+                          <Text
+                            style={{ fontWeight: '500' }}
+                            size={16}
+                            color={argonTheme.COLORS.ERROR}
+                          >
+                            <Icon
+                              //   size={16}
+                              //   color={argonTheme.COLORS.ICON}
+                              name="close-circle-outline"
+                              //   family="ArgonExtra"
+                              style={[styles.inputIcons, { color: 'red' }]}
+                            />{' '}
+                            {questionData.answers[2]}
+                          </Text>
+                        </Button>
+                      </Block>
+                      <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                        <Button style={styles.labelStyle}>
+                          <Text
+                            style={{ fontWeight: '500' }}
+                            size={16}
+                            color={argonTheme.COLORS.ERROR}
+                          >
+                            <Icon
+                              //   size={16}
+                              //   color={argonTheme.COLORS.ICON}
+                              name="close-circle-outline"
+                              //   family="ArgonExtra"
+                              style={[styles.inputIcons, { color: 'red' }]}
+                            />{' '}
+                            {questionData.answers[3]}
+                          </Text>
+                        </Button>
+                      </Block>
+                    </>
+                  )}
 
                   {!creating && (
                     <Block middle row>
@@ -292,7 +313,7 @@ const ViewQuestionSetModal = (props) => {
                         onPress={showDatepicker}
                       >
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                          {oldDate}
+                          {deadline}
                         </Text>
                       </Button>
 
@@ -320,22 +341,40 @@ const ViewQuestionSetModal = (props) => {
                       </Text>
                     </Button>
                     {!creating && (
-                      <Button
-                        onPress={modifyPressed}
-                        disabled={oldDate == deadline && oldGraded == graded}
-                        color={
-                          oldDate == deadline && oldGraded == graded
-                            ? 'muted'
-                            : 'primary'
-                        }
-                        style={styles.createButton}
-                      >
-                        <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                          MODIFY
-                        </Text>
-                      </Button>
+                      <>
+                        <Button
+                          onPress={modifyPressed}
+                          disabled={oldDate == deadline && oldGraded == graded}
+                          color={
+                            oldDate == deadline && oldGraded == graded
+                              ? 'muted'
+                              : 'primary'
+                          }
+                          style={styles.createButton}
+                        >
+                          <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                            MODIFY
+                          </Text>
+                        </Button>
+                      </>
                     )}
                   </Block>
+                  {!creating && (
+                    <Button
+                      onPress={modifyPressed}
+                      disabled={oldDate == deadline && oldGraded == graded}
+                      color={
+                        oldDate == deadline && oldGraded == graded
+                          ? 'muted'
+                          : 'primary'
+                      }
+                      style={styles.createButton}
+                    >
+                      <Text bold size={14} color={argonTheme.COLORS.WHITE}>
+                        DELETE
+                      </Text>
+                    </Button>
+                  )}
                 </Block>
               </Block>
             </Block>

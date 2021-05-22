@@ -113,7 +113,6 @@ export default ({ navigation, route }) => {
   const createSet = () => {
     const createData = JSON.stringify(data);
 
-    console.log('creating...', createData);
     dispatch(createQuestions(data));
     // dispatch(getQuestionsTeacher(data.token));
     // navigation.navigate('Home');
