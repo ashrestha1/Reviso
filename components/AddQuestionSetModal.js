@@ -116,6 +116,7 @@ const AddQuestionSetModal = (props) => {
       answers: [correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3],
     };
 
+    props.addProblem(newProblem);
     // dispatch(createQuestions(data));
   };
 
@@ -194,7 +195,7 @@ const AddQuestionSetModal = (props) => {
                         //   family="ArgonExtra"
                         style={[styles.inputIcons, { color: '#9fc2c3' }]}
                       />{' '}
-                      Title.....
+                      {props.title}
                     </Text>
                   </Button>
                 </Block>
@@ -288,7 +289,7 @@ const AddQuestionSetModal = (props) => {
                       small
                       color="primary"
                       style={styles.createButton}
-                      onPress={props.toggleCreateQuestionSetModal}
+                      onPress={props.toggleAddQuestionSetModal}
                     >
                       <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                         CANCEL

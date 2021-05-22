@@ -148,8 +148,6 @@ const CreateQuestionSetModal = (props) => {
     };
 
     props.navigation.navigate('QuestionList', { data: data, create: true });
-
-    // dispatch(createQuestions(data));
   };
 
   const [date, setDate] = useState(new Date());

@@ -10,9 +10,10 @@ import {
 } from 'react-native';
 import { Block, Checkbox, Text, theme } from 'galio-framework';
 import { BlurView } from 'expo-blur';
-
+import { useDispatch, useSelector } from 'react-redux';
 import ViewQuestionSetModal from '../components/ViewQuestionSetModal';
 import AddQuestionSetModal from '../components/AddQuestionSetModal';
+import { createQuestions } from '../Redux2/Actions/questions';
 
 import Button from '../components/Button';
 
@@ -69,16 +70,14 @@ export default ({ navigation, route }) => {
       ],
     },
   };
-
+  const dispatch = useDispatch();
   data = route.params.data;
   const create = route.params.create;
 
   const [problems, setProblems] = useState(data.questionSet.problems);
 
   const addProblem = (newProblem) => {
-    var oldProblems = problems;
-    var newProblems = oldProblems.push(newProblem);
-    setProblems(newProblems);
+    data.questionSet.problems = [...data.questionSet.problems, newProblem];
   };
 
   const [
@@ -106,6 +105,14 @@ export default ({ navigation, route }) => {
     addQuestionSetModalVisible
       ? setAddQuestionSetModalVisible(false)
       : setAddQuestionSetModalVisible(true);
+  };
+
+  const createSet = () => {
+    const createData = JSON.stringify(data);
+
+    console.log('creating...', createData);
+    dispatch(createQuestions(data));
+    navigation.navigate('Home');
   };
 
   return (
@@ -171,7 +178,11 @@ export default ({ navigation, route }) => {
           intensity={90}
           style={[StyleSheet.absoluteFill, styles.nonBlurredContent]}
         >
-          <AddQuestionSetModal addProblem={addProblem} />
+          <AddQuestionSetModal
+            addProblem={addProblem}
+            toggleAddQuestionSetModal={toggleAddQuestionSetModal}
+            title={data.questionSet.title}
+          />
         </BlurView>
       </Modal>
 
@@ -196,6 +207,26 @@ export default ({ navigation, route }) => {
           />
         </BlurView>
       </Modal>
+
+      {create && (
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 50,
+            zIndex: 1,
+          }}
+        >
+          <Button
+            onPress={createSet}
+            large
+            center
+            color="default"
+            style={styles.optionsButton}
+          >
+            CREATE Your Set!
+          </Button>
+        </View>
+      )}
     </>
   );
 };
