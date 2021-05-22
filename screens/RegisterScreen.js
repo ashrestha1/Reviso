@@ -109,7 +109,6 @@ const RegisterScreen = ({ navigation }) => {
         },
       })
       .then((res) => {
-        console.log(res);
         navigation.navigate('Login', { token: res.data });
       })
       .catch((err) => {

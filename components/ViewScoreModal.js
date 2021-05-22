@@ -52,8 +52,6 @@ const argonTheme = {
 const { width, height } = Dimensions.get('screen');
 
 const ViewScoreModal = (props) => {
-  console.log('questiondata', props.questionData);
-
   const data = props.data;
 
   return (

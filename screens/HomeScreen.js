@@ -24,11 +24,14 @@ import { getQuestionsTeacher } from '../Redux2/Actions/questions';
 
 const { width } = Dimensions.get('screen');
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import axios from 'axios';
 
 const Tab = createMaterialTopTabNavigator();
 
 export default ({ navigation, route }) => {
   const dispatch = useDispatch();
+
+  const [questionsForStudent, setQuestionsForStudent] = useState([]);
 
   const [
     createQuestionSetModalVisible,
@@ -37,6 +40,18 @@ export default ({ navigation, route }) => {
   useEffect(() => {
     dispatch(getAccount(route.params.token));
     dispatch(getQuestionsTeacher(route.params.token));
+
+    console.log(route.params.token);
+
+    axios
+      .get(`http://18.166.28.128/set/browse?token=${route.params.token}`)
+      .then((res) => {
+        setQuestionsForStudent(res.data);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const account = useSelector((state) => state.account);
@@ -73,20 +88,40 @@ export default ({ navigation, route }) => {
           Reccomended
         </Text>
 
-        <Block flex>
-          {questions.map((data) =>
-            data.title.includes('math') ? (
-              <QuestionSet
-                disable={account.privileged ? true : false}
-                key={data.id}
-                question={data}
-                navigation={navigation}
-                destination="Question"
-              />
-            ) : null
-          )}
-          {questions?.length === 0 && <Text>No Questions left </Text>}
-        </Block>
+        {account.privileged ? (
+          <Block flex>
+            {questions.map((data) =>
+              data.title.includes('math') ? (
+                <QuestionSet
+                  disable={account.privileged ? true : false}
+                  key={data.id}
+                  question={data}
+                  navigation={navigation}
+                  destination="Question"
+                />
+              ) : null
+            )}
+            {questions?.length === 0 && <Text>No Questions left </Text>}
+          </Block>
+        ) : (
+          <Block flex>
+            {console.log('i', questionsForStudent)}
+            {questionsForStudent.map((data) =>
+              data.title.includes('math') ? (
+                <QuestionSet
+                  disable={account.privileged ? true : false}
+                  key={data.id}
+                  question={data}
+                  navigation={navigation}
+                  destination="Question"
+                />
+              ) : null
+            )}
+            {questionsForStudent?.length === 0 && (
+              <Text>No Questions left </Text>
+            )}
+          </Block>
+        )}
       </ScrollView>
     </View>
   );
@@ -187,7 +222,11 @@ export default ({ navigation, route }) => {
           >
             Hello {account.prettyName}
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Profile', { token: route.params.token })
+            }
+          >
             <Icon name="account-circle" size={33} color="#FFF" />
           </TouchableOpacity>
         </View>
@@ -260,7 +299,7 @@ export default ({ navigation, route }) => {
                   });
                 }}
               >
-                <Icon name="refresh" style={{ fontSize: 20 }} />
+                <Icon name="account-group" style={{ fontSize: 20 }} />
               </ActionButton.Item>
             </ActionButton>
           )}

@@ -56,7 +56,7 @@ const argonTheme = {
 
 const { width, height } = Dimensions.get('screen');
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [privileged, setPrivileged] = useState(false);
@@ -83,36 +83,9 @@ export default ({ navigation }) => {
 
   const account = useSelector((state) => state.account);
 
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-  ];
-
   const logoutPressed = () => {
-    const data = JSON.stringify({
-      prettyName: name,
-      username: username,
-      password: password,
-      privileged: privileged,
-      masterPassword: masterPassword,
-    });
-
     axios
-      .post('http://18.166.28.128/signup', data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      .get(`http://18.166.28.128/logout?token=${route.params.token}`)
       .then((res) => {
         console.log(res);
         navigation.navigate('Login');
@@ -226,17 +199,6 @@ export default ({ navigation }) => {
                         <Button
                           color="primary"
                           style={styles.resetButton}
-                          onPress={() => {
-                            setResetModal(true);
-                          }}
-                        >
-                          <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                            Reset Password
-                          </Text>
-                        </Button>
-                        <Button
-                          color="primary"
-                          style={styles.resetButton}
                           onPress={logoutPressed}
                         >
                           <Text bold size={14} color={argonTheme.COLORS.WHITE}>
@@ -332,7 +294,7 @@ export default ({ navigation }) => {
                           </Text>
                         </Block>
                       )}
-
+                      {/* 
                       <Block middle>
                         <Button
                           color="primary"
@@ -343,7 +305,7 @@ export default ({ navigation }) => {
                             Reset
                           </Text>
                         </Button>
-                      </Block>
+                      </Block> */}
                     </KeyboardAvoidingView>
                   </Block>
                 </Block>

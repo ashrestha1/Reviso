@@ -9,13 +9,12 @@ import axios from 'axios';
 //Actions Creators
 export const getQuestionsTeacher = (token) => async (dispatch) => {
   try {
-    console.log('fetching', token);
     axios.get(`http://18.166.28.128/set/manage?token=${token}`).then((res) => {
       const { data } = res;
       dispatch({ type: FETCH_QUESTIONS, payload: data });
     });
   } catch (error) {
-    console.log('teac', error);
+    console.log(error);
   }
 };
 
@@ -33,14 +32,13 @@ export const createQuestions = (questionData) => async (dispatch) => {
         return true;
       });
   } catch (error) {
-    console.log('223teac', error);
+    console.log(error);
     return false;
   }
 };
 
 export const updateQuestion = (newData, token) => async (dispatch) => {
   try {
-    console.log('updating....', newData);
     axios
       .post(`http://18.166.28.128/set/modify`, newData, {
         headers: {
@@ -48,20 +46,18 @@ export const updateQuestion = (newData, token) => async (dispatch) => {
         },
       })
       .then((res) => {
-        console.log('aayush', token);
         dispatch(getQuestionsTeacher(token));
         dispatch({ type: UPDATE_QUESTION, payload: newData });
         return true;
       });
   } catch (error) {
-    console.log('223teac', error);
+    console.log(error);
     return false;
   }
 };
 
 export const deleteQuestion = (data, token) => async (dispatch) => {
   try {
-    console.log('delete....', data);
     axios
       .post(`http://18.166.28.128/set/delete`, data, {
         headers: {
@@ -74,7 +70,7 @@ export const deleteQuestion = (data, token) => async (dispatch) => {
         return true;
       });
   } catch (error) {
-    console.log('223teac', error);
+    console.log(error);
     return false;
   }
 };

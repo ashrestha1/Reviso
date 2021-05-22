@@ -68,6 +68,7 @@ export default ({ navigation, route }) => {
   const [viewQuestionSetModalData, setViewQuestionSetModalData] = useState([]);
 
   const openViewQuestionSetModal = (item) => {
+    console.log('item', item);
     setViewQuestionSetModalData(item);
     setViewQuestionSetModalVisible(true);
   };
@@ -80,20 +81,20 @@ export default ({ navigation, route }) => {
   const [viewScoreData, setViewScoreData] = useState({});
 
   const viewScoreModalOpen = (questionSetId) => {
-    console.log('pressed');
-
     axios
       .get(
         `http://18.166.28.128/score/users?token=${route.params.token}&student=${route.params.studentId}&${questionSetId}`
       )
       .then((res) => {
         setViewScoreData(res);
+        console.log('scoredata', viewScoreData);
+      })
+      .then(() => {
+        setViewScoreModalVisible(true);
       })
       .catch((err) => {
         console.err(err);
       });
-
-    setViewScoreModalVisible(true);
   };
 
   const viewScoreModalClose = () => {
@@ -114,7 +115,9 @@ export default ({ navigation, route }) => {
             style={styles.backButton}
             color="#9fc2c3"
             onPress={() => {
-              navigation.navigate('StudentScoreList');
+              viewScore
+                ? navigation.navigate('StudentScoreList')
+                : navigation.navigate('Home');
             }}
           >
             <Icon name="arrow-left" size={30} color="#8898AA" />
@@ -133,10 +136,9 @@ export default ({ navigation, route }) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                console.log('view', viewScore);
                 viewScore
                   ? viewScoreModalOpen()
-                  : openViewQuestionSetModal(item.id);
+                  : openViewQuestionSetModal(item);
               }}
             >
               <View style={styles.card}>

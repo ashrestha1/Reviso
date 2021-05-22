@@ -75,8 +75,6 @@ export default ({ navigation, route }) => {
   data = route.params.data;
   const create = route.params.create;
 
-  console.log(data);
-
   const [problems, setProblems] = useState(data.questionSet.problems);
 
   const addProblem = (newProblem) => {

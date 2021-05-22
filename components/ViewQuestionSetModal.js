@@ -52,10 +52,8 @@ const argonTheme = {
 const { width, height } = Dimensions.get('screen');
 
 const ViewQuestionSetModal = (props) => {
-  console.log('questiondata', props.questionData);
   const questionData = props.questionData;
   const questionSetData = props.questionSetData;
-  console.log('questionSSEEETTdata', props.questionSetData);
 
   const creating = props.creating || false;
 
@@ -113,7 +111,6 @@ const ViewQuestionSetModal = (props) => {
       token: props.token,
       id: questionData.id,
     });
-    console.log('delete');
     dispatch(deleteQuestion(data, props.token));
   };
 

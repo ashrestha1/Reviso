@@ -12,7 +12,6 @@ const initialState = {
 export default function questions(state = initialState, action) {
   switch (action.type) {
     case FETCH_QUESTIONS:
-      console.log('fetchquestion', action.payload);
       return { ...state, questionsArray: action.payload };
     case CREATE_QUESTION:
       const newQuestionSet = {
