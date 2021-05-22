@@ -41,7 +41,17 @@ export default ({ navigation, route }) => {
   }, []);
 
   const account = useSelector((state) => state.account);
-  const questions = useSelector((state) => state.questions.questionsArray);
+
+  var questions = {
+    created: '2021-05-20T00:00:00.000Z',
+    deadline: '2021-05-20T00:00:00.000Z',
+    graded: 0,
+    id: 0,
+    timeLimit: 12060,
+    title: 'test',
+  };
+
+  questions = useSelector((state) => state.questions.questionsArray);
 
   const toggleCreateQuestionSetModal = () => {
     createQuestionSetModalVisible
@@ -67,7 +77,7 @@ export default ({ navigation, route }) => {
         <Block flex>
           {console.log('question222s', questions)}
           {questions.map((data) =>
-            data.title.includes('Math') ? (
+            data.title.includes('math') ? (
               <QuestionSet
                 key={data.id}
                 question={data}
@@ -101,7 +111,7 @@ export default ({ navigation, route }) => {
         <Block flex>
           {console.log('question222s', questions)}
           {questions.map((data) =>
-            data.title.includes('Computer') ? (
+            data.title.includes('computer') ? (
               <QuestionSet
                 key={data.id}
                 question={data}
@@ -135,7 +145,7 @@ export default ({ navigation, route }) => {
         <Block flex>
           {console.log('question222s', questions)}
           {questions.map((data) =>
-            data.title.includes('Physics') ? (
+            data.title.includes('physics') ? (
               <QuestionSet
                 key={data.id}
                 question={data}

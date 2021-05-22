@@ -130,13 +130,15 @@ const CreateQuestionSetModal = (props) => {
     //     ],
     //   },
     // });
+    const newtitle = questionSetTitle + category;
+    console.log(newtitle);
     const data = {
       token: props.token,
       graded: graded,
       deadline: deadline,
       timeLimit: totalSecond,
       questionSet: {
-        title: questionSetTitle,
+        title: newtitle,
         description: category,
         problems: [
           {

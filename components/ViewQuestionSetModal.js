@@ -132,6 +132,9 @@ const ViewQuestionSetModal = (props) => {
     setShowTimer(false);
     setShow(false);
   };
+  var questionSetReplacedTitle = data.questionSet.title.replace('math', '');
+  questionSetReplacedTitle = questionSetReplacedTitle.replace('computer', '');
+  questionSetReplacedTitle = questionSetReplacedTitle.replace('physics', '');
 
   return (
     <>
@@ -180,7 +183,7 @@ const ViewQuestionSetModal = (props) => {
                         //   family="ArgonExtra"
                         style={[styles.inputIcons, { color: '#9fc2c3' }]}
                       />{' '}
-                      {questionSetData.questionSet.title}
+                      {questionSetReplacedTitle}
                     </Text>
                   </Button>
                 </Block>

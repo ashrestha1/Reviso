@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ViewQuestionSetModal from '../components/ViewQuestionSetModal';
 import AddQuestionSetModal from '../components/AddQuestionSetModal';
 import { createQuestions } from '../Redux2/Actions/questions';
+import { getQuestionsTeacher } from '../Redux2/Actions/questions';
 
 import Button from '../components/Button';
 
@@ -74,6 +75,8 @@ export default ({ navigation, route }) => {
   data = route.params.data;
   const create = route.params.create;
 
+  console.log(data);
+
   const [problems, setProblems] = useState(data.questionSet.problems);
 
   const addProblem = (newProblem) => {
@@ -112,8 +115,13 @@ export default ({ navigation, route }) => {
 
     console.log('creating...', createData);
     dispatch(createQuestions(data));
+    dispatch(getQuestionsTeacher(data.token));
     navigation.navigate('Home');
   };
+
+  var questionSetReplacedTitle = data.questionSet.title.replace('math', '');
+  questionSetReplacedTitle = questionSetReplacedTitle.replace('computer', '');
+  questionSetReplacedTitle = questionSetReplacedTitle.replace('physics', '');
 
   return (
     <>
@@ -133,7 +141,7 @@ export default ({ navigation, route }) => {
               name="book-open-page-variant"
               style={[styles.inputIcons, { color: '#9fc2c3' }]}
             />{' '}
-            {data.questionSet.title}
+            {questionSetReplacedTitle}
           </Text>
           {create && (
             <Button
@@ -181,7 +189,7 @@ export default ({ navigation, route }) => {
           <AddQuestionSetModal
             addProblem={addProblem}
             toggleAddQuestionSetModal={toggleAddQuestionSetModal}
-            title={data.questionSet.title}
+            title={questionSetReplacedTitle}
           />
         </BlurView>
       </Modal>
