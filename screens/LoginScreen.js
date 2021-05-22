@@ -57,7 +57,7 @@ export default ({ navigation }) => {
       username: username,
       password: password,
     });
-    console.log(data);
+
     axios
       .post('http://18.166.28.128/login', data, {
         headers: {
@@ -65,13 +65,11 @@ export default ({ navigation }) => {
         },
       })
       .then((res) => {
-        console.log(res);
         save('token', res.data.token);
 
         navigation.navigate('Home', { token: res.data.token });
       })
       .catch((err) => {
-        console.log('hisss');
         startAnimation();
         setLoginText('Wrong credentials');
         setTimeout(function () {

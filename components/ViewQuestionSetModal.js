@@ -52,8 +52,10 @@ const argonTheme = {
 const { width, height } = Dimensions.get('screen');
 
 const ViewQuestionSetModal = (props) => {
+  console.log('questiondata', props.questionData);
   const questionData = props.questionData;
   const questionSetData = props.questionSetData;
+  console.log('questionSSEEETTdata', props.questionSetData);
 
   const creating = props.creating;
   const oldGraded = questionSetData.graded;
@@ -76,7 +78,6 @@ const ViewQuestionSetModal = (props) => {
   };
 
   const modifyPressed = () => {
-    console.log(graded != oldGraded);
     const gradeChangeToUngraded = graded != oldGraded;
 
     if (gradeChangeToUngraded) {
@@ -105,7 +106,6 @@ const ViewQuestionSetModal = (props) => {
   const [timerIconColor, setTimerIconColor] = useState(argonTheme.COLORS.GREEN);
 
   const onChange = (event, selectedDate) => {
-    console.log(selectedDate);
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
@@ -113,7 +113,6 @@ const ViewQuestionSetModal = (props) => {
   };
 
   const onChangeTime = (event, selectedTimer) => {
-    console.log(selectedTimer);
     const currentTime = selectedTimer || timeLimit;
     setShow(Platform.OS === 'ios');
     setTimelimit(currentTime);
@@ -132,7 +131,10 @@ const ViewQuestionSetModal = (props) => {
     setShowTimer(false);
     setShow(false);
   };
-  var questionSetReplacedTitle = data.questionSet.title.replace('math', '');
+  var questionSetReplacedTitle = questionSetData.questionSet.title.replace(
+    'math',
+    ''
+  );
   questionSetReplacedTitle = questionSetReplacedTitle.replace('computer', '');
   questionSetReplacedTitle = questionSetReplacedTitle.replace('physics', '');
 

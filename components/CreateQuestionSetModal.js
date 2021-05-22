@@ -99,8 +99,6 @@ const CreateQuestionSetModal = (props) => {
       timeLimit == new Date() ||
       (!math && !computer && !physics)
     ) {
-      console.log('hi');
-      console.log(timeLimit);
       startAnimation();
       return;
     }
@@ -131,7 +129,7 @@ const CreateQuestionSetModal = (props) => {
     //   },
     // });
     const newtitle = questionSetTitle + category;
-    console.log(newtitle);
+
     const data = {
       token: props.token,
       graded: graded,
@@ -159,15 +157,13 @@ const CreateQuestionSetModal = (props) => {
   const [timerIconColor, setTimerIconColor] = useState('#9fc2c3');
 
   const onChange = (event, selectedDate) => {
-    console.log(selectedDate);
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
-    setDeadline(currentDate.toLocaleDateString());
+    setDeadline(currentDate.toLocaleDateString('fr-CA'));
   };
 
   const onChangeTime = (event, selectedTimer) => {
-    console.log(selectedTimer);
     const currentTime = selectedTimer || timeLimit;
     setShow(Platform.OS === 'ios');
     setTimelimit(currentTime);

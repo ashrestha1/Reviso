@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Dimensions,
@@ -91,7 +91,6 @@ export default ({ navigation, route }) => {
   const [viewQuestionSetModalData, setViewQuestionSetModalData] = useState([]);
 
   const openViewQuestionSetModal = (item) => {
-    console.log('hererere', item);
     setViewQuestionSetModalData(item);
     setViewQuestionSetModalVisible(true);
   };
@@ -124,10 +123,23 @@ export default ({ navigation, route }) => {
   questionSetReplacedTitle = questionSetReplacedTitle.replace('computer', '');
   questionSetReplacedTitle = questionSetReplacedTitle.replace('physics', '');
 
+  useEffect(() => {
+    dispatch(getQuestionsTeacher(route.params.token));
+  }, []);
+
   return (
     <>
       <Block style={styles.registerContainer}>
         <Block style={styles.socialConnect} row>
+          <Button
+            style={styles.backButton}
+            color="#9fc2c3"
+            onPress={() => {
+              navigation.navigate('QuestionSetList');
+            }}
+          >
+            <Icon name="arrow-left" size={30} color="#8898AA" />
+          </Button>
           <Text color="#8898AA" size={25} style={{ marginTop: '5%' }}>
             <Icon
               name="book-open-page-variant"

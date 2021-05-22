@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Dimensions,
@@ -10,6 +10,9 @@ import {
 } from 'react-native';
 import { Block, Checkbox, Text, theme } from 'galio-framework';
 import { BlurView } from 'expo-blur';
+import { useDispatch, useSelector } from 'react-redux';
+import { getQuestionsTeacher } from '../Redux2/Actions/questions';
+import ViewQuestionSetModal from '../components/ViewQuestionSetModal';
 
 import Button from '../components/Button';
 
@@ -67,7 +70,14 @@ const DATA = [
 
 const { width, height } = Dimensions.get('screen');
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getQuestionsTeacher(route.params.token));
+  }, []);
+
+  questions = useSelector((state) => state.questions.questionsArray);
+
   return (
     <>
       <Block style={styles.registerContainer}>
@@ -91,11 +101,11 @@ export default ({ navigation }) => {
         </Block>
 
         <FlatList
-          data={DATA}
+          data={questions}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('QuestionList', { data: item.problems })
+                navigation.navigate('QuestionList', { data: item })
               }
             >
               <View style={styles.card}>
@@ -107,7 +117,7 @@ export default ({ navigation }) => {
               </View>
             </TouchableOpacity>
           )}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, index) => index.toString()}
         />
       </Block>
     </>

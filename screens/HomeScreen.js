@@ -35,21 +35,20 @@ export default ({ navigation, route }) => {
     setCreateQuestionSetModalVisible,
   ] = useState(false);
   useEffect(() => {
-    console.log('activate', route.params.token);
     dispatch(getAccount(route.params.token));
     dispatch(getQuestionsTeacher(route.params.token));
   }, []);
 
   const account = useSelector((state) => state.account);
 
-  var questions = {
-    created: '2021-05-20T00:00:00.000Z',
-    deadline: '2021-05-20T00:00:00.000Z',
-    graded: 0,
-    id: 0,
-    timeLimit: 12060,
-    title: 'test',
-  };
+  // var questions = {
+  //   created: '2021-05-20T00:00:00.000Z',
+  //   deadline: '2021-05-20T00:00:00.000Z',
+  //   graded: 0,
+  //   id: 0,
+  //   timeLimit: 12060,
+  //   title: 'test',
+  // };
 
   questions = useSelector((state) => state.questions.questionsArray);
 
@@ -75,7 +74,6 @@ export default ({ navigation, route }) => {
         </Text>
 
         <Block flex>
-          {console.log('question222s', questions)}
           {questions.map((data) =>
             data.title.includes('math') ? (
               <QuestionSet
@@ -109,7 +107,6 @@ export default ({ navigation, route }) => {
         </Text>
 
         <Block flex>
-          {console.log('question222s', questions)}
           {questions.map((data) =>
             data.title.includes('computer') ? (
               <QuestionSet
@@ -143,7 +140,6 @@ export default ({ navigation, route }) => {
         </Text>
 
         <Block flex>
-          {console.log('question222s', questions)}
           {questions.map((data) =>
             data.title.includes('physics') ? (
               <QuestionSet
@@ -243,7 +239,11 @@ export default ({ navigation, route }) => {
                 buttonColor="#3498db"
                 title="Edit a Question Set"
                 spaceBetween={-50}
-                onPress={() => navigation.navigate('QuestionSetList')}
+                onPress={() =>
+                  navigation.navigate('QuestionSetList', {
+                    token: route.params.token,
+                  })
+                }
               >
                 <Icon name="pencil" style={{ fontSize: 20 }} />
               </ActionButton.Item>
@@ -251,7 +251,9 @@ export default ({ navigation, route }) => {
                 buttonColor="#1abc9c"
                 spaceBetween={-50}
                 title="View your Students"
-                onPress={() => alert('Students')}
+                onPress={() => {
+                  dispatch(getQuestionsTeacher(route.params.token));
+                }}
               >
                 <Icon name="account-group" style={{ fontSize: 20 }} />
               </ActionButton.Item>

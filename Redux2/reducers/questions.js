@@ -12,10 +12,17 @@ const initialState = {
 export default function questions(state = initialState, action) {
   switch (action.type) {
     case FETCH_QUESTIONS:
-      console.log('fetchquestion');
+      console.log('fetchquestion', action.payload);
       return { ...state, questionsArray: action.payload };
     case CREATE_QUESTION:
-      const newQuestionSet = action.payload;
+      const newQuestionSet = {
+        deadline: action.payload.deadline,
+        graded: action.payload.graded,
+        timeLimit: action.payload.timeLimit,
+        title: action.payload.questionSet.title,
+      };
+
+      return;
       return {
         ...state,
         questionsArray: [...state.questionsArray, newQuestionSet],

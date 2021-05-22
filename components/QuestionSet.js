@@ -25,13 +25,12 @@ class QuestionSet extends React.Component {
     const navigation = this.props.navigation;
     const destination = this.props.destination;
     const questionData = this.props.question;
-    const size = this.props.small ? 12 : 22;
-    const padding = this.props.small ? 1.5 : 1;
-    console.log(destination);
+    const size = 12;
+    const padding = 1.5;
 
     var questionSetReplacedTitle = questionData.title.replace('math', '');
-    questionSetReplacedTitle = questionData.title.replace('computer', '');
-    questionSetReplacedTitle = questionData.title.replace('physics', '');
+    questionSetReplacedTitle = questionSetReplacedTitle.replace('computer', '');
+    questionSetReplacedTitle = questionSetReplacedTitle.replace('physics', '');
 
     return (
       <Block card flex style={[styles.product, styles.shadow, style]}>
@@ -47,11 +46,11 @@ class QuestionSet extends React.Component {
             row
             space="between"
           >
-            <Text size={size + 2} style={styles.productTitle}>
+            <Text size={size} style={styles.productTitle}>
               {questionSetReplacedTitle}
             </Text>
             <Text size={size} muted={!priceColor} color={priceColor}>
-              number
+              {questionData.graded ? questionData.deadline : 'Ungraded'}
             </Text>
           </Block>
         </TouchableOpacity>

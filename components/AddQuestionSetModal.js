@@ -96,8 +96,6 @@ const AddQuestionSetModal = (props) => {
       wrongAnswer2 == '' ||
       wrongAnswer3 == ''
     ) {
-      console.log('hi');
-      console.log(timeLimit);
       startAnimation();
       return;
     }
@@ -127,7 +125,6 @@ const AddQuestionSetModal = (props) => {
   const [timerIconColor, setTimerIconColor] = useState('#9fc2c3');
 
   const onChange = (event, selectedDate) => {
-    console.log(selectedDate);
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
@@ -135,7 +132,6 @@ const AddQuestionSetModal = (props) => {
   };
 
   const onChangeTime = (event, selectedTimer) => {
-    console.log(selectedTimer);
     const currentTime = selectedTimer || timeLimit;
     setShow(Platform.OS === 'ios');
     setTimelimit(currentTime);

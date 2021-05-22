@@ -13,7 +13,7 @@ export default function account(state = initialState, action) {
         password: action.payload.password,
         privileged: true,
       };
-      console.log('newAccount', newAccount);
+
       return (state = newAccount);
     default:
       return state;
