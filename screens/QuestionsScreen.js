@@ -101,8 +101,15 @@ export default ({ navigation, route }) => {
   };
 
   const answerPressed = (answer) => {
+    console.log(answer, ' ', questionData.problems[count].answers[0]);
     if (answer != questionData.problems[count].answers[0]) startAnimation();
-    else setScore(score + 1);
+    var newScore = score;
+    if (answer == questionData.problems[count].answers[0]) {
+      console.log(score, 'before');
+      newScore = score + 1;
+      setScore(score + 1);
+      console.log(score, 'after');
+    }
     setDirection('right');
     setDelay(3000);
     setAim('out');
@@ -111,30 +118,7 @@ export default ({ navigation, route }) => {
     setWrongAnswerBackground('#DC143C');
 
     if (count == questions.length - 1 || isLate) {
-      setTimeout(function () {
-        var percentageVal = (score / questionData.problems.length - 1) * 100;
-
-        percentageVal = Math.round(percentageVal);
-
-        var data = JSON.stringify({
-          token: token,
-          questionSetId: questionId,
-          percentage: percentageVal,
-        });
-
-        axios
-          .post(`http://16.162.3.244/score/submit/`, data, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-          .then((res) => {
-            navigation.navigate('Home');
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }, 2000);
+      submit(newScore);
     }
 
     //score++
@@ -147,6 +131,36 @@ export default ({ navigation, route }) => {
       setWrongAnswerBackground('white');
       if (count < questions.length - 1) setCount(count + 1);
     }, 3000);
+  };
+
+  const submit = (newScore) => {
+    setTimeout(function () {
+      var percentageVal = (newScore / questionData.problems.length) * 100;
+      console.log(score);
+      console.log(questionData.problems.length);
+      percentageVal = Math.round(percentageVal);
+
+      var data = JSON.stringify({
+        token: token,
+        questionSetId: questionId,
+        percentage: percentageVal,
+      });
+
+      console.log(data);
+
+      axios
+        .post(`http://16.162.3.244/score/submit/`, data, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((res) => {
+          navigation.navigate('Home');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, 2000);
   };
 
   const questions = questionData.problems;

@@ -52,7 +52,15 @@ const argonTheme = {
 const { width, height } = Dimensions.get('screen');
 
 const ViewScoreModal = (props) => {
-  const data = props.data[0];
+  const data =
+    props.data.length == 0
+      ? {
+          id: 'Not submitted yet',
+          Submitted: 'Not submitted yet',
+          percentage: '',
+        }
+      : props.data[0];
+
   console.log(data, 'hi');
 
   return (
@@ -100,7 +108,9 @@ const ViewScoreModal = (props) => {
                         style={[styles.inputIcons, { color: '#9fc2c3' }]}
                       />{' '}
                       Submitted on:{' '}
-                      {new Date(data.submitted).toLocaleDateString('fr-CA')}
+                      {data.Submitted == 'Not submitted yet'
+                        ? ''
+                        : new Date(data.submitted).toLocaleDateString('fr-CA')}
                     </Text>
                   </Button>
                 </Block>

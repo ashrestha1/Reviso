@@ -210,7 +210,7 @@ export default ({ navigation, route }) => {
             position: 'absolute',
             bottom: 50,
             zIndex: 1,
-            left: '50%',
+            left: '25%',
           }}
         >
           <Button onPress={createSet} large center color="default">
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   socialConnect: {
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
     paddingVertical: '6%',

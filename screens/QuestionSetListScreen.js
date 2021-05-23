@@ -80,13 +80,25 @@ export default ({ navigation, route }) => {
   const [viewScoreData, setViewScoreData] = useState({});
 
   const viewScoreModalOpen = (questionSetId) => {
+    console.log(
+      'token',
+      route.params.token,
+      'student',
+      route.params.studentId,
+      'q',
+      questionSetId
+    );
     axios
       .get(
         `http://16.162.3.244/score/user?token=${route.params.token}&studentId=${route.params.studentId}&questionSetId=${questionSetId}`
       )
       .then((res) => {
         console.log(res.data);
-        setViewScoreData(res.data);
+        if (res.data.length == 0) setViewScoreData([]);
+        else {
+          console.log('hi', res.data);
+          setViewScoreData(res.data);
+        }
         setViewScoreModalVisible(true);
       })
       .catch((err) => {
@@ -143,7 +155,10 @@ export default ({ navigation, route }) => {
                   <View style={styles.card}>
                     <View style={styles.cardContent}>
                       <Text bold size={14} color={argonTheme.COLORS.BLACK}>
-                        {item.title}
+                        {item.title
+                          .replace('math', '')
+                          .replace('computer', '')
+                          .replace('physics', '')}
                       </Text>
                     </View>
                   </View>

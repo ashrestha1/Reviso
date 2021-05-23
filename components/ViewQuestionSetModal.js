@@ -348,7 +348,10 @@ const ViewQuestionSetModal = (props) => {
                     {!creating && (
                       <>
                         <Button
-                          onPress={modifyPressed}
+                          onPress={() => {
+                            modifyPressed();
+                            props.closeViewQuestionSetModal();
+                          }}
                           disabled={oldDate == deadline && oldGraded == graded}
                           color={
                             oldDate == deadline && oldGraded == graded
