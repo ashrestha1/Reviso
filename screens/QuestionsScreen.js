@@ -6,6 +6,7 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Shake } from 'react-native-motion';
 import { SimpleAnimation } from 'react-native-simple-animations';
 import { counterEvent } from 'react-native/Libraries/Performance/Systrace';
+import { set } from 'react-native-reanimated';
 
 const styles = StyleSheet.create({
   container: {},
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
   const [answerTextColor, setAnswerTextColor] = useState('black');
   const [correctAnswerBackground, setCorrectAnswerBackground] = useState(
     'white'
@@ -82,19 +83,37 @@ export default ({ navigation }) => {
   const [aim, setAim] = useState('in');
   const [delay, setDelay] = useState(0);
   const [direction, setDirection] = useState('left');
+  const [newArray, setNewArray] = useState([]);
+
+  const [once, setOnce] = useState(true);
+
+  const token = route.params.token;
+  const questionId = route.params.id;
+  const questionData = route.params.data;
+  const fakeData = route.params.fakeData;
 
   const startAnimation = () => {
     setValue(value + 1);
   };
 
-  const answerPressed = (isCorrect) => {
-    if (!isCorrect) startAnimation();
+  const answerPressed = (answer) => {
+    if (answer != questionData.problems[count].answers[0]) startAnimation();
+
+    // else score++;
     setDirection('right');
     setDelay(2000);
     setAim('out');
     setAnswerTextColor('white');
     setCorrectAnswerBackground('#3CB371');
     setWrongAnswerBackground('#DC143C');
+
+    if (count == questions.length - 1) {
+      setDelay(5000);
+      setTimeout(function () {
+        navigation.navigate('Home');
+      }, 3000);
+    }
+
     //score++
     setTimeout(function () {
       setDirection('left');
@@ -103,39 +122,11 @@ export default ({ navigation }) => {
       setAnswerTextColor('black');
       setCorrectAnswerBackground('white');
       setWrongAnswerBackground('white');
-      setCount(count + 1);
+      if (count < questions.length - 1) setCount(count + 1);
     }, 3000);
   };
 
-  const questions = [
-    {
-      question: "What is localhost's IP address?",
-      answers: [
-        { id: '1', text: '192.168.1.1' },
-        { id: '2', text: '127.0.0.1', correct: true },
-        { id: '3', text: '209.85.231.104' },
-        { id: '4', text: '66.220.149.25' },
-      ],
-    },
-    {
-      question: 'What kind of fruit was used to name a computer in 1984?',
-      answers: [
-        { id: '1', text: 'Blackberry' },
-        { id: '2', text: 'Blueberry' },
-        { id: '3', text: 'Pear' },
-        { id: '4', text: 'Apple', correct: true },
-      ],
-    },
-    {
-      question: 'Question 3',
-      answers: [
-        { id: '1', text: 'Blackberry' },
-        { id: '2', text: 'Blueberry' },
-        { id: '3', text: 'Pear' },
-        { id: '4', text: 'Apple', correct: true },
-      ],
-    },
-  ];
+  const questions = questionData.problems;
 
   state = {
     correctCount: 0,
@@ -144,6 +135,9 @@ export default ({ navigation }) => {
     answered: false,
     answerCorrect: false,
   };
+
+  console.log('fake.......', fakeData);
+  console.log('real.......', questionData);
 
   return (
     <View style={{ flex: 1, paddingHorizontal: 5 }}>
@@ -188,12 +182,12 @@ export default ({ navigation }) => {
             </Block>
 
             <View style={styles.buttonContainer}>
-              {questions[0].answers.map((answer) => (
+              {fakeData[count].map((answer, index) => (
                 <TouchableOpacity
-                  key={answer.id}
-                  onPress={() => answerPressed(answer.correct)}
+                  key={index}
+                  onPress={() => answerPressed(answer)}
                 >
-                  {answer.correct ? (
+                  {answer == questionData.problems[count].answers[0] ? (
                     <Block
                       card
                       style={[
@@ -209,7 +203,7 @@ export default ({ navigation }) => {
                             { color: answerTextColor },
                           ]}
                         >
-                          {answer.text}
+                          {answer}
                         </Text>
                       </Block>
                     </Block>
@@ -229,7 +223,7 @@ export default ({ navigation }) => {
                             { color: answerTextColor },
                           ]}
                         >
-                          {answer.text}
+                          {answer}
                         </Text>
                       </Block>
                     </Block>

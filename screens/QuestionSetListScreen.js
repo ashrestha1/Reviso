@@ -83,7 +83,7 @@ export default ({ navigation, route }) => {
   const viewScoreModalOpen = (questionSetId) => {
     axios
       .get(
-        `http://18.166.28.128/score/users?token=${route.params.token}&student=${route.params.studentId}&${questionSetId}`
+        `http://16.162.89.86/score/users?token=${route.params.token}&student=${route.params.studentId}&${questionSetId}`
       )
       .then((res) => {
         setViewScoreData(res);

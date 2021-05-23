@@ -44,7 +44,7 @@ export default ({ navigation, route }) => {
     console.log(route.params.token);
 
     axios
-      .get(`http://18.166.28.128/set/browse?token=${route.params.token}`)
+      .get(`http://16.162.89.86/set/browse?token=${route.params.token}`)
       .then((res) => {
         setQuestionsForStudent(res.data);
         console.log(res);

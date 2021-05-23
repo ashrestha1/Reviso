@@ -76,7 +76,7 @@ const QuestionSet = (props) => {
 
     axios
       .get(
-        `http://18.166.28.128/score/mine?token=${token}&questionSetId=${questionDataId}`
+        `http://16.162.89.86/score/mine?token=${token}&questionSetId=${questionDataId}`
       )
       .then((res) => {
         setQuestionInfoModalData(res);
@@ -84,6 +84,40 @@ const QuestionSet = (props) => {
       })
       .then(() => {
         setQuestionInfoModalVisible(!questionInfoModalVisible);
+      })
+      .catch((err) => {
+        console.err(err);
+      });
+  };
+
+  const shuffle = (array) => {
+    let i = array.length;
+    var newArray = [...array];
+    while (i--) {
+      const ri = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[ri]] = [newArray[ri], newArray[i]];
+    }
+
+    return newArray;
+  };
+
+  const getTrainData = (questionDataId) => {
+    console.log('train');
+    axios
+      .get(`http://16.162.89.86/set/train?token=${token}&id=${questionDataId}`)
+      .then((res) => {
+        var temp = [];
+        for (var i = 0; i < res.data.problems.length; i++) {
+          temp[i] = shuffle(res.data.problems[i].answers);
+        }
+
+        setQuestionInfoModalVisible(!questionInfoModalVisible);
+        navigation.navigate(destination, {
+          token: token,
+          id: questionData.id,
+          data: res.data,
+          fakeData: temp,
+        });
       })
       .catch((err) => {
         console.err(err);
@@ -206,7 +240,7 @@ const QuestionSet = (props) => {
                       color="default"
                       onPress={() => {
                         setQuestionInfoModalVisible(false);
-                        navigation.navigate(destination);
+                        getTrainData(questionData.id);
                       }}
                     >
                       <Text bold size={14} color={argonTheme.COLORS.WHITE}>

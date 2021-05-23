@@ -4,7 +4,7 @@ import axios from 'axios';
 //Actions Creators
 export const getStudents = (token) => async (dispatch) => {
   try {
-    axios.get(`http://18.166.28.128/users?token=${token}`).then((res) => {
+    axios.get(`http://16.162.89.86/users?token=${token}`).then((res) => {
       const { data } = res;
       dispatch({ type: FETCH_STUDENTS, payload: data });
     });

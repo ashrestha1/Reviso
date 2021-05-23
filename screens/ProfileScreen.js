@@ -85,7 +85,7 @@ export default ({ navigation, route }) => {
 
   const logoutPressed = () => {
     axios
-      .get(`http://18.166.28.128/logout?token=${route.params.token}`)
+      .get(`http://16.162.89.86/logout?token=${route.params.token}`)
       .then((res) => {
         console.log(res);
         navigation.navigate('Login');

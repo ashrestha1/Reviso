@@ -59,7 +59,7 @@ export default ({ navigation }) => {
     });
 
     axios
-      .post('http://18.166.28.128/login', data, {
+      .post('http://16.162.89.86/login', data, {
         headers: {
           'Content-Type': 'application/json',
         },
