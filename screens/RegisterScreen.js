@@ -103,7 +103,7 @@ const RegisterScreen = ({ navigation }) => {
     });
 
     axios
-      .post('http://16.162.89.86/signup', data, {
+      .post('http://16.162.3.244/signup', data, {
         headers: {
           'Content-Type': 'application/json',
         },

@@ -55,20 +55,6 @@ const argonTheme = {
 };
 
 const { width, height } = Dimensions.get('screen');
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
 
 export default ({ navigation, route }) => {
   const dispatch = useDispatch();
@@ -80,15 +66,6 @@ export default ({ navigation, route }) => {
 
   return (
     <View style={styles.modal}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('Profile');
-        }}
-        style={{ marginBottom: 20 }}
-      >
-        <Icon name="progress-close" size={25} color="#8898AA" />
-      </TouchableOpacity>
-
       <Text
         bold
         size={34}

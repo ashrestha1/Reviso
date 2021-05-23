@@ -75,7 +75,7 @@ const QuestionSet = (props) => {
 
     axios
       .get(
-        `http://16.162.89.86/score/mine?token=${token}&questionSetId=${questionDataId}`
+        `http://16.162.3.244/score/mine?token=${token}&questionSetId=${questionDataId}`
       )
       .then((res) => {
         if (res.data.length > 0)
@@ -106,7 +106,7 @@ const QuestionSet = (props) => {
 
   const getTrainData = (questionDataId) => {
     axios
-      .get(`http://16.162.89.86/set/train?token=${token}&id=${questionDataId}`)
+      .get(`http://16.162.3.244/set/train?token=${token}&id=${questionDataId}`)
       .then((res) => {
         var temp = [];
         for (var i = 0; i < res.data.problems.length; i++) {

@@ -52,7 +52,8 @@ const argonTheme = {
 const { width, height } = Dimensions.get('screen');
 
 const ViewScoreModal = (props) => {
-  const data = props.data;
+  const data = props.data[0];
+  console.log(data, 'hi');
 
   return (
     <>
@@ -75,10 +76,11 @@ const ViewScoreModal = (props) => {
                   <Icon
                     //   size={16}
                     //   color={argonTheme.COLORS.ICON}
-                    name="book-open-page-variant"
+                    name="card-account-details-outline"
                     //   family="ArgonExtra"
                     style={[styles.inputIcons, { color: '#9fc2c3' }]}
-                  />{' '}
+                  />
+                  {'  '}
                   {data.id}
                 </Text>
               </Button>
@@ -89,37 +91,30 @@ const ViewScoreModal = (props) => {
               <>
                 <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                   <Button style={styles.labelStyle}>
-                    <Text
-                      style={{ fontWeight: '500' }}
-                      size={16}
-                      color={argonTheme.COLORS.ERROR}
-                    >
+                    <Text style={{ fontWeight: '500' }} size={16}>
                       <Icon
                         //   size={16}
                         //   color={argonTheme.COLORS.ICON}
-                        name="close-circle-outline"
+                        name="calendar-range"
                         //   family="ArgonExtra"
-                        style={[styles.inputIcons, { color: 'red' }]}
+                        style={[styles.inputIcons, { color: '#9fc2c3' }]}
                       />{' '}
-                      Submitted on: {data.submitted}
+                      Submitted on:{' '}
+                      {new Date(data.submitted).toLocaleDateString('fr-CA')}
                     </Text>
                   </Button>
                 </Block>
                 <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                   <Button style={styles.labelStyle}>
-                    <Text
-                      style={{ fontWeight: '500' }}
-                      size={16}
-                      color={argonTheme.COLORS.ERROR}
-                    >
+                    <Text style={{ fontWeight: '500' }} size={16}>
                       <Icon
                         //   size={16}
                         //   color={argonTheme.COLORS.ICON}
-                        name="close-circle-outline"
+                        name="scoreboard-outline"
                         //   family="ArgonExtra"
-                        style={[styles.inputIcons, { color: 'red' }]}
+                        style={[styles.inputIcons, { color: '#9fc2c3' }]}
                       />{' '}
-                      Percentage: {data.percentage}
+                      Percentage: {data.percentage}%
                     </Text>
                   </Button>
                 </Block>
@@ -128,10 +123,11 @@ const ViewScoreModal = (props) => {
               <Block middle row>
                 <Button
                   style={styles.resetButton}
+                  color={'default'}
                   onPress={props.viewScoreModalClose}
                 >
                   <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                    BACK
+                    CANCEL
                   </Text>
                 </Button>
               </Block>

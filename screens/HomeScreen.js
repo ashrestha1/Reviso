@@ -67,7 +67,7 @@ export default ({ navigation, route }) => {
             fontSize: 17,
           }}
         >
-          Reccomended
+          Math-tastic Questions for you!
         </Text>
 
         {account.privileged ? (
@@ -122,7 +122,7 @@ export default ({ navigation, route }) => {
             fontSize: 17,
           }}
         >
-          Reccomended
+          Your first steps to become a professional coder
         </Text>
 
         {account.privileged ? (
@@ -177,7 +177,7 @@ export default ({ navigation, route }) => {
             fontSize: 17,
           }}
         >
-          Reccomended
+          We are the best Science!
         </Text>
 
         {account.privileged ? (

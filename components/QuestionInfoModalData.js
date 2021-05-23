@@ -72,10 +72,11 @@ const QuestionInfoModalData = (props) => {
                 <Icon
                   //   size={16}
                   //   color={argonTheme.COLORS.ICON}
-                  name="book-open-page-variant"
+                  name="card-account-details-outline"
                   //   family="ArgonExtra"
                   style={[styles.inputIcons, { color: '#9fc2c3' }]}
-                />{' '}
+                />
+                {'  '}
                 {questionInfoModalData.id}
               </Text>
             </Button>
@@ -86,17 +87,13 @@ const QuestionInfoModalData = (props) => {
             <>
               <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                 <Button style={styles.labelStyle}>
-                  <Text
-                    style={{ fontWeight: '500' }}
-                    size={16}
-                    color={argonTheme.COLORS.ERROR}
-                  >
+                  <Text style={{ fontWeight: '500' }} size={16}>
                     <Icon
                       //   size={16}
                       //   color={argonTheme.COLORS.ICON}
-                      name="close-circle-outline"
+                      name="calendar-range"
                       //   family="ArgonExtra"
-                      style={[styles.inputIcons, { color: 'red' }]}
+                      style={[styles.inputIcons, { color: '#9fc2c3' }]}
                     />{' '}
                     Submitted on:{' '}
                     {questionInfoModalData.submitted == ''
@@ -109,17 +106,13 @@ const QuestionInfoModalData = (props) => {
               </Block>
               <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                 <Button style={styles.labelStyle}>
-                  <Text
-                    style={{ fontWeight: '500' }}
-                    size={16}
-                    color={argonTheme.COLORS.ERROR}
-                  >
+                  <Text style={{ fontWeight: '500' }} size={16}>
                     <Icon
                       //   size={16}
                       //   color={argonTheme.COLORS.ICON}
-                      name="close-circle-outline"
+                      name="scoreboard-outline"
                       //   family="ArgonExtra"
-                      style={[styles.inputIcons, { color: 'red' }]}
+                      style={[styles.inputIcons, { color: '#9fc2c3' }]}
                     />{' '}
                     Percentage: {questionInfoModalData.percentage}%
                   </Text>
@@ -134,7 +127,7 @@ const QuestionInfoModalData = (props) => {
                 onPress={() => toggleShowQuestionInfoModal('close')}
               >
                 <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                  BACK
+                  CANCEL
                 </Text>
               </Button>
               <Button

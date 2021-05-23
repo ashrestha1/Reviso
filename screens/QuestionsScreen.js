@@ -123,7 +123,7 @@ export default ({ navigation, route }) => {
         });
 
         axios
-          .post(`http://16.162.89.86/score/submit/`, data, {
+          .post(`http://16.162.3.244/score/submit/`, data, {
             headers: {
               'Content-Type': 'application/json',
             },

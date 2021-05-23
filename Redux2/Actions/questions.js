@@ -9,7 +9,7 @@ import axios from 'axios';
 //Actions Creators
 export const getQuestionsTeacher = (token) => async (dispatch) => {
   try {
-    axios.get(`http://16.162.89.86/set/manage?token=${token}`).then((res) => {
+    axios.get(`http://16.162.3.244/set/manage?token=${token}`).then((res) => {
       const { data } = res;
       dispatch({ type: FETCH_QUESTIONS, payload: data });
     });
@@ -21,7 +21,7 @@ export const getQuestionsTeacher = (token) => async (dispatch) => {
 export const createQuestions = (questionData) => async (dispatch) => {
   try {
     axios
-      .post(`http://16.162.89.86/set/create`, questionData, {
+      .post(`http://16.162.3.244/set/create`, questionData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -40,7 +40,7 @@ export const createQuestions = (questionData) => async (dispatch) => {
 export const updateQuestion = (newData, token) => async (dispatch) => {
   try {
     axios
-      .post(`http://16.162.89.86/set/modify`, newData, {
+      .post(`http://16.162.3.244/set/modify`, newData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -59,7 +59,7 @@ export const updateQuestion = (newData, token) => async (dispatch) => {
 export const deleteQuestion = (data, token) => async (dispatch) => {
   try {
     axios
-      .post(`http://16.162.89.86/set/delete`, data, {
+      .post(`http://16.162.3.244/set/delete`, data, {
         headers: {
           'Content-Type': 'application/json',
         },

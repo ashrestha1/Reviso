@@ -80,20 +80,13 @@ export default ({ navigation, route }) => {
   const [viewScoreData, setViewScoreData] = useState({});
 
   const viewScoreModalOpen = (questionSetId) => {
-    console.log(
-      'here',
-      route.params.token,
-      's',
-      route.params.studentId,
-      'a',
-      questionSetId
-    );
     axios
       .get(
-        `http://16.162.89.86/score/user?token=${route.params.token}&studentId=${route.params.studentId}&questionSetId=${questionSetId}`
+        `http://16.162.3.244/score/user?token=${route.params.token}&studentId=${route.params.studentId}&questionSetId=${questionSetId}`
       )
       .then((res) => {
-        setViewScoreData(res);
+        console.log(res.data);
+        setViewScoreData(res.data);
         setViewScoreModalVisible(true);
       })
       .catch((err) => {

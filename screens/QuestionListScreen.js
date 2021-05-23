@@ -210,15 +210,10 @@ export default ({ navigation, route }) => {
             position: 'absolute',
             bottom: 50,
             zIndex: 1,
+            left: '50%',
           }}
         >
-          <Button
-            onPress={createSet}
-            large
-            center
-            color="default"
-            style={styles.optionsButton}
-          >
+          <Button onPress={createSet} large center color="default">
             CREATE Your Set!
           </Button>
         </View>

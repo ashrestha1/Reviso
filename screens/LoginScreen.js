@@ -59,7 +59,7 @@ export default ({ navigation }) => {
     });
 
     axios
-      .post('http://16.162.89.86/login', data, {
+      .post('http://16.162.3.244/login', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -235,6 +235,7 @@ export default ({ navigation }) => {
               <TextInput
                 style={styles.inputText}
                 placeholderTextColor="gray"
+                secureTextEntry={true}
                 onChangeText={(val) => setPassword(val)}
                 defaultValue={password}
                 placeholder="Password"
