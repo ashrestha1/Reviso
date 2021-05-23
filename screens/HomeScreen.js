@@ -41,13 +41,10 @@ export default ({ navigation, route }) => {
     dispatch(getAccount(route.params.token));
     dispatch(getQuestionsTeacher(route.params.token));
 
-    console.log(route.params.token);
-
     axios
       .get(`http://16.162.89.86/set/browse?token=${route.params.token}`)
       .then((res) => {
         setQuestionsForStudent(res.data);
-        console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -66,7 +63,6 @@ export default ({ navigation, route }) => {
   // };
 
   questions = useSelector((state) => state.questions.questionsArray);
-
   const toggleCreateQuestionSetModal = () => {
     createQuestionSetModalVisible
       ? setCreateQuestionSetModalVisible(false)
@@ -106,7 +102,6 @@ export default ({ navigation, route }) => {
           </Block>
         ) : (
           <Block flex>
-            {console.log('i', questionsForStudent)}
             {questionsForStudent.map((data) =>
               data.title.includes('math') ? (
                 <QuestionSet
@@ -144,21 +139,41 @@ export default ({ navigation, route }) => {
           Reccomended
         </Text>
 
-        <Block flex>
-          {questions.map((data) =>
-            data.title.includes('computer') ? (
-              <QuestionSet
-                disable={account.privileged ? true : false}
-                key={data.id}
-                question={data}
-                token={route.params.token}
-                navigation={navigation}
-                destination="Question"
-              />
-            ) : null
-          )}
-          {questions?.length === 0 && <Text>No Questions left </Text>}
-        </Block>
+        {account.privileged ? (
+          <Block flex>
+            {questions.map((data) =>
+              data.title.includes('computer') ? (
+                <QuestionSet
+                  disable={account.privileged ? true : false}
+                  key={data.id}
+                  question={data}
+                  token={route.params.token}
+                  navigation={navigation}
+                  destination="Question"
+                />
+              ) : null
+            )}
+            {questions?.length === 0 && <Text>No Questions left </Text>}
+          </Block>
+        ) : (
+          <Block flex>
+            {questionsForStudent.map((data) =>
+              data.title.includes('computer') ? (
+                <QuestionSet
+                  disable={account.privileged ? true : false}
+                  key={data.id}
+                  question={data}
+                  token={route.params.token}
+                  navigation={navigation}
+                  destination="Question"
+                />
+              ) : null
+            )}
+            {questionsForStudent?.length === 0 && (
+              <Text>No Questions left </Text>
+            )}
+          </Block>
+        )}
       </ScrollView>
     </View>
   );
@@ -179,21 +194,41 @@ export default ({ navigation, route }) => {
           Reccomended
         </Text>
 
-        <Block flex>
-          {questions.map((data) =>
-            data.title.includes('physics') ? (
-              <QuestionSet
-                disable={account.privileged ? true : false}
-                key={data.id}
-                question={data}
-                token={route.params.token}
-                navigation={navigation}
-                destination="Question"
-              />
-            ) : null
-          )}
-          {questions?.length === 0 && <Text>No Questions left </Text>}
-        </Block>
+        {account.privileged ? (
+          <Block flex>
+            {questions.map((data) =>
+              data.title.includes('physics') ? (
+                <QuestionSet
+                  disable={account.privileged ? true : false}
+                  key={data.id}
+                  question={data}
+                  token={route.params.token}
+                  navigation={navigation}
+                  destination="Question"
+                />
+              ) : null
+            )}
+            {questions?.length === 0 && <Text>No Questions left </Text>}
+          </Block>
+        ) : (
+          <Block flex>
+            {questionsForStudent.map((data) =>
+              data.title.includes('physics') ? (
+                <QuestionSet
+                  disable={account.privileged ? true : false}
+                  key={data.id}
+                  question={data}
+                  token={route.params.token}
+                  navigation={navigation}
+                  destination="Question"
+                />
+              ) : null
+            )}
+            {questionsForStudent?.length === 0 && (
+              <Text>No Questions left </Text>
+            )}
+          </Block>
+        )}
       </ScrollView>
     </View>
   );

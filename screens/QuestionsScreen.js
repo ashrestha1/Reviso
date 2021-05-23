@@ -7,6 +7,7 @@ import { Shake } from 'react-native-motion';
 import { SimpleAnimation } from 'react-native-simple-animations';
 import { counterEvent } from 'react-native/Libraries/Performance/Systrace';
 import { set } from 'react-native-reanimated';
+import axios from 'axios';
 
 const styles = StyleSheet.create({
   container: {},
@@ -85,6 +86,7 @@ export default ({ navigation, route }) => {
   const [direction, setDirection] = useState('left');
   const [newArray, setNewArray] = useState([]);
 
+  const [score, setScore] = useState(0);
   const [once, setOnce] = useState(true);
 
   const token = route.params.token;
@@ -98,8 +100,7 @@ export default ({ navigation, route }) => {
 
   const answerPressed = (answer) => {
     if (answer != questionData.problems[count].answers[0]) startAnimation();
-
-    // else score++;
+    else setScore(score + 1);
     setDirection('right');
     setDelay(2000);
     setAim('out');
@@ -110,8 +111,29 @@ export default ({ navigation, route }) => {
     if (count == questions.length - 1) {
       setDelay(5000);
       setTimeout(function () {
-        navigation.navigate('Home');
-      }, 3000);
+        var percentageVal = (score / questionData.problems.length) * 100;
+
+        percentageVal = Math.round(percentageVal);
+
+        var data = JSON.stringify({
+          token: token,
+          questionSetId: questionId,
+          percentage: percentageVal,
+        });
+
+        axios
+          .post(`http://16.162.89.86/score/submit/`, data, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+          .then((res) => {
+            navigation.navigate('Home');
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }, 2000);
     }
 
     //score++
@@ -135,9 +157,6 @@ export default ({ navigation, route }) => {
     answered: false,
     answerCorrect: false,
   };
-
-  console.log('fake.......', fakeData);
-  console.log('real.......', questionData);
 
   return (
     <View style={{ flex: 1, paddingHorizontal: 5 }}>

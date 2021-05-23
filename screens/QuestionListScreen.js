@@ -113,7 +113,7 @@ export default ({ navigation, route }) => {
 
     dispatch(createQuestions(data));
     // dispatch(getQuestionsTeacher(data.token));
-    // navigation.navigate('Home');
+    navigation.navigate('Home');
   };
 
   var questionSetReplacedTitle = data.questionSet.title.replace('math', '');

@@ -5,6 +5,7 @@ import { Block, Text, theme } from 'galio-framework';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Button from '../components/Button';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import QuestionInfoModalData from './QuestionInfoModalData';
 import axios from 'axios';
 
 const argonTheme = {
@@ -72,22 +73,24 @@ const QuestionSet = (props) => {
       return;
     }
 
-    console.log(props, questionDataId);
-
     axios
       .get(
         `http://16.162.89.86/score/mine?token=${token}&questionSetId=${questionDataId}`
       )
       .then((res) => {
-        setQuestionInfoModalData(res);
-        console.log('setquestionInfoData', res);
-      })
-      .then(() => {
+        if (res.data.length > 0)
+          setQuestionInfoModalData(res.data[res.data.length - 1]);
+        else setQuestionInfoModalData(res.data);
+
         setQuestionInfoModalVisible(!questionInfoModalVisible);
       })
       .catch((err) => {
         console.err(err);
       });
+  };
+
+  const closeModal = () => {
+    setQuestionInfoModalVisible(false);
   };
 
   const shuffle = (array) => {
@@ -102,7 +105,6 @@ const QuestionSet = (props) => {
   };
 
   const getTrainData = (questionDataId) => {
-    console.log('train');
     axios
       .get(`http://16.162.89.86/set/train?token=${token}&id=${questionDataId}`)
       .then((res) => {
@@ -120,7 +122,7 @@ const QuestionSet = (props) => {
         });
       })
       .catch((err) => {
-        console.err(err);
+        console.log(err.message);
       });
   };
 
@@ -143,7 +145,9 @@ const QuestionSet = (props) => {
             {questionSetReplacedTitle}
           </Text>
           <Text size={size} muted={!priceColor} color={priceColor}>
-            {questionData.graded ? questionData.deadline : 'Ungraded'}
+            {questionData.graded
+              ? new Date(questionData.deadline).toLocaleDateString('fr-CA')
+              : 'Ungraded'}
           </Text>
         </Block>
       </TouchableOpacity>
@@ -155,104 +159,13 @@ const QuestionSet = (props) => {
           Alert.alert('Modal has been closed.');
         }}
       >
-        <>
-          <Block flex={0.5} safe middle>
-            <Block style={styles.registerContainer}>
-              <Block middle style={styles.socialConnect}>
-                <Block row middle style>
-                  <Text color="#8898AA" size={25} style={{ marginTop: '5%' }}>
-                    Score:
-                  </Text>
-                </Block>
-
-                <Block width={width * 0.8}>
-                  <Button style={styles.labelStyle}>
-                    <Text
-                      style={{ fontWeight: '500' }}
-                      size={16}
-                      color={argonTheme.COLORS.BLACK}
-                    >
-                      <Icon
-                        //   size={16}
-                        //   color={argonTheme.COLORS.ICON}
-                        name="book-open-page-variant"
-                        //   family="ArgonExtra"
-                        style={[styles.inputIcons, { color: '#9fc2c3' }]}
-                      />{' '}
-                      {questionInfoModalData.id}
-                    </Text>
-                  </Button>
-                </Block>
-              </Block>
-              <Block flex>
-                <Block flex center>
-                  <>
-                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                      <Button style={styles.labelStyle}>
-                        <Text
-                          style={{ fontWeight: '500' }}
-                          size={16}
-                          color={argonTheme.COLORS.ERROR}
-                        >
-                          <Icon
-                            //   size={16}
-                            //   color={argonTheme.COLORS.ICON}
-                            name="close-circle-outline"
-                            //   family="ArgonExtra"
-                            style={[styles.inputIcons, { color: 'red' }]}
-                          />{' '}
-                          Submitted on: {questionInfoModalData.submitted}
-                        </Text>
-                      </Button>
-                    </Block>
-                    <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                      <Button style={styles.labelStyle}>
-                        <Text
-                          style={{ fontWeight: '500' }}
-                          size={16}
-                          color={argonTheme.COLORS.ERROR}
-                        >
-                          <Icon
-                            //   size={16}
-                            //   color={argonTheme.COLORS.ICON}
-                            name="close-circle-outline"
-                            //   family="ArgonExtra"
-                            style={[styles.inputIcons, { color: 'red' }]}
-                          />{' '}
-                          Percentage: {questionInfoModalData.percentage}
-                        </Text>
-                      </Button>
-                    </Block>
-                  </>
-
-                  <Block middle row>
-                    <Button
-                      style={styles.resetButton}
-                      color="default"
-                      onPress={() => toggleShowQuestionInfoModal('close')}
-                    >
-                      <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                        BACK
-                      </Text>
-                    </Button>
-                    <Button
-                      style={styles.resetButton}
-                      color="default"
-                      onPress={() => {
-                        setQuestionInfoModalVisible(false);
-                        getTrainData(questionData.id);
-                      }}
-                    >
-                      <Text bold size={14} color={argonTheme.COLORS.WHITE}>
-                        ENTER
-                      </Text>
-                    </Button>
-                  </Block>
-                </Block>
-              </Block>
-            </Block>
-          </Block>
-        </>
+        <QuestionInfoModalData
+          data={questionInfoModalData}
+          closeModal={closeModal}
+          toggleShowQuestionInfoModal={toggleShowQuestionInfoModal}
+          getTrainData={getTrainData}
+          questionData={questionData}
+        />
       </Modal>
     </Block>
   );
