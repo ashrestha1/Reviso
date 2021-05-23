@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, StyleSheet, Easing } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Block, Text, theme } from 'galio-framework';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Shake } from 'react-native-motion';
 import { SimpleAnimation } from 'react-native-simple-animations';
 import { counterEvent } from 'react-native/Libraries/Performance/Systrace';
-import { set } from 'react-native-reanimated';
+
 import axios from 'axios';
 
 const styles = StyleSheet.create({
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
 });
 
 export default ({ navigation, route }) => {
+  const circularProgressRef = useRef();
   const [answerTextColor, setAnswerTextColor] = useState('black');
   const [correctAnswerBackground, setCorrectAnswerBackground] = useState(
     'white'
@@ -93,23 +94,24 @@ export default ({ navigation, route }) => {
   const questionId = route.params.id;
   const questionData = route.params.data;
   const fakeData = route.params.fakeData;
+  const timeLimit = route.params.timeLimit;
 
   const startAnimation = () => {
     setValue(value + 1);
   };
 
+  console.log(circularProgressRef);
   const answerPressed = (answer) => {
     if (answer != questionData.problems[count].answers[0]) startAnimation();
     else setScore(score + 1);
     setDirection('right');
-    setDelay(2000);
+    setDelay(3000);
     setAim('out');
     setAnswerTextColor('white');
     setCorrectAnswerBackground('#3CB371');
     setWrongAnswerBackground('#DC143C');
 
-    if (count == questions.length - 1) {
-      setDelay(5000);
+    if (count == questions.length - 1 || isLate) {
       setTimeout(function () {
         var percentageVal = (score / questionData.problems.length) * 100;
 
@@ -121,6 +123,8 @@ export default ({ navigation, route }) => {
           percentage: percentageVal,
         });
 
+        console.log(data, 'submitted');
+
         axios
           .post(`http://16.162.89.86/score/submit/`, data, {
             headers: {
@@ -128,6 +132,7 @@ export default ({ navigation, route }) => {
             },
           })
           .then((res) => {
+            console.log(res, 'response');
             navigation.navigate('Home');
           })
           .catch((err) => {
@@ -158,15 +163,22 @@ export default ({ navigation, route }) => {
     answerCorrect: false,
   };
 
+  let arcRef;
+
+  useEffect(() => {
+    arcRef.animate(100, 120000, Easing.quad);
+  }, [arcRef]);
+
+  const [isLate, setIsLate] = useState(false);
   return (
     <View style={{ flex: 1, paddingHorizontal: 5 }}>
       <View style={{ marginTop: '15%' }}>
         <AnimatedCircularProgress
+          ref={(ref) => (arcRef = ref)}
           size={80}
           width={8}
-          fill={count}
+          fill={100}
           tintColor="#00e0ff"
-          onAnimationComplete={() => console.log('')}
           backgroundColor="white"
           style={{ alignSelf: 'center', marginBottom: '5%' }}
           rotation={0}
@@ -176,7 +188,6 @@ export default ({ navigation, route }) => {
         <SimpleAnimation
           aim={aim}
           animateOnUpdate={animateOnUpdate}
-          delay={0}
           direction={direction}
           distance={500}
           duration={3000}

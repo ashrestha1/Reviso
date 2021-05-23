@@ -81,15 +81,22 @@ export default ({ navigation, route }) => {
   const [viewScoreData, setViewScoreData] = useState({});
 
   const viewScoreModalOpen = (questionSetId) => {
+    console.log(
+      'here',
+      route.params.token,
+      's',
+      route.params.studentId,
+      'a',
+      questionSetId
+    );
     axios
       .get(
-        `http://18.166.28.128/score/users?token=${route.params.token}&student=${route.params.studentId}&${questionSetId}`
+        `http://18.166.28.128/score/user?token=${route.params.token}&studentId=${route.params.studentId}&questionSetId=${questionSetId}`
       )
       .then((res) => {
+        console.log(res.data[0]);
         setViewScoreData(res);
-        console.log('scoredata', viewScoreData);
-      })
-      .then(() => {
+        console.log('scoredata', viewScoreData.data[0]);
         setViewScoreModalVisible(true);
       })
       .catch((err) => {
@@ -134,21 +141,25 @@ export default ({ navigation, route }) => {
         <FlatList
           data={questions}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => {
-                viewScore
-                  ? viewScoreModalOpen()
-                  : openViewQuestionSetModal(item);
-              }}
-            >
-              <View style={styles.card}>
-                <View style={styles.cardContent}>
-                  <Text bold size={14} color={argonTheme.COLORS.BLACK}>
-                    {item.title}
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
+            <>
+              {item.graded || viewScore == false ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    viewScore
+                      ? viewScoreModalOpen(item.id)
+                      : openViewQuestionSetModal(item);
+                  }}
+                >
+                  <View style={styles.card}>
+                    <View style={styles.cardContent}>
+                      <Text bold size={14} color={argonTheme.COLORS.BLACK}>
+                        {item.title}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ) : null}
+            </>
           )}
           keyExtractor={(item, index) => index.toString()}
         />

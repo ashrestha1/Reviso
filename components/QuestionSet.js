@@ -105,9 +105,13 @@ const QuestionSet = (props) => {
   };
 
   const getTrainData = (questionDataId) => {
+    console.log(questionDataId);
+    console.log(token);
+
     axios
       .get(`http://16.162.89.86/set/train?token=${token}&id=${questionDataId}`)
       .then((res) => {
+        console.log('sucess');
         var temp = [];
         for (var i = 0; i < res.data.problems.length; i++) {
           temp[i] = shuffle(res.data.problems[i].answers);
@@ -119,9 +123,11 @@ const QuestionSet = (props) => {
           id: questionData.id,
           data: res.data,
           fakeData: temp,
+          TimeLimit: questionData.timeLimit,
         });
       })
       .catch((err) => {
+        console.log('FAIL');
         console.log(err.message);
       });
   };
