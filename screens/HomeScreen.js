@@ -25,13 +25,12 @@ import { getQuestionsTeacher } from '../Redux2/Actions/questions';
 const { width } = Dimensions.get('screen');
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import axios from 'axios';
+import { getQuestionsStudent } from '../Redux2/Actions/studentQuestions';
 
 const Tab = createMaterialTopTabNavigator();
 
 export default ({ navigation, route }) => {
   const dispatch = useDispatch();
-
-  const [questionsForStudent, setQuestionsForStudent] = useState([]);
 
   const [
     createQuestionSetModalVisible,
@@ -40,29 +39,16 @@ export default ({ navigation, route }) => {
   useEffect(() => {
     dispatch(getAccount(route.params.token));
     dispatch(getQuestionsTeacher(route.params.token));
-
-    axios
-      .get(`http://16.162.89.86/set/browse?token=${route.params.token}`)
-      .then((res) => {
-        setQuestionsForStudent(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(getQuestionsStudent(route.params.token));
   }, []);
 
   const account = useSelector((state) => state.account);
 
-  // var questions = {
-  //   created: '2021-05-20T00:00:00.000Z',
-  //   deadline: '2021-05-20T00:00:00.000Z',
-  //   graded: 0,
-  //   id: 0,
-  //   timeLimit: 12060,
-  //   title: 'test',
-  // };
-
   questions = useSelector((state) => state.questions.questionsArray);
+
+  questionsForStudent = useSelector(
+    (state) => state.questionsStudent.questionsStudentArray
+  );
   const toggleCreateQuestionSetModal = () => {
     createQuestionSetModalVisible
       ? setCreateQuestionSetModalVisible(false)

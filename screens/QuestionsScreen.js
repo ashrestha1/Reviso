@@ -100,7 +100,6 @@ export default ({ navigation, route }) => {
     setValue(value + 1);
   };
 
-  console.log(circularProgressRef);
   const answerPressed = (answer) => {
     if (answer != questionData.problems[count].answers[0]) startAnimation();
     else setScore(score + 1);
@@ -113,7 +112,7 @@ export default ({ navigation, route }) => {
 
     if (count == questions.length - 1 || isLate) {
       setTimeout(function () {
-        var percentageVal = (score / questionData.problems.length) * 100;
+        var percentageVal = (score / questionData.problems.length - 1) * 100;
 
         percentageVal = Math.round(percentageVal);
 
@@ -123,8 +122,6 @@ export default ({ navigation, route }) => {
           percentage: percentageVal,
         });
 
-        console.log(data, 'submitted');
-
         axios
           .post(`http://16.162.89.86/score/submit/`, data, {
             headers: {
@@ -132,7 +129,6 @@ export default ({ navigation, route }) => {
             },
           })
           .then((res) => {
-            console.log(res, 'response');
             navigation.navigate('Home');
           })
           .catch((err) => {

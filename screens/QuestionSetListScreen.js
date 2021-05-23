@@ -68,7 +68,6 @@ export default ({ navigation, route }) => {
   const [viewQuestionSetModalData, setViewQuestionSetModalData] = useState([]);
 
   const openViewQuestionSetModal = (item) => {
-    console.log('item', item);
     setViewQuestionSetModalData(item);
     setViewQuestionSetModalVisible(true);
   };
@@ -91,12 +90,10 @@ export default ({ navigation, route }) => {
     );
     axios
       .get(
-        `http://18.166.28.128/score/user?token=${route.params.token}&studentId=${route.params.studentId}&questionSetId=${questionSetId}`
+        `http://16.162.89.86/score/user?token=${route.params.token}&studentId=${route.params.studentId}&questionSetId=${questionSetId}`
       )
       .then((res) => {
-        console.log(res.data[0]);
         setViewScoreData(res);
-        console.log('scoredata', viewScoreData.data[0]);
         setViewScoreModalVisible(true);
       })
       .catch((err) => {
